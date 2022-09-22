@@ -1,0 +1,16 @@
+{
+  "chat": [
+    {
+      "id": 1,
+      "message": " A wszystko to bo ciebie kocham i nie wiem jak bez ciebie mógłbym żyć",
+      "author": "lukaszo199",
+      "imgSrc": "https://ssw.solutions/app/uploads/2020/10/DSC_5404-e1602777729138.jpg "
+    },
+    {
+      "id": 2,
+      "message": "Moim zdaniem nie ma tak , że dobrze albo że nie dobrze, gdybym miał powiedzieć co cenie w życiu najbardziej, powiedziałbym że ludzi.",
+      "author": "mateuszololo",
+      "imgSrc": "https://ssw.solutions/app/uploads/2021/05/DSC8679_strona.jpg "
+    }
+  ]
+}

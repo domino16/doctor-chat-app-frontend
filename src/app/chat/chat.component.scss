@@ -1,0 +1,97 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  max-height: 100vh;
+
+.chat-box {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: rgb(250, 250, 250);
+  border: 1px solid rgb(150, 150, 150);
+  box-shadow: 0 0 5px black;
+  overflow: hidden;
+
+  .stranger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.6rem;
+  }
+
+  hr {
+    margin: 0 auto;
+    width: 80%;
+  }
+
+  input {
+position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    font-size: 1.6em;
+  }
+
+// Style wspólne wiadomości
+
+  .allbox-messages {
+    margin-top: 20px;
+
+    .message-box {
+      display: flex;
+      position: relative;
+      margin-bottom: 20px;
+
+      .message-text {
+        max-width: 75%;
+        padding: 20px;
+        font-size: 1.6rem;
+        border-radius: 40px;
+      }
+
+      .message-picture {
+        position: absolute;
+        bottom: 0;
+
+        img {
+          width: 60px;
+          border-radius: 50%;
+        }
+      }
+    }
+
+
+// Style klasy wiadomości po prawej stronie
+    .message-box-right{
+      justify-content: flex-end;
+      padding-right: 80px;
+      .message-text{
+        background-color:#007bff;
+        color: #fff ;
+      }
+      .message-picture{
+        right: 15px;
+      }
+    }
+
+// Style klasy wiadomości po lewej stronie
+    .message-box-left{
+      justify-content: flex-start;
+      padding-left: 80px;
+      .message-text{
+        background-color: #e4e6eb;
+        color: #050505 ;
+      }
+      .message-picture{
+        left: 15px;
+      }
+
+    }
+
+  }
+}
+}

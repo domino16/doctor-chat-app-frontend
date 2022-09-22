@@ -1,0 +1,59 @@
+<div class="wrapper">
+  <div class="chat-box">
+    <div class="stranger">{{stranger}}</div>
+    <hr>
+    <div class="allbox-messages">
+      <div class="message-box message-box-right " *ngFor="let message of messages | async ">
+        <div class="message-text" ><p> {{message.message}}</p>
+        </div>
+        <div class="message-picture"><img src="https://ssw.solutions/app/uploads/2021/06/Hy%C5%BCy-Mateusz.jpg" alt="">
+        </div>
+      </div>
+
+      <div class="message-box message-box-left">
+        <div class="message-text"><p> ipsum dolor sit amet consectetur adipisicing elit. Nam illum voluptatem quo
+          voluptatibus in neque iure quod minima error beatae enim dolore ipsa ea perspiciatis tempora doloribus aut,
+          accusamus dolorum?lore</p>
+        </div>
+        <div class="message-picture"><img src="https://ssw.solutions/app/uploads/2021/06/Hy%C5%BCy-Mateusz.jpg" alt="">
+        </div>
+      </div>
+      <div class="message-box message-box-right">
+        <div class="message-text"><p> ipsum dolor sit amet consectetur adipisicing elit. Nam illum voluptatem quo
+          voluptatibus in neque iure quod minima error beatae enim dolore ipsa ea perspiciatis tempora doloribus aut,
+          accusamus dolorum?lore</p>
+        </div>
+        <div class="message-picture"><img src="https://ssw.solutions/app/uploads/2021/06/Hy%C5%BCy-Mateusz.jpg" alt="">
+        </div>
+      </div>
+
+      <div class="message-box message-box-left">
+        <div class="message-text"><p> ipsum dolor sit amet consectetur adipisicing elit. Nam illum voluptatem quo
+          voluptatibus in neque iure quod minima error beatae enim dolore ipsa ea perspiciatis tempora doloribus aut,
+          accusamus dolorum?lore</p>
+        </div>
+        <div class="message-picture"><img src="https://ssw.solutions/app/uploads/2021/06/Hy%C5%BCy-Mateusz.jpg" alt="">
+        </div>
+      </div>
+
+    </div>
+    <input type="text" (keyup.enter)="post()" [(ngModel)]="message">
+
+  </div>
+</div>
+<form (ngSubmit)="sendMessage(sendForm)" #sendForm="ngForm">
+  <div class="chat-send row">
+      <div class="col-2">
+          <input type="text" class="form-control" name="message" id="input-message" ngModel>
+      </div>
+      <div class="col-8">
+          <input type="text" class="form-control" name="author" id="input-author" ngModel>
+      </div>
+      <div class="col-8">
+        <input type="text" class="form-control" name="imgSrc" id="input-imgSrc" ngModel>
+    </div>
+      <div class="col-2">
+          <button type="submit" class="btn btn-primary">Send</button>
+      </div>
+  </div>
+</form>
