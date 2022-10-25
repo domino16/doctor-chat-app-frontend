@@ -3,4 +3,5 @@ export interface Message {
   message: string;
   author: string;
   imgSrc : string;
+  
 }
