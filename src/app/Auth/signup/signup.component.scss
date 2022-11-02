@@ -38,7 +38,6 @@ h1 {
 }
 
 .form-box .error-text {
-  visibility: hidden;
   margin: 5px 0 0 10px;
   font-size: 14px;
   color: rgb(0, 137, 250);
@@ -51,6 +50,7 @@ h1 {
 .control-buttons {
   display: flex;
   justify-content: flex-end;
+  margin-top: 10px;
 }
 
 .send,
@@ -75,31 +75,10 @@ h1 {
   background-color: rgb(0, 107, 194);
 }
 
-.popup {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  position: absolute;
-  top: -300px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 200px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 8px;
-  border: 2px solid black;
-  transition: top .5s;
+.disabled-button, .disabled-button:hover{
+  background-color: rgb(74, 74, 74);
 }
 
-.popup p {
-  font-size: 28px;
-}
-
-.popup button {
-  margin-top: 20px;
-}
-
-.show-popup {
-  top: 150px;
+.line-through{
+  text-decoration: line-through;
 }
