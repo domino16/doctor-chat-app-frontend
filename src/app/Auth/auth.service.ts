@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { catchError, throwError } from 'rxjs';
+
 
 interface AuthResponseData{
   idToken:string;
@@ -23,7 +25,17 @@ export class AuthService {
         password: password,
         returnSecureToken: true,
       }
-    );
+    ).pipe(catchError(errorRes => {
+      let errorMessage = 'Nieznany błąd'
+      if(!errorRes.error || !errorRes.error.error){
+        throwError(() => new Error(errorMessage))
+      }
+      switch(errorRes.error.error.message){
+        case 'EMAIL_EXISTS':
+          errorMessage= 'Ten Email jest już używany.'
+      }
+      return  throwError(() => new Error(errorMessage))
+    }));
   }
 
   signin(email: string, password: string) {
@@ -34,7 +46,25 @@ export class AuthService {
         password: password,
         returnSecureToken: true,
       }
-    );
+    ).pipe(catchError(errorRes => {
+      let errorMessage = 'Nieznany błąd'
+      if(!errorRes.error || !errorRes.error.error){
+        throwError(() => new Error(errorMessage))
+      }
+      switch(errorRes.error.error.message){
+        case 'EMAIL_NOT_FOUND':
+          errorMessage= 'Nie znaleźliśmy użytkownika o tej nazwie. Użytkownik mógł zostać usunięty.'
+          break;
+          case 'INVALID_PASSWORD':
+          errorMessage= 'Błędne hasło'
+          break;
+          case 'USER_DISABLED':
+          errorMessage= 'To konto zostało wyłączone przez administratora'
+          break;
+
+      }
+      return  throwError(() => new Error(errorMessage))
+    }));;
   }
 
 

@@ -1,10 +1,11 @@
-  <div *ngIf="isLoading" style="text-align: center; margin-top: 10em;">
-    <app-loading-spinner></app-loading-spinner>
-  </div>
-  <div class="wrapper" *ngIf="!isLoading">
-    <div class="alert alert-danger">error</div>
-  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" >
+<div *ngIf="isLoading" style="text-align: center; margin-top: 10em;">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+<div class="wrapper" *ngIf="!isLoading">
+
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
     <h1>Zarejestruj się!</h1>
+    <div class="alert alert-danger" *ngIf="error">{{error}}</div>
     <div class="form-box">
       <label for="username">Nazwa użytkownika:</label>
       <input type="text" id="username" placeholder="Podaj nazwę użytkownika" name="username" formControlName="username">
@@ -50,14 +51,16 @@
       </span>
 
     </div>
-    <input type="checkbox" formControlName="acceptTerms" class="form-check-input" />
-    <label for="acceptTerms">
-      Przeczytałem/am i akceptuje <a href="">regulamin</a></label>
+    <div class="form-check form-switch">
+      <input type="checkbox" formControlName="acceptTerms" class="form-check-input" id="flexSwitchCheckDefault" />
+      <label for="acceptTerms" class="form-check-label">
+        Zapoznałem/am się i akceptuje <a href="">regulamin</a></label>
+    </div>
     <div class="control-buttons">
       <button type="reset" class="clear">Wyczyść</button>
       <button type="submit" [disabled]="!signupForm.valid" class="send"
         [ngClass]="{'disabled-button' : !signupForm.valid}">Wyślij</button>
     </div>
+
   </form>
 </div>
-

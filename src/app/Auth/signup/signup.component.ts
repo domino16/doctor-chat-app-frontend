@@ -18,8 +18,8 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
-
   isLoading = false;
+  error: string = '';
 
   numberPattern = new RegExp('(?=.*[0-9])');
   uppercasePattern = new RegExp('(?=.*[A-Z])');
@@ -82,23 +82,24 @@ export class SignupComponent implements OnInit {
   onSubmit() {
     console.log(this.signupForm.valid);
     if (!this.signupForm.valid) {
-      return
-    } else{
+      return;
+    } else {
       const email: string = this.signupForm.controls['email'].value;
       const password: string = this.signupForm.controls['password'].value;
 
       this.isLoading = true;
-      this.authService.signup(email, password).subscribe(
-        (resData) => {
+      this.authService.signup(email, password).subscribe({
+        next: (resData) => {
           console.log(resData);
           this.isLoading = false;
         },
-        (error) => {
-          console.error(error);
+        error: (errorMessage) => {
+          console.error(errorMessage);
+          this.error = errorMessage;
           this.isLoading = false;
-        }
-      );
-      this.signupForm.reset;
+        },
+      });
+      // this.signupForm.reset;
     }
   }
 }

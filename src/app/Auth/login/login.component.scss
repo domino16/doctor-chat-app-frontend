@@ -38,15 +38,10 @@ h1 {
 }
 
 .form-box .error-text {
-  visibility: hidden;
-  margin: 5px 0 0 10px;
   font-size: 14px;
-  color: rgb(0, 137, 250);
+  color: rgb(196, 72, 72);
 }
 
-.form-box.error .error-text {
-  visibility: visible;
-}
 
 .control-buttons {
   display: flex;
@@ -71,4 +66,9 @@ h1 {
 .send:hover,
 .close:hover {
   background-color: rgb(0, 107, 194);
+}
+
+.disabled-button,
+.disabled-button:hover {
+  background-color: rgb(74, 74, 74);
 }

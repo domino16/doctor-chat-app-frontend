@@ -1,19 +1,21 @@
-<div class="wrapper">
-  <form>
+<div class="wrapper" *ngIf="!isLoading">
+  <form [formGroup]="loginForm" (ngSubmit)="send()">
       <h1>Zaloguj!</h1>
       <div class="form-box">
           <label for="username">Nazwa użytkownika:</label>
-          <input type="text" id="username" placeholder="Podaj nazwę użytkownika"[(ngModel)]="username" name="username">
-          <p class="error-text">error</p>
+          <input type="text" id="username" placeholder="Podaj nazwę użytkownika" name="username" formControlName="username">
+          <span  class="error-text" *ngIf="!loginForm.controls['username'].valid && loginForm.controls['username'].touched ">Uzupełnij to pole.</span>
+          
       </div>
       <div class="form-box">
           <label for="password">Hasło:</label>
-          <input type="password" id="password" placeholder="Podaj hasło" [(ngModel)]="password" name="password">
-          <p class="error-text">error</p>
+          <input type="password" id="password" placeholder="Wpisz hasło" name="password" formControlName="password">
+          <span  class="error-text" *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched ">Uzupełnij to pole.</span>
       </div>
 
       <div class="control-buttons">
-        <button type="submit" class="send" (click)="send()">Wyślij</button>
+        <button type="submit" [disabled]="!loginForm.valid" class="send"
+        [ngClass]="{'disabled-button' : !loginForm.valid}">Wyślij</button>
     </div>
 </form>
 </div>

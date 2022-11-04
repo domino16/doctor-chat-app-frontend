@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../shared/models/user';
 import { HttpUserService } from '../../services/http-user.service';
-import { map, of, every, find } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,28 +8,21 @@ import { map, of, every, find } from 'rxjs';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  password = '';
-  username = '';
-  users: User[] = [];
+
+  isLoading = false;
+
   constructor(private http: HttpUserService) {}
 
+  loginForm: FormGroup = new FormGroup ({
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
+  })
+
+
   ngOnInit(): void {
-    this.http
-      .getUser()
-      .pipe(map((res) => (this.users = res)))
-      .subscribe((x) => console.log(x));
   }
 
   send() {
-    this.users.forEach((element) => {
-      if (
-        element.password == this.password &&
-        element.username == this.username
-      ) {
-        console.log('udało się zalogować ');
-      } else {
-        console.log('nie udało się zalogować');
-      }
-    });
+    console.log(this.loginForm);
   }
 }
