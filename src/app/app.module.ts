@@ -9,9 +9,10 @@ import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './Auth/login/login.component';
 import { SignupComponent } from './Auth/signup/signup.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
-  declarations: [AppComponent, ChatComponent, LoginComponent, SignupComponent, LoadingSpinnerComponent],
+  declarations: [AppComponent, ChatComponent, LoginComponent, SignupComponent, LoadingSpinnerComponent, HeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

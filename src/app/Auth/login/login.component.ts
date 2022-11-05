@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpUserService } from '../../services/http-user.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { EmailValidator, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +12,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
 
   isLoading = false;
+  error:string = '';
 
-  constructor(private http: HttpUserService) {}
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   loginForm: FormGroup = new FormGroup ({
     username: new FormControl('', Validators.required),
@@ -24,5 +28,23 @@ export class LoginComponent implements OnInit {
 
   send() {
     console.log(this.loginForm);
+
+    const email:string = this.loginForm.controls['username'].value
+    const password:string = this.loginForm.controls['password'].value
+this.isLoading = true;
+    this.authService.signin(email,password).subscribe({
+      next: (resData) => {
+        console.log(resData);
+        this.isLoading = false
+        this.router.navigate(['/'])
+      },
+      error: (errorMessage) => {
+        this.error = errorMessage;
+        console.log(errorMessage);
+        this.isLoading = false;
+      }
+    })
+
+
   }
 }

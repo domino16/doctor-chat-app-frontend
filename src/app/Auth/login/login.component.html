@@ -1,11 +1,13 @@
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 <div class="wrapper" *ngIf="!isLoading">
   <form [formGroup]="loginForm" (ngSubmit)="send()">
+    <div class="alert alert-danger" *ngIf="error">{{error}}</div>
       <h1>Zaloguj!</h1>
       <div class="form-box">
           <label for="username">Nazwa użytkownika:</label>
           <input type="text" id="username" placeholder="Podaj nazwę użytkownika" name="username" formControlName="username">
           <span  class="error-text" *ngIf="!loginForm.controls['username'].valid && loginForm.controls['username'].touched ">Uzupełnij to pole.</span>
-          
+
       </div>
       <div class="form-box">
           <label for="password">Hasło:</label>

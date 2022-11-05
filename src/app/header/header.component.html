@@ -1,0 +1,63 @@
+<link href="https://fonts.googleapis.com/css?family=Merienda+One" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+<nav class="navbar navbar-expand-md navbar-light ">
+  <div class="container-xxl">
+    <a class="navbar-brand">Dominik Pietrzyk</a>
+    <div class="navbar-header">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+
+    <div id="navbarSupportedContent" class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a  routerLink="/" class="nav-link active" aria-current="page">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/chat" class="nav-link" >Chat</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a data-bs-toggle="dropdown" aria-expanded="false" class="nav-link dropdown-toggle" >Services
+            <b></b></a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" >Web Design</a></li>
+            <li><a class="dropdown-item" >Web Development</a></li>
+            <li><a class="dropdown-item" >Graphic Design</a></li>
+            <li><a class="dropdown-item" >Digital Marketing</a></li>
+          </ul>
+        </li>
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right" *ngIf="!loggedIn">
+        <li class=" signIn"><a routerLink="/login">Sign In</a></li>
+        <li class=" signUp"><a routerLink="/signup" >Sign Up</a></li>
+
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right" *ngIf="loggedIn">
+        <li class="nav-item"><a class="notifications"><i class="fa fa-bell-o"></i><span class="badge">1</span></a></li>
+        <li class="nav-item"><a class="messages"><i class="fa fa-envelope-o"></i><span class="badge">10</span></a></li>
+        <li class="dropdown nav-item">
+          <a data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link" ><img
+              src="https://cdn.pixabay.com/photo/2016/11/14/17/39/person-1824144_960_720.png" class="avatar"
+              alt="Avatar">Dominik Pietrzyk</a>
+          <ul class="dropdown-menu">
+            <li><a ><i class="fa fa-user-o"></i> Profile</a></li>
+            <li><a ><i class="fa fa-calendar-o"></i> Calendar</a></li>
+            <li><a ><i class=" fa fa-sliders"></i> Settings</a></li>
+            <li class="divider"></li>
+            <li><a (click)="onLogout()"><i class="material-icons" >&#xE8AC;</i> Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
