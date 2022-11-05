@@ -7,7 +7,7 @@ import { AuthService } from './Auth/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
 
   userSub!:Subscription
   loggedIn:boolean = false;
@@ -22,10 +22,6 @@ ngOnInit(): void {
   )
   this.authService.autoLogin()
 
-}
-
-ngOnDestroy(): void {
-  this.userSub.unsubscribe
 }
 
 }

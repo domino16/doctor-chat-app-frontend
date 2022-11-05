@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Subject, tap, throwError } from 'rxjs';
+import { catchError, BehaviorSubject, tap, throwError } from 'rxjs';
 import { AuthUser } from './authuser.model';
 import { Router } from '@angular/router';
 
@@ -17,8 +17,8 @@ export interface AuthResponseData {
   providedIn: 'root',
 })
 export class AuthService {
-  user = new Subject<AuthUser>();
-  tokenExpirationTimer!:any;
+  user = new BehaviorSubject<AuthUser>(null!);
+  private tokenExpirationTimer!:any;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -29,9 +29,6 @@ export class AuthService {
       _token: string;
       _tokenExpirationDate: string;
     } = JSON.parse(localStorage.getItem('userData') ?? '{}');
-
-    console.log(userData);
-
     if (!userData) {
       return;
     }
@@ -45,7 +42,7 @@ export class AuthService {
 
     if (loadedUser.token) {
       this.user.next(loadedUser);
-      const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime()
+      const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.autoLogout(expirationDuration)
     }
   }
@@ -70,7 +67,7 @@ export class AuthService {
     email: string,
     localId: string,
     idToken: string,
-    expiresIn: string
+    expiresIn: number
   ) {
     const expirationDate = new Date(new Date().getTime() + +expiresIn * 1000);
     const user = new AuthUser(email, localId, idToken, expirationDate);
@@ -106,7 +103,7 @@ export class AuthService {
             resData.email,
             resData.localId,
             resData.idToken,
-            resData.expiresIn
+            +resData.expiresIn
           );
         })
       );
@@ -149,7 +146,7 @@ export class AuthService {
             resData.email,
             resData.localId,
             resData.idToken,
-            resData.expiresIn
+            +resData.expiresIn
           );
         })
       );

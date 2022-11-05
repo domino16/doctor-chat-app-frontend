@@ -6,7 +6,7 @@ import { SignupComponent } from './Auth/signup/signup.component';
 import { AuthGuard } from './Auth/auth.guard';
 
 const routes: Routes = [
-  { path: 'chat',component: ChatComponent },
+  { path: 'chat',canActivate:[AuthGuard], component: ChatComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
 ];

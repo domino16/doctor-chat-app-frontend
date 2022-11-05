@@ -13,11 +13,14 @@ export class HeaderComponent implements OnInit {
   userSub!:Subscription;
   loggedIn:boolean = false;
 
-  constructor(private authService: AuthService, private appComponent:AppComponent){}
+  constructor(private authService: AuthService){}
 
 
   ngOnInit(): void {
-    this.loggedIn = this.appComponent.loggedIn
+    this.userSub = this.authService.user.subscribe(user =>{
+      this.loggedIn = !!user
+    }
+    )
   }
 
   onLogout(){
