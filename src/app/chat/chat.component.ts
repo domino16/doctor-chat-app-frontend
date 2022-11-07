@@ -1,14 +1,11 @@
 import {
   Component,
   OnInit,
-  OnChanges,
-  SimpleChanges,
-  OnDestroy,
 } from '@angular/core';
 import { Message } from '../shared/models/message';
-import { Observable, interval, Subscription } from 'rxjs';
-import { NgForm } from '@angular/forms';
-import { HttpMessagesService } from '../services/http-messages.service';
+import { Observable} from 'rxjs';
+import { UserService } from '../services/user.service';
+import { User } from '../shared/models/user';
 
 @Component({
   selector: 'app-chat',
@@ -19,13 +16,15 @@ export class ChatComponent implements OnInit {
   username: string = '';
   message: string = '';
   messages!: Observable<Message[]>;
+  searchControl:any;
+  users = [];
 
-  constructor(private http: HttpMessagesService) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.http.subMessages.subscribe((data) => (this.messages = data));
-  }
 
+  }
+  user:User = {'address':''}
   send() {
     const message: Message = {
       message: this.message,
@@ -34,7 +33,9 @@ export class ChatComponent implements OnInit {
         'https://upload.wikimedia.org/wikipedia/commons/a/a0/Andrzej_Person_Kancelaria_Senatu.jpg',
     };
 
-    this.http.postMessage(message).subscribe();
-    this.message = '';
+    // this.http.postMessage(message).subscribe();
+    // this.message = '';
   }
+
+
 }

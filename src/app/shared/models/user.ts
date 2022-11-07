@@ -1,8 +1,11 @@
 export interface User{
-  id?: number;
-  username: string;
-  password: string;
-  email: string;
-  imgSrc: string;
-  loginStatus: boolean;
+  id?: string;
+  email?: string;
+  password?:string;
+  displayName?: string;
+  photoURL?: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  address?: string;
 }

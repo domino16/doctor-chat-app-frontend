@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
-
   Validators,
 } from '@angular/forms';
+
 
 import { Validation } from '../passwordValidators/validation';
 import { StrongPasswordValidation } from '../passwordValidators/strongPasswordValidation';
 import { AuthService } from '../auth.service';
-
 import { Router } from '@angular/router';
+import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-signup',
@@ -31,6 +33,7 @@ export class SignupComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private userService: UserService
   ) {}
 
   signupForm: FormGroup = new FormGroup(
@@ -75,22 +78,26 @@ export class SignupComponent implements OnInit {
     if (!this.signupForm.valid) {
       return;
     } else {
+      const username: string = this.signupForm.controls['username'].value;
       const email: string = this.signupForm.controls['email'].value;
       const password: string = this.signupForm.controls['password'].value;
 
+      const user:User = {'email':email,'displayName': username,'password':password}
 
       this.isLoading = true;
       this.authService.signup(email, password).subscribe({
         next: (resData) => {
           console.log(resData);
           this.isLoading = false;
-          this.router.navigate(['chat'])
+          this.userService.adduser(user).subscribe(resData=> console.log(resData))
+          this.router.navigate(['chat']);
+
         },
         error: (errorMessage) => {
           console.error(errorMessage);
           this.error = errorMessage;
           this.isLoading = false;
-        },
+        }
       });
 
     }
