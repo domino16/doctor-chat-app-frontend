@@ -2,18 +2,73 @@
   <div class="chat-box__list">
     <div class="chat-box__search-input">
       <mat-form-field>
-        <input matInput placeholder="Z kim chcesz porozmawiać?" [formControl]="searchControl" [matAutocomplete]="userss"/>
+        <input matInput placeholder="Z kim chcesz porozmawiać?" [formControl]="searchControl"
+          [matAutocomplete]="userss" />
       </mat-form-field>
       <mat-autocomplete #userss="matAutocomplete">
-        <mat-option *ngFor="let user of users" >
-          <!-- {{option}} -->
-        </mat-option>
+
+        <ng-container *ngFor="let user of users | async ">
+          <mat-option [value]="''" *ngIf="user.email != currentUserEmail" (click)="createChat(user)">{{user.displayName}}
+          </mat-option>
+        </ng-container>
       </mat-autocomplete>
     </div>
+    <mat-selection-list [multiple]="false" [formControl]="chatListControl">
+      <mat-list-option *ngFor="let chat of myChats | async" [value]="chat.id">
+        <img matListAvatar [src]="chat.chatImg" alt="photo avatar">
+
+        <p mat-line class="chat-box__chat-title">
+          <span class="chat-box__chat-name">{{ chat.chatName}} </span><span class="chat-box__chat-date">{{
+            chat.lastMessageDate
+            }}</span>
+        </p>
+        <p mat-line class="cs"> <span class="chat-box__last-message">{{ chat.lastMessage }}</span></p>
+        <mat-divider></mat-divider>
+      </mat-list-option>
+    </mat-selection-list>
 
   </div>
   <div class="chat-box__messages">
-    <p>dasf</p>
+    <div class="discussion_header" *ngIf="selectedChat | async as selectedChat; else noMessages">
+      <img style="margin:15px" [src]="
+        selectedChat.chatImg
+      " />
+      <h2>{{ selectedChat.chatName }}</h2>
+    </div>
+    <ng-template #noMessages>
+      <div class="discussion_header">
+        <h2>Chat</h2>
+      </div>
+    </ng-template>
+
+    <mat-divider></mat-divider>
+
+
+
+    <div class="allbox-messages" *ngIf="selectedChat | async as selectedChat">
+      <div class="message-box message-box-right " >
+        <div class="message-text" ><p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae aliquid error corporis et tempora ratione blanditiis, laudantium sequi quae dolor.</p>
+        </div>
+        <div class="message-picture"><img [src]="" alt="avatar">
+        </div>
+      </div>
+      <div class="message-box message-box-left">
+        <div class="message-text"><p> ipsum dolor sit amet consectetur adipisicing elit. Nam illum voluptatem quo
+          voluptatibus in neque iure quod minima error beatae enim dolore ipsa ea perspiciatis tempora doloribus aut,
+          accusamus dolorum?lore</p>
+        </div>
+
+        <div class="message-picture"><img src="selectedChat.chatImg" alt="">
+        </div>
+      </div>
+
+      <div class="inputext"><mat-form-field appearance="outline">
+        <input matInput placeholder="Wpisz swoją wiadomość">
+        <button mat-icon-button matSuffix><mat-icon>send</mat-icon></button>
+      </mat-form-field></div>
+    </div>
+
+
 
   </div>
 </div>

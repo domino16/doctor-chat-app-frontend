@@ -202,6 +202,11 @@ li.signUp a:hover::after {
   cursor: pointer;
 }
 
+.nav>li>:hover{
+  color: #337ab7;
+  border-radius: 10px;
+}
+
 @media (min-width: 1200px) {
   .form-inline .input-group {
     width: 300px;

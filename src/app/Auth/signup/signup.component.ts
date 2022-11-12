@@ -81,15 +81,16 @@ export class SignupComponent implements OnInit {
       const username: string = this.signupForm.controls['username'].value;
       const email: string = this.signupForm.controls['email'].value;
       const password: string = this.signupForm.controls['password'].value;
+      const defaultImgUrl: string = 'https://cdn.pixabay.com/photo/2016/11/14/17/39/person-1824144__340.png'
 
-      const user:User = {'email':email,'displayName': username,'password':password}
+      const user:User = {'uid':email,'email':email,'displayName': username,'password':password, 'photoUrl':defaultImgUrl, 'firstName':'','lastName':'', 'phone':'', 'address':'' }
 
       this.isLoading = true;
       this.authService.signup(email, password).subscribe({
         next: (resData) => {
           console.log(resData);
           this.isLoading = false;
-          this.userService.adduser(user).subscribe(resData=> console.log(resData))
+        this.userService.addUser(user)
           this.router.navigate(['chat']);
 
         },

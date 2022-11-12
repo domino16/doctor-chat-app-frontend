@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "chat-36809"
+  },
+  "targets": {
+    "chat-36809": {
+      "hosting": {
+        "Dyplom": [
+          "chat-36809"
+        ]
+      }
+    }
+  }
+}
