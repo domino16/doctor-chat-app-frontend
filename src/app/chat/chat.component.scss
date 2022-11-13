@@ -84,7 +84,10 @@
 
 
 .allbox-messages {
-  margin-top: 20px;
+  width: 100%;
+  height: 75%;
+  margin-top: 15px;
+  overflow: auto;
 
   .message-box {
     display: flex;

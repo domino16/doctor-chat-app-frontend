@@ -8,7 +8,8 @@
       <mat-autocomplete #userss="matAutocomplete">
 
         <ng-container *ngFor="let user of users | async ">
-          <mat-option [value]="''" *ngIf="user.email != currentUserEmail" (click)="createChat(user)">{{user.displayName}}
+          <mat-option [value]="''" *ngIf="user.email != currentUser?.email" (click)="createChat(user)">
+            {{user.displayName}}
           </mat-option>
         </ng-container>
       </mat-autocomplete>
@@ -28,8 +29,8 @@
     </mat-selection-list>
 
   </div>
-  <div class="chat-box__messages">
-    <div class="discussion_header" *ngIf="selectedChat | async as selectedChat; else noMessages">
+  <div class="chat-box__messages"*ngIf="selectedChat | async as selectedChat;">
+    <div class="discussion_header" >
       <img style="margin:15px" [src]="
         selectedChat.chatImg
       " />
@@ -44,31 +45,25 @@
     <mat-divider></mat-divider>
 
 
-
-    <div class="allbox-messages" *ngIf="selectedChat | async as selectedChat">
-      <div class="message-box message-box-right " >
-        <div class="message-text" ><p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae aliquid error corporis et tempora ratione blanditiis, laudantium sequi quae dolor.</p>
-        </div>
-        <div class="message-picture"><img [src]="" alt="avatar">
-        </div>
-      </div>
-      <div class="message-box message-box-left">
-        <div class="message-text"><p> ipsum dolor sit amet consectetur adipisicing elit. Nam illum voluptatem quo
-          voluptatibus in neque iure quod minima error beatae enim dolore ipsa ea perspiciatis tempora doloribus aut,
-          accusamus dolorum?lore</p>
+    <div class="allbox-messages">
+        <div *ngFor="let message of chatAllMessages" class="message-box" [ngClass]="{'message-box-left': message.author !== currentUser?.email,'message-box-right': message.author === currentUser?.email }">
+          <div class="message-text">
+            <p>{{message.message}}</p>
+          </div>
+          <div class="message-picture"><img [src]="currentUser?.photoUrl" alt="avatar">
+          </div>
         </div>
 
-        <div class="message-picture"><img src="selectedChat.chatImg" alt="">
-        </div>
-      </div>
 
-      <div class="inputext"><mat-form-field appearance="outline">
-        <input matInput placeholder="Wpisz swoją wiadomość">
-        <button mat-icon-button matSuffix><mat-icon>send</mat-icon></button>
-      </mat-form-field></div>
+        <div #chatEnd></div>
     </div>
-
-
-
+    <div class="inputext">
+      <mat-form-field appearance="outline">
+        <input [formControl]="messageControl" matInput placeholder="Wpisz swoją wiadomość" (keydown.enter)="onSubmit()" (keydown.enter)="scrollToBottom()">
+        <button (click)="scrollToBottom" (click)="onSubmit()" mat-icon-button matSuffix>
+          <mat-icon>send</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
   </div>
 </div>

@@ -110,15 +110,13 @@ li.signIn a {
   padding: 0;
   font-weight: bold;
   font-size: 1.6rem;
-  transition: color 0.3s;
-  transition: background-color 0.3s;
+  transition: color 0.3s, background-color 0.3;
+
 }
 
 li.signUp a {
   position: relative;
   margin-right: 50px;
-  border-top: 2px solid #4a12d7;
-  border-bottom: 2px solid #4a12d7;
   transform-style: preserve-3d;
   background-color: #e15b64;
   padding: 0;
@@ -134,7 +132,7 @@ li.signUp a {
 li.signIn a::before {
   position: absolute;
   height: 100%;
-  right: -25px;
+  right: -22px;
   top: 0px;
   content: "";
   width: 50px;
@@ -148,7 +146,7 @@ li.signIn a::before {
 li.signIn a::after {
   position: absolute;
   height: 100%;
-  left: -25px;
+  left: -22px;
   top: 0px;
   content: "";
   width: 50px;
@@ -161,7 +159,7 @@ li.signIn a::after {
 li.signUp a::before {
   position: absolute;
   height: calc(100% + 4px);
-  right: -25px;
+  right: -22px;
   top: -2px;
   content: "";
   width: 50px;
@@ -175,7 +173,7 @@ li.signUp a::before {
 li.signUp a::after {
   position: absolute;
   height: calc(100% + 4px);
-  left: -25px;
+  left: -22px;
   top: -2px;
   content: "";
   width: 50px;
@@ -202,9 +200,13 @@ li.signUp a:hover::after {
   cursor: pointer;
 }
 
+.dropdown-toggle.nav-link{
+  border-radius: 10px;
+  transition: color 0.3s, border-radius 10px 0.3s;
+}
+
 .nav>li>:hover{
   color: #337ab7;
-  border-radius: 10px;
 }
 
 @media (min-width: 1200px) {
