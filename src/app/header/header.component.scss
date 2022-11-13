@@ -23,8 +23,6 @@ body {
 
 .navbar .navbar-brand {
   color: #dddddd;
-  padding-left: 0;
-  padding-right: 50px;
   font-family: "Merienda One", sans-serif;
 }
 
@@ -89,7 +87,7 @@ body {
 }
 
 .navbar-nav > li > a {
-  padding: 8px 10px;
+  padding: 8px 6px;
 }
 
 .nav-link {
@@ -222,5 +220,14 @@ li.signUp a:hover::after {
   }
   .input-group {
     width: 100%;
+  }
+
+  @media(max-width:768px){
+    ul.navbar-right{
+      display: flex;
+      flex-direction: row;
+    }
+
+
   }
 }

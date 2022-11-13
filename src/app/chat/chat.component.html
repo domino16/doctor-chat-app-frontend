@@ -1,5 +1,5 @@
 <div class="container-xxl chat-box">
-  <div class="chat-box__list">
+  <div class="chat-box__list" [ngClass]="{'chat-box__list-hide': hideClassToggle }">
     <div class="chat-box__search-input">
       <mat-form-field>
         <input matInput placeholder="Z kim chcesz porozmawiać?" [formControl]="searchControl"
@@ -15,13 +15,17 @@
       </mat-autocomplete>
     </div>
     <mat-selection-list [multiple]="false" [formControl]="chatListControl">
-      <mat-list-option *ngFor="let chat of myChats | async" [value]="chat.id">
+      <mat-list-option (click)="hideClassToggle = !hideClassToggle" *ngFor="let chat of myChats | async" [value]="chat.id">
         <img matListAvatar [src]="chat.chatImg" alt="photo avatar">
 
         <p mat-line class="chat-box__chat-title">
-          <span class="chat-box__chat-name">{{ chat.chatName}} </span><span class="chat-box__chat-date">{{
-            chat.lastMessageDate
-            }}</span>
+          <span class="chat-box__chat-name">{{ chat.chatName}} </span><span class="chat-box__chat-date">
+            <ng-container *ngIf="currentDate - chat.lastMessageDate?.toMillis()! >= 86400000">
+              {{chat.lastMessageDate?.toMillis() | date:'MMM d, y, H:mm'}}</ng-container>
+            <ng-container *ngIf="currentDate - chat.lastMessageDate?.toMillis()! <= 86400000">
+              {{chat.lastMessageDate?.toMillis() | date:'H:mm'}}</ng-container>
+
+          </span>
         </p>
         <p mat-line class="cs"> <span class="chat-box__last-message">{{ chat.lastMessage }}</span></p>
         <mat-divider></mat-divider>
@@ -29,37 +33,48 @@
     </mat-selection-list>
 
   </div>
-  <div class="chat-box__messages"*ngIf="selectedChat | async as selectedChat;">
-    <div class="discussion_header" >
+  <div  class="chat-box__messages" *ngIf="selectedChat | async as selectedChat;"  [ngClass]="{'chat-box__messages-hide': !hideClassToggle }">
+    <div class="discussion_header">
       <img style="margin:15px" [src]="
         selectedChat.chatImg
       " />
       <h2>{{ selectedChat.chatName }}</h2>
+      <div class="close-icon" (click)="hideClassToggle = !hideClassToggle"><i class="bi bi-x-lg"></i></div>
     </div>
-    <ng-template #noMessages>
-      <div class="discussion_header">
-        <h2>Chat</h2>
-      </div>
-    </ng-template>
 
     <mat-divider></mat-divider>
 
 
     <div class="allbox-messages">
-        <div *ngFor="let message of chatAllMessages" class="message-box" [ngClass]="{'message-box-left': message.author !== currentUser?.email,'message-box-right': message.author === currentUser?.email }">
-          <div class="message-text">
-            <p>{{message.message}}</p>
-          </div>
-          <div class="message-picture"><img [src]="currentUser?.photoUrl" alt="avatar">
+      <div *ngFor="let message of chatAllMessages" class="message-box"
+        [ngClass]="{'message-box-left': message.author !== currentUser?.email,'message-box-right': message.author === currentUser?.email }">
+        <span *ngIf="message.author === currentUser?.email" class="messages-author">{{selectedChat.users[0].displayName}}</span>
+        <span *ngIf="message.author !== currentUser?.email" class="messages-author">{{selectedChat.users[1].displayName}}</span>
+
+        <div class="message-text">
+          <p>{{message.message}}</p>
+          <div class="lastMessageDate">
+            <ng-container *ngIf="currentDate - message.sentDate.toMillis() <= 86400000">
+              <span>{{message.sentDate.toMillis()| date: 'H:mm'}}</span>
+            </ng-container>
+            <ng-container *ngIf="currentDate - message.sentDate.toMillis() >= 86400000">
+              <span>{{message.sentDate.toMillis()| date: 'MMM d, y, H:mm'}}</span>
+            </ng-container>
+
           </div>
         </div>
+        <div class="message-picture"><img [src]="currentUser?.photoUrl" alt="avatar">
+        </div>
+
+      </div>
 
 
-        <div #chatEnd></div>
+      <div #chatEnd></div>
     </div>
     <div class="inputext">
       <mat-form-field appearance="outline">
-        <input [formControl]="messageControl" matInput placeholder="Wpisz swoją wiadomość" (keydown.enter)="onSubmit()" (keydown.enter)="scrollToBottom()">
+        <input [formControl]="messageControl" matInput placeholder="Wpisz swoją wiadomość" (keydown.enter)="onSubmit()"
+          (keydown.enter)="scrollToBottom()">
         <button (click)="scrollToBottom" (click)="onSubmit()" mat-icon-button matSuffix>
           <mat-icon>send</mat-icon>
         </button>

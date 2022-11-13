@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Message } from '../shared/models/message';
-import { Observable, combineLatest, map, from, switchMap, tap } from 'rxjs';
+import { Observable, combineLatest, map, from, switchMap, tap, of } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { User } from '../shared/models/user';
 import { AuthUser } from '../Auth/authuser.model';
@@ -23,11 +23,13 @@ export class ChatComponent implements OnInit {
   searchControl = new FormControl('');
   users: Observable<User[]> = this.userService.getallUsers();
   currentUser!: User | null;
+  hideClassToggle:boolean = false;
   myChats: Observable<Chat[]> = this.chatService.myChats;
   chatDisplayName: string | undefined = '';
-  chatListControl = new FormControl('');
+  chatListControl = new FormControl<string[] | string |null>('');
   messageControl = new FormControl('');
-  chatAllMessages: Message[] = []
+  chatAllMessages: Message[] = [];
+  currentDate = new Date().getTime();
   selectedChat = combineLatest([
     this.chatListControl.valueChanges,
     this.myChats,
@@ -44,17 +46,30 @@ export class ChatComponent implements OnInit {
       (user) => (this.currentUser = user)
     );
 
-    this.chatListControl.valueChanges.pipe(
-      map((value) => value![0]),
-      switchMap((chatID) => this.chatService.getChatMessages(chatID)),
-      tap(() => {
-        this.scrollToBottom();
-      })
-    ).subscribe(messsage => this.chatAllMessages = messsage);
+    this.chatListControl.valueChanges
+      .pipe(
+        map((value) => value![0]),
+        switchMap((chatID) => this.chatService.getChatMessages(chatID)),
+        tap(() => {
+          this.scrollToBottom();
+        })
+      )
+      .subscribe((messsage) => (this.chatAllMessages = messsage));
   }
 
   createChat(user: User) {
-    this.chatService.createChat(user).subscribe();
+    this.chatService.chatExist(user.uid).pipe(
+      switchMap((chatId) => {
+        if (chatId) {
+          return of(chatId);
+        } else {
+          return this.chatService.createChat(user);
+        }
+      })
+    ).subscribe(chatId =>{
+      this.chatListControl.setValue([chatId])
+      })
+
   }
 
   onSubmit() {
@@ -63,7 +78,7 @@ export class ChatComponent implements OnInit {
 
     if (message && selectedChatID[0]) {
       this.chatService.addChatMessage(selectedChatID[0], message).subscribe();
-        this.messageControl.setValue('');
+      this.messageControl.setValue('');
     }
   }
 

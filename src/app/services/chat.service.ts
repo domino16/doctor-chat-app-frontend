@@ -47,6 +47,20 @@ export class ChatService {
     );
   }
 
+  chatExist(otherChatUser: string): Observable<string | null> {
+    return this.myChats.pipe(
+      take(1),
+      map((chats) => {
+        for (let i = 0; i < chats.length; i++) {
+          if (chats[i].userIDs.includes(otherChatUser)) {
+            return chats[i].id;
+          }
+        }
+        return null;
+      })
+    );
+  }
+
   get myChats(): Observable<Chat[]> {
     const ref = collection(this.firestore, 'chats');
     return this.userService.CurrentAuthUSer.pipe(
@@ -64,12 +78,11 @@ export class ChatService {
 
   addChatNameAndPic(currentUserEmail: string, chats: Chat[]): Chat[] {
     chats.forEach((chat: Chat) => {
-      // if (chat.userIds) {
-      // const otherIndex = chat.userIds.indexOf(currentUserEmail ?? '') === 0 ? 1 : 0;
+
       const { displayName, photoUrl } = chat.users[1];
       chat.chatName = displayName;
       chat.chatImg = photoUrl;
-      // }
+
     });
 
     return chats;
