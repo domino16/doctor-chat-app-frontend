@@ -4,6 +4,7 @@ import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './Auth/login/login.component';
 import { SignupComponent } from './Auth/signup/signup.component';
 import { AuthGuard } from './Auth/auth.guard';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   { path: 'chat',canActivate:[AuthGuard], component: ChatComponent },

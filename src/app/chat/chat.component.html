@@ -5,10 +5,10 @@
         <input matInput placeholder="Z kim chcesz porozmawiać?" [formControl]="searchControl"
           [matAutocomplete]="userss" />
       </mat-form-field>
-      <mat-autocomplete #userss="matAutocomplete">
-
-        <ng-container *ngFor="let user of users | async ">
-          <mat-option [value]="''" *ngIf="user.email != currentUser?.email" (click)="createChat(user)">
+      <mat-autocomplete #userss="matAutocomplete"
+      [displayWith]="displayFn">
+        <ng-container *ngFor="let user of filteredUsers | async ">
+          <mat-option [value]="user" *ngIf="user.email != currentUser?.email" (click)="createChat(user)" (click)="hideClassToggle = !hideClassToggle">
             {{user.displayName}}
           </mat-option>
         </ng-container>
@@ -21,7 +21,7 @@
         <p mat-line class="chat-box__chat-title">
           <span class="chat-box__chat-name">{{ chat.chatName}} </span><span class="chat-box__chat-date">
             <ng-container *ngIf="currentDate - chat.lastMessageDate?.toMillis()! >= 86400000">
-              {{chat.lastMessageDate?.toMillis() | date:'MMM d, y, H:mm'}}</ng-container>
+              {{chat.lastMessageDate?.toMillis() | date:'MMM d, H:mm'}}</ng-container>
             <ng-container *ngIf="currentDate - chat.lastMessageDate?.toMillis()! <= 86400000">
               {{chat.lastMessageDate?.toMillis() | date:'H:mm'}}</ng-container>
 
@@ -33,13 +33,14 @@
     </mat-selection-list>
 
   </div>
-  <div  class="chat-box__messages" *ngIf="selectedChat | async as selectedChat;"  [ngClass]="{'chat-box__messages-hide': !hideClassToggle }">
+  <div  class="chat-box__messages" *ngIf="selectedChat | async as selectedChat"  [ngClass]="{'chat-box__messages-hide': !hideClassToggle }">
     <div class="discussion_header">
-      <img style="margin:15px" [src]="
+      <img style="margin:15px;
+       border-radius:50%" [src]="
         selectedChat.chatImg
       " />
       <h2>{{ selectedChat.chatName }}</h2>
-      <div class="close-icon" (click)="hideClassToggle = !hideClassToggle"><i class="bi bi-x-lg"></i></div>
+      <div class="close-icon" (click)="onClickX()"><i class="bi bi-x-lg"></i></div>
     </div>
 
     <mat-divider></mat-divider>
@@ -48,8 +49,8 @@
     <div class="allbox-messages">
       <div *ngFor="let message of chatAllMessages" class="message-box"
         [ngClass]="{'message-box-left': message.author !== currentUser?.email,'message-box-right': message.author === currentUser?.email }">
-        <span *ngIf="message.author === currentUser?.email" class="messages-author">{{selectedChat.users[0].displayName}}</span>
-        <span *ngIf="message.author !== currentUser?.email" class="messages-author">{{selectedChat.users[1].displayName}}</span>
+        <span *ngIf="message.author === currentUser?.email" class="messages-author">{{selectedChat.users[myUserIndex].displayName}}</span>
+        <span *ngIf="message.author !== currentUser?.email" class="messages-author">{{selectedChat.users[otherUserIndex].displayName}}</span>
 
         <div class="message-text">
           <p>{{message.message}}</p>
@@ -58,12 +59,15 @@
               <span>{{message.sentDate.toMillis()| date: 'H:mm'}}</span>
             </ng-container>
             <ng-container *ngIf="currentDate - message.sentDate.toMillis() >= 86400000">
-              <span>{{message.sentDate.toMillis()| date: 'MMM d, y, H:mm'}}</span>
+              <span>{{message.sentDate.toMillis()| date: 'MMM d, H:mm'}}</span>
             </ng-container>
 
           </div>
         </div>
-        <div class="message-picture"><img [src]="currentUser?.photoUrl" alt="avatar">
+
+        <div class="message-picture" *ngIf="message.author === currentUser?.email"><img [src]="currentUser?.photoUrl" alt="avatar">
+        </div>
+        <div class="message-picture" *ngIf="message.author !== currentUser?.email"><img [src]="selectedChat.chatImg" alt="avatar">
         </div>
 
       </div>

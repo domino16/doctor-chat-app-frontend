@@ -75,18 +75,19 @@ export class ChatService {
       })
     );
   }
-
-  addChatNameAndPic(currentUserEmail: string, chats: Chat[]): Chat[] {
+  addChatNameAndPic(currentUserId: string | undefined, chats: Chat[]): Chat[] {
     chats.forEach((chat: Chat) => {
-
-      const { displayName, photoUrl } = chat.users[1];
+      const otherUserIndex =
+        chat.userIDs?.indexOf(currentUserId ?? '') === 0 ? 1 : 0;
+      const { displayName, photoUrl } = chat.users[otherUserIndex];
       chat.chatName = displayName;
       chat.chatImg = photoUrl;
-
     });
 
     return chats;
   }
+
+
 
   addChatMessage(chatId: string, message: string): Observable<any> {
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
