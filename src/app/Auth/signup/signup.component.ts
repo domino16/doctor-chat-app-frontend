@@ -13,6 +13,13 @@ import { Router } from '@angular/router';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/shared/models/user';
+import { Store } from '@ngrx/store';
+import { signUpStart, signUpSuccess } from '../store/auth.actions';
+import { setLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
+import { getLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.selector';
+import { getErrorMessage } from 'src/app/shared/store/shared.selector';
+import { Observable } from 'rxjs';
+import { authUser } from '../store/auth.selector';
 
 @Component({
   selector: 'app-signup',
@@ -21,9 +28,10 @@ import { User } from 'src/app/shared/models/user';
 })
 export class SignupComponent implements OnInit {
 
+  isLoading!:Observable<boolean>;
+  authUser!: any;
 
-  isLoading = false;
-  error: string = '';
+  error!: Observable<string>;
 
   numberPattern = new RegExp('(?=.*[0-9])');
   uppercasePattern = new RegExp('(?=.*[A-Z])');
@@ -33,7 +41,8 @@ export class SignupComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private store:Store
   ) {}
 
   signupForm: FormGroup = new FormGroup(
@@ -70,11 +79,12 @@ export class SignupComponent implements OnInit {
   );
 
   ngOnInit(): void {
+    this.isLoading = this.store.select(getLoadingSpinner);
 
+    this.error = this.store.select(getErrorMessage);
   }
 
   onSubmit() {
-    console.log(this.signupForm.valid);
     if (!this.signupForm.valid) {
       return;
     } else {
@@ -85,21 +95,24 @@ export class SignupComponent implements OnInit {
 
       const user:User = {'uid':email,'email':email,'displayName': username,'password':password, 'photoUrl':defaultImgUrl, 'firstName':'','lastName':'', 'phone':'', 'address':'' }
 
-      this.isLoading = true;
-      this.authService.signup(email, password).subscribe({
-        next: (resData) => {
-          console.log(resData);
-          this.isLoading = false;
-        this.userService.addUser(user)
-          this.router.navigate(['chat']);
+      this.store.dispatch(setLoadingSpinner({status:true}))
+      this.store.dispatch(signUpStart({email, password}));
+  
 
-        },
-        error: (errorMessage) => {
-          console.error(errorMessage);
-          this.error = errorMessage;
-          this.isLoading = false;
-        }
-      });
+      // this.authService.signup(email, password).subscribe({
+      //   next: (resData) => {
+      //     console.log(resData);
+      //     this.isLoading = false;
+        // this.userService.addUser(user)
+      //     this.router.navigate(['chat']);
+
+      //   },
+      //   error: (errorMessage) => {
+      //     console.error(errorMessage);
+      //     this.error = errorMessage;
+      //     this.isLoading = false;
+      //   }
+      // });
 
     }
   }

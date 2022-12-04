@@ -36,6 +36,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './Auth/store/auth.effects';
+import { rootReducer } from './store/rootState';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +64,13 @@ import { MatIconModule } from '@angular/material/icon';
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
+    EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forRoot(rootReducer),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+    }),
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),

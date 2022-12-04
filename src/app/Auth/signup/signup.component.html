@@ -1,11 +1,11 @@
-<div *ngIf="isLoading" style="text-align: center; margin-top: 10em;">
+<div *ngIf="isLoading | async" style="text-align: center; margin-top: 10em;">
   <app-loading-spinner></app-loading-spinner>
 </div>
-<div class="wrapper" *ngIf="!isLoading">
+<div class="wrapper" *ngIf="!(isLoading | async)">
 
   <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
     <h1>Zarejestruj się!</h1>
-    <div class="alert alert-danger" *ngIf="error">{{error}}</div>
+    <div class="alert alert-danger" *ngIf="error | async as errorr">{{errorr}}</div>
     <div class="form-box">
       <label for="username">Nazwa użytkownika:</label>
       <input type="text" id="username" placeholder="Podaj nazwę użytkownika" name="username" formControlName="username">

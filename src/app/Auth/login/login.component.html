@@ -1,7 +1,7 @@
-<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-<div class="wrapper" *ngIf="!isLoading">
+<app-loading-spinner *ngIf="isLoading | async"></app-loading-spinner>
+<div class="wrapper" *ngIf="!(isLoading | async)">
   <form [formGroup]="loginForm" (ngSubmit)="send()">
-    <div class="alert alert-danger" *ngIf="error">{{error}}</div>
+    <div class="alert alert-danger" *ngIf="errorMessage | async" >{{errorMessage|async}}</div>
       <h1>Zaloguj!</h1>
       <div class="form-box">
           <label for="username">Nazwa użytkownika:</label>

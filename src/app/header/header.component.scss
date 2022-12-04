@@ -137,7 +137,6 @@ li.signIn a::before {
   transform: translateZ(-1px);
   background-color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 li.signIn a::after {
@@ -150,7 +149,7 @@ li.signIn a::after {
   border-radius: 50%;
   transform: translateZ(-1px);
   background-color: #fff;
-  transition: background-color 0.3s;
+
 }
 
 li.signUp a::before {

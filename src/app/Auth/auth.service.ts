@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, BehaviorSubject, tap, throwError } from 'rxjs';
 import { AuthUser } from './authuser.model';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store'
+import { loginSuccess } from './store/auth.actions';
 
 export interface AuthResponseData {
   idToken: string;
@@ -17,10 +19,10 @@ export interface AuthResponseData {
   providedIn: 'root',
 })
 export class AuthService {
-  user = new BehaviorSubject<AuthUser>(null!);
+  user$ = new BehaviorSubject<AuthUser>(null!)
   private tokenExpirationTimer!:any;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private store: Store) {}
 
   autoLogin() {
     const userData: {
@@ -41,14 +43,14 @@ export class AuthService {
     );
 
     if (loadedUser.token) {
-      this.user.next(loadedUser);
+      this.store.dispatch(loginSuccess({authUser:loadedUser}))
       const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
       this.autoLogout(expirationDuration)
     }
   }
 
   logout() {
-    this.user.next(null!);
+    this.store.dispatch(loginSuccess({authUser:null}))
     this.router.navigate(['/login']);
     localStorage.removeItem('userData');
     if(this.tokenExpirationTimer){
@@ -63,17 +65,18 @@ export class AuthService {
     }, expirationDuration);
   }
 
-  private handleAuth(
+  handleAuth(
     email: string,
     localId: string,
     idToken: string,
     expiresIn: number
-  ) {
+  ){
     const expirationDate = new Date(new Date().getTime() + +expiresIn * 1000);
     const user = new AuthUser(email, localId, idToken, expirationDate);
-    this.user.next(user);
+    this.user$.next(user);
     this.autoLogout(+expiresIn* 1000)
     localStorage.setItem('userData', JSON.stringify(user));
+    return user;
   }
 
   signup(email: string, password: string) {
@@ -86,28 +89,8 @@ export class AuthService {
           returnSecureToken: true,
         }
       )
-      .pipe(
-        catchError((errorRes) => {
-          let errorMessage = 'Nieznany błąd';
-          if (!errorRes.error || !errorRes.error.error) {
-            throwError(() => new Error(errorMessage));
-          }
-          switch (errorRes.error.error.message) {
-            case 'EMAIL_EXISTS':
-              errorMessage = 'Ten Email jest już używany.';
-          }
-          return throwError(() => new Error(errorMessage));
-        }),
-        tap((resData) => {
-          this.handleAuth(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
   }
+
 
   signin(email: string, password: string) {
     return this.http
@@ -119,36 +102,6 @@ export class AuthService {
           returnSecureToken: true,
         }
       )
-      .pipe(
-        catchError((errorRes) => {
-          let errorMessage = 'Nieznany błąd';
-          if (!errorRes.error || !errorRes.error.error) {
-            throwError(() => new Error(errorMessage));
-          }
-          switch (errorRes.error.error.message) {
-            case 'EMAIL_NOT_FOUND':
-              errorMessage = 'Nie znaleźliśmy użytkownika o tej nazwie.';
-              break;
-            case 'INVALID_PASSWORD':
-              errorMessage = 'Błędne hasło';
-              break;
-            case 'USER_DISABLED':
-              errorMessage = 'To konto zostało wyłączone przez administratora';
-              break;
-            case 'INVALID_EMAIL':
-              errorMessage = 'Musisz wpisać email';
-              break;
-          }
-          return throwError(() => new Error(errorMessage));
-        }),
-        tap((resData) => {
-          this.handleAuth(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn
-          );
-        })
-      );
+
   }
 }

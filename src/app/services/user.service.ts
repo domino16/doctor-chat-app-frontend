@@ -11,12 +11,19 @@ import {
   docData,
 } from '@angular/fire/firestore';
 import { AuthService } from '../Auth/auth.service';
+import { authUser } from '../Auth/store/auth.selector';
+import { Store } from '@ngrx/store';
+import { rootState } from '../store/rootState';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private firestore: Firestore, private authService: AuthService) {}
+  constructor(
+    private firestore: Firestore,
+    private authService: AuthService,
+    private store: Store<rootState>
+  ) {}
 
   addUser(user: User): Observable<any> {
     const ref = doc(this.firestore, 'users', user?.email);
@@ -30,7 +37,8 @@ export class UserService {
   }
 
   get CurrentAuthUSer(): Observable<User | null> {
-    return this.authService.user.pipe(
+    // return this.authService.user$
+    return this.store.select(authUser).pipe(
       switchMap((user) => {
         if (!user?.email) {
           return of(null);

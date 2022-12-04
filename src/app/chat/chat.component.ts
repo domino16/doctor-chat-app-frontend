@@ -4,7 +4,6 @@ import {
   Observable,
   combineLatest,
   map,
-  from,
   switchMap,
   tap,
   of,
@@ -16,6 +15,10 @@ import { AuthService } from '../Auth/auth.service';
 import { ChatService } from '../services/chat.service';
 import { FormControl } from '@angular/forms';
 import { Chat } from '../shared/models/chat';
+import { Store } from '@ngrx/store';
+import { rootState } from '../store/rootState';
+import { authUser, isAuthenticated } from '../Auth/store/auth.selector';
+import { authState } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-chat',
@@ -49,7 +52,8 @@ export class ChatComponent implements OnInit {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private store:Store<rootState>
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +68,12 @@ export class ChatComponent implements OnInit {
       );
     });
 
+    // this.store.select(authUser).subscribe(user => this.currentUser = user)
+ this.userService.CurrentAuthUSer.subscribe(
+      (user) => (this.currentUser = user)
+    );
+
+
     this.selectedChat.subscribe((chat) => {
       this.otherUserIndex =
         chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 1 : 0;
@@ -71,9 +81,6 @@ export class ChatComponent implements OnInit {
         chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 0 : 1;
     });
 
-    this.userService.CurrentAuthUSer.subscribe(
-      (user) => (this.currentUser = user)
-    );
 
     this.chatListControl.valueChanges
       .pipe(
@@ -103,7 +110,7 @@ export class ChatComponent implements OnInit {
 
   createChat(user: User) {
     this.chatService
-      .chatExist(user.uid)
+      .chatExist(user.uid!)
       .pipe(
         switchMap((chatId) => {
           if (chatId) {
