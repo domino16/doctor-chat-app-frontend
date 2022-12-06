@@ -46,6 +46,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './Auth/store/auth.effects';
 import { rootReducer } from './store/rootState';
 import { ChatEffects } from './chat/store/chat.effects';
+import { SharedEffects } from './shared/store/shared.effects';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,7 +71,7 @@ import { ChatEffects } from './chat/store/chat.effects';
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
-    EffectsModule.forRoot([AuthEffects, ChatEffects]),
+    EffectsModule.forRoot([AuthEffects, ChatEffects, SharedEffects]),
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

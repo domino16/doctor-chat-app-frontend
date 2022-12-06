@@ -11,6 +11,7 @@ import {
   collection,
   orderBy,
 } from '@angular/fire/firestore';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { concatMap, take, map } from 'rxjs/operators';
 import { Chat } from '../shared/models/chat';
@@ -22,7 +23,7 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(private firestore: Firestore, private userService: UserService) {}
+  constructor(private firestore: Firestore, private userService: UserService, private store:Store) {}
 
   createChat(otherChatUser: User) {
     const ref = collection(this.firestore, 'chats');
@@ -94,6 +95,7 @@ export class ChatService {
     const chatRef = doc(this.firestore, 'chats', chatId);
     const today = Timestamp.fromDate(new Date());
     return this.userService.CurrentAuthUSer.pipe(
+
       take(1),
       concatMap((user) =>
         addDoc(ref, {

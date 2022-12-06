@@ -19,8 +19,16 @@ import { Store } from '@ngrx/store';
 import { rootState } from '../store/rootState';
 import { authUser, isAuthenticated } from '../Auth/store/auth.selector';
 import { authState } from '@angular/fire/auth';
-import { getChats } from './store/chat.selectors';
-import { loadChats, loadChatsSuccess } from './store/chat.actions';
+import { getChats, getMessages, getSelectedChat } from './store/chat.selectors';
+import {
+  addChat,
+  loadChats,
+  loadChatsSuccess,
+  loadMessagesStart,
+  setallUsers,
+  setSelectedChat,
+} from './store/chat.actions';
+import { getCurrentChatUser } from '../shared/store/shared.selector';
 
 @Component({
   selector: 'app-chat',
@@ -37,17 +45,14 @@ export class ChatComponent implements OnInit {
   users!: User[];
   currentUser!: User | null;
   hideClassToggle: boolean = false;
-  myChats: Observable<Chat[]> = this.store.select(getChats)
+  myChats: Observable<Chat[]> = this.store.select(getChats);
   chatDisplayName: string | undefined = '';
   chatListControl = new FormControl<string[] | string | null>('');
   messageControl = new FormControl('');
   chatAllMessages: Message[] = [];
   currentDate = new Date().getTime();
   filteredUsers!: Observable<User[]>;
-  selectedChat = combineLatest([
-    this.chatListControl.valueChanges,
-    this.myChats,
-  ]).pipe(map(([value, chats]) => chats.find((c) => c.id === value![0])));
+  selectedChat = this.store.select(getSelectedChat);
   otherUserIndex!: number;
   myUserIndex!: number;
 
@@ -55,12 +60,17 @@ export class ChatComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService,
     private chatService: ChatService,
-    private store:Store<rootState>
+    private store: Store<rootState>
   ) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadChats());
-    this.store.select(getChats).subscribe(a=>console.log(a))
+    this.store.select(getChats).subscribe((a) => console.log(a));
+    this.store.dispatch(setallUsers());
+
+    combineLatest([this.chatListControl.valueChanges, this.myChats])
+      .pipe(map(([value, chats]) => chats.find((c) => c.id === value![0])!))
+      .subscribe((chat) => this.store.dispatch(setSelectedChat({selectedChat:chat})));
 
     this.userService.getallUsers().subscribe((user) => {
       this.users = user;
@@ -74,24 +84,24 @@ export class ChatComponent implements OnInit {
     });
 
     // this.store.select(authUser).subscribe(user => this.currentUser = user)
- this.userService.CurrentAuthUSer.subscribe(
-      (user) => (this.currentUser = user)
-    );
+    this.store
+      .select(getCurrentChatUser)
+      .subscribe((user) => (this.currentUser = user));
 
-
-    this.selectedChat.subscribe((chat) => {
+    this.store.select(getSelectedChat).subscribe((chat) => {
       this.otherUserIndex =
         chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 1 : 0;
       this.myUserIndex =
         chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 0 : 1;
     });
 
-
     this.chatListControl.valueChanges
       .pipe(
-        tap((value) => (this.chatAllMessages = [])),
-        map((value) => value![0]),
-        switchMap((chatID) => this.chatService.getChatMessages(chatID)),
+        tap(() => (this.chatAllMessages = [])),
+        map((value) => {
+          this.store.dispatch(loadMessagesStart({ chatId: value![0] }));
+        }),
+        switchMap(() => this.store.select(getMessages)),
         tap(() => {
           this.scrollToBottom();
         })
@@ -114,21 +124,23 @@ export class ChatComponent implements OnInit {
   }
 
   createChat(user: User) {
-    this.chatService
-      .chatExist(user.uid!)
-      .pipe(
-        switchMap((chatId) => {
-          if (chatId) {
-            this.searchControl.setValue('');
-            return of(chatId);
-          } else {
-            return this.chatService.createChat(user);
-          }
-        })
-      )
-      .subscribe((chatId) => {
-        this.chatListControl.setValue([chatId]);
-      });
+    this.store.dispatch(addChat({ user }));
+
+    // this.chatService
+    //   .chatExist(user.uid!)
+    //   .pipe(
+    //     switchMap((chatId) => {
+    //       if (chatId) {
+    //         this.searchControl.setValue('');
+    //         return of(chatId);
+    //       } else {
+    //         return this.chatService.createChat(user);
+    //       }
+    //     })
+    //   )
+    //   .subscribe((chatId) => {
+    //     this.chatListControl.setValue([chatId]);
+    //   });
   }
 
   onSubmit() {
@@ -144,23 +156,25 @@ export class ChatComponent implements OnInit {
   scrollToBottom() {
     setTimeout(() => {
       if (this.chatEnd) {
-        this.chatEnd.nativeElement.scrollIntoView({ behavior: 'smooth' });
+        this.chatEnd.nativeElement.scrollIntoView();
       }
-    }, 10);
+    }, 1);
   }
 
   onClickX() {
     this.chatListControl.setValue('');
     this.chatAllMessages = [];
-    this.chatListControl.valueChanges
-      .pipe(
-        map((value) => value![0]),
-        switchMap((chatID) => this.chatService.getChatMessages(chatID)),
-        tap(() => {
-          this.scrollToBottom();
-        })
-      )
-      .subscribe((messsage) => (this.chatAllMessages = messsage));
+    this.store.dispatch;
+
+    // this.chatListControl.valueChanges
+    //   .pipe(
+    //     map((value) => value![0]),
+    //     switchMap((chatID) => this.chatService.getChatMessages(chatID)),
+    //     tap(() => {
+    //       this.scrollToBottom();
+    //     })
+    //   )
+    //   .subscribe((messsage) => (this.chatAllMessages = messsage));
 
     this.hideClassToggle = !this.hideClassToggle;
   }

@@ -8,6 +8,7 @@ import { isAuthenticated } from '../Auth/store/auth.selector';
 import { authState } from '../Auth/store/auth.state';
 import { UserService } from '../services/user.service';
 import { User } from '../shared/models/user';
+import { getCurrentChatUser } from '../shared/store/shared.selector';
 import { rootState } from '../store/rootState';
 
 @Component({
@@ -20,6 +21,7 @@ export class HeaderComponent implements OnInit {
   userSub!:Subscription;
   loggedIn!:boolean;
   username!:string | undefined;
+  avatar!:string | undefined
 
 
   constructor(private authService: AuthService, private userService:UserService, private store:Store<[rootState]>){}
@@ -28,7 +30,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.store.select(isAuthenticated).subscribe(status => {this.loggedIn = status; console.log(status)})
 
-    this.userService.CurrentAuthUSer.subscribe(user => this.username = user?.displayName );
+    this.store.select(getCurrentChatUser).subscribe(user => {this.username = user?.displayName; this.avatar = user?.photoUrl} );
+
+
   }
 
   onLogout(){

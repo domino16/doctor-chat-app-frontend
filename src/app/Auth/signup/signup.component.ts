@@ -20,7 +20,7 @@ import { getLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-
 import { getCurrentChatUser, getErrorMessage } from 'src/app/shared/store/shared.selector';
 import { Observable } from 'rxjs';
 import { authUser } from '../store/auth.selector';
-import { setCurrentChatUser } from 'src/app/shared/store/shared.actions';
+import { setCurrentChatUserStart } from 'src/app/shared/store/shared.actions';
 
 @Component({
   selector: 'app-signup',
@@ -97,9 +97,10 @@ export class SignupComponent implements OnInit {
       const user:User = {'uid':email,'email':email,'displayName': username,'password':password, 'photoUrl':defaultImgUrl, 'firstName':'','lastName':'', 'phone':'', 'address':'' }
 
       this.store.dispatch(setLoadingSpinner({status:true}))
-      this.store.dispatch(setCurrentChatUser({currentChatUser:user}))
+      // this.store.dispatch(setCurrentChatUser({currentChatUser:user}))
+      this.store.dispatch(setCurrentChatUserStart())
       this.store.dispatch(signUpStart({email, password}));
-
+      this.userService.addUser(user)
       // this.store.select(getCurrentChatUser).subscribe(data => console.log(data))
 
 
@@ -107,7 +108,7 @@ export class SignupComponent implements OnInit {
       //   next: (resData) => {
       //     console.log(resData);
       //     this.isLoading = false;
-        // this.userService.addUser(user)
+
       //     this.router.navigate(['chat']);
 
       //   },

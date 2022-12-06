@@ -4,20 +4,20 @@ import { AuthUser } from '../authuser.model';
 
 
 export const loginStart = createAction(
-  'Login start',
+  '[AUTH PAGE] Login start',
   props<{ email: string; password: string }>()
 );
 
 export const loginSuccess = createAction(
-  'Login success',
+  '[AUTH PAGE] Login success',
   props<{ authUser: AuthUser | null}>()
 );
 
 export const signUpStart = createAction(
-  'SignUp Start',
+  '[AUTH PAGE] SignUp Start',
   props<{  email: string; password: string;}>()
 );
 
 export const  signUpSuccess = createAction(
-  'Singup Success', props<{authUser: AuthUser | null}>()
+  '[AUTH PAGE] Singup Success', props<{authUser: AuthUser | null}>()
 )

@@ -100,7 +100,7 @@ export class AuthEffects {
               +data.expiresIn
             );
             this.store.select(getCurrentChatUser).subscribe((currentUser) => {
-              this.userService.addUser(currentUser)
+              this.userService.addUser(currentUser!)
             });
             return loginSuccess({ authUser });
           }),

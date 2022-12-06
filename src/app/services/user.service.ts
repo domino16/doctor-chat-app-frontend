@@ -25,7 +25,7 @@ export class UserService {
     private store: Store<rootState>
   ) {}
 
-  
+
 
   addUser(user: User): Observable<any> {
     const ref = doc(this.firestore, 'users', user?.email);
@@ -36,6 +36,19 @@ export class UserService {
     const ref = collection(this.firestore, 'users');
     const queryAll = query(ref);
     return collectionData(queryAll) as Observable<User[]>;
+  }
+
+   CurrentAuthUser(): Observable<User | null> {
+    // return this.authService.user$
+    return this.store.select(authUser).pipe(
+      switchMap((user) => {
+        if (!user?.email) {
+          return of(null);
+        }
+        const ref = doc(this.firestore, 'users', user.email);
+        return docData(ref) as Observable<User>;
+      })
+    );
   }
 
   get CurrentAuthUSer(): Observable<User | null> {
@@ -50,4 +63,6 @@ export class UserService {
       })
     );
   }
-}
+
+
+    }
