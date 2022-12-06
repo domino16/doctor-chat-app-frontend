@@ -19,6 +19,8 @@ import { Store } from '@ngrx/store';
 import { rootState } from '../store/rootState';
 import { authUser, isAuthenticated } from '../Auth/store/auth.selector';
 import { authState } from '@angular/fire/auth';
+import { getChats } from './store/chat.selectors';
+import { loadChats, loadChatsSuccess } from './store/chat.actions';
 
 @Component({
   selector: 'app-chat',
@@ -35,7 +37,7 @@ export class ChatComponent implements OnInit {
   users!: User[];
   currentUser!: User | null;
   hideClassToggle: boolean = false;
-  myChats: Observable<Chat[]> = this.chatService.myChats;
+  myChats: Observable<Chat[]> = this.store.select(getChats)
   chatDisplayName: string | undefined = '';
   chatListControl = new FormControl<string[] | string | null>('');
   messageControl = new FormControl('');
@@ -57,6 +59,9 @@ export class ChatComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.store.dispatch(loadChats());
+    this.store.select(getChats).subscribe(a=>console.log(a))
+
     this.userService.getallUsers().subscribe((user) => {
       this.users = user;
       this.filteredUsers = this.searchControl.valueChanges.pipe(

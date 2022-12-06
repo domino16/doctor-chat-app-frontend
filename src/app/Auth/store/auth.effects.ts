@@ -6,23 +6,28 @@ import { catchError, exhaustMap, map, of, throwError } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { setLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
 import { setErrorMessage } from 'src/app/shared/store/shared.actions';
-import { getErrorMessage } from 'src/app/shared/store/shared.selector';
+import { getCurrentChatUser } from 'src/app/shared/store/shared.selector';
 import { rootState } from 'src/app/store/rootState';
 import { AuthService } from '../auth.service';
 import { AuthUser } from '../authuser.model';
-import { loginStart, loginSuccess, signUpStart, signUpSuccess } from './auth.actions';
+import { SignupComponent } from '../signup/signup.component';
+import {
+  loginStart,
+  loginSuccess,
+  signUpStart,
+  signUpSuccess,
+} from './auth.actions';
 import { authUser } from './auth.selector';
 @Injectable()
 export class AuthEffects {
   user!: AuthUser;
-
 
   constructor(
     private actions$: Actions,
     private authService: AuthService,
     private store: Store<rootState>,
     private router: Router,
-    private userService:UserService
+    private userService: UserService
   ) {}
   login$ = createEffect(() => {
     return this.actions$.pipe(
@@ -37,7 +42,7 @@ export class AuthEffects {
               data.idToken,
               +data.expiresIn
             );
-            return loginSuccess({authUser});
+            return loginSuccess({ authUser });
           }),
           catchError((errorRes) => {
             console.log(errorRes);
@@ -73,7 +78,7 @@ export class AuthEffects {
       return this.actions$.pipe(
         ofType(...[loginSuccess, signUpSuccess]),
         map(() => {
-          this.store.dispatch(setErrorMessage({message:''}))
+          this.store.dispatch(setErrorMessage({ message: '' }));
           this.router.navigate(['/chat']);
         })
       );
@@ -84,35 +89,43 @@ export class AuthEffects {
   signUp$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(signUpStart),
-      exhaustMap((action) => {return this.authService
-        .signup(action.email, action.password).pipe(
-          map((data)=>{
-
-          this.store.dispatch(setLoadingSpinner({status:false}))
-          const authUser = this.authService.handleAuth(data.email, data.localId, data.idToken, +data.expiresIn)
-          return loginSuccess({authUser})
-        }),  catchError((errorRes) => {
-          console.log(errorRes);
-          this.store.dispatch(setLoadingSpinner({ status: false }));
-          let errorMessage = 'Nieznany błąd';
-          if (!errorRes.error || !errorRes.error.error) {
-            throwError(() => new Error(errorMessage));
-          }
-      switch (errorRes.error.error.message) {
-            case 'EMAIL_EXISTS':
-              errorMessage = 'Ten Email jest już używany.';
-      break;
-      case 'OPERATION_NOT_ALLOWED':
-        errorMessage = 'Logowanie na hasło jest wyłączone';
-        break;
-        case 'TOO_MANY_ATTEMPTS_TRY_LATER':
-          errorMessage = 'Zbyt wiele prób spróbuj ponownie później';
-          break;
-          }
-          return of(setErrorMessage({ message: errorMessage }));
-        }))}
-      )
+      exhaustMap((action) => {
+        return this.authService.signup(action.email, action.password).pipe(
+          map((data) => {
+            this.store.dispatch(setLoadingSpinner({ status: false }));
+            const authUser = this.authService.handleAuth(
+              data.email,
+              data.localId,
+              data.idToken,
+              +data.expiresIn
+            );
+            this.store.select(getCurrentChatUser).subscribe((currentUser) => {
+              this.userService.addUser(currentUser)
+            });
+            return loginSuccess({ authUser });
+          }),
+          catchError((errorRes) => {
+            console.log(errorRes);
+            this.store.dispatch(setLoadingSpinner({ status: false }));
+            let errorMessage = 'Nieznany błąd';
+            if (!errorRes.error || !errorRes.error.error) {
+              throwError(() => new Error(errorMessage));
+            }
+            switch (errorRes.error.error.message) {
+              case 'EMAIL_EXISTS':
+                errorMessage = 'Ten Email jest już używany.';
+                break;
+              case 'OPERATION_NOT_ALLOWED':
+                errorMessage = 'Logowanie na hasło jest wyłączone';
+                break;
+              case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+                errorMessage = 'Zbyt wiele prób spróbuj ponownie później';
+                break;
+            }
+            return of(setErrorMessage({ message: errorMessage }));
+          })
+        );
+      })
     );
   });
-
 }

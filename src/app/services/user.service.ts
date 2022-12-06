@@ -25,6 +25,8 @@ export class UserService {
     private store: Store<rootState>
   ) {}
 
+  
+
   addUser(user: User): Observable<any> {
     const ref = doc(this.firestore, 'users', user?.email);
     return from(setDoc(ref, user));

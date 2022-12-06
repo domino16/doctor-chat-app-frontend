@@ -74,7 +74,7 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + +expiresIn * 1000);
     const user = new AuthUser(email, localId, idToken, expirationDate);
     this.user$.next(user);
-    this.autoLogout(+expiresIn* 1000)
+    this.autoLogout(+expiresIn*1000)
     localStorage.setItem('userData', JSON.stringify(user));
     return user;
   }
@@ -89,6 +89,27 @@ export class AuthService {
           returnSecureToken: true,
         }
       )
+      // .pipe(
+      //   catchError((errorRes) => {
+      //     let errorMessage = 'Nieznany błąd';
+      //     if (!errorRes.error || !errorRes.error.error) {
+      //       throwError(() => new Error(errorMessage));
+      //     }
+      //     switch (errorRes.error.error.message) {
+      //       case 'EMAIL_EXISTS':
+      //         errorMessage = 'Ten Email jest już używany.';
+      //     }
+      //     return throwError(() => new Error(errorMessage));
+      //   })
+      //   tap((resData) => {
+      //     this.handleAuth(
+      //       resData.email,
+      //       resData.localId,
+      //       resData.idToken,
+      //       +resData.expiresIn
+      //     );
+      //   })
+      // );
   }
 
 

@@ -16,6 +16,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
+
+
+
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import {
   ScreenTrackingService,
@@ -32,6 +35,7 @@ import {
   getRemoteConfig,
 } from '@angular/fire/remote-config';
 import { provideStorage, getStorage } from '@angular/fire/storage';
+
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
@@ -41,6 +45,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './Auth/store/auth.effects';
 import { rootReducer } from './store/rootState';
+import { ChatEffects } from './chat/store/chat.effects';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +69,7 @@ import { rootReducer } from './store/rootState';
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, ChatEffects]),
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

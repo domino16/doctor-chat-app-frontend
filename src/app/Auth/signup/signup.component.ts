@@ -17,9 +17,10 @@ import { Store } from '@ngrx/store';
 import { signUpStart, signUpSuccess } from '../store/auth.actions';
 import { setLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
 import { getLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.selector';
-import { getErrorMessage } from 'src/app/shared/store/shared.selector';
+import { getCurrentChatUser, getErrorMessage } from 'src/app/shared/store/shared.selector';
 import { Observable } from 'rxjs';
 import { authUser } from '../store/auth.selector';
+import { setCurrentChatUser } from 'src/app/shared/store/shared.actions';
 
 @Component({
   selector: 'app-signup',
@@ -96,8 +97,11 @@ export class SignupComponent implements OnInit {
       const user:User = {'uid':email,'email':email,'displayName': username,'password':password, 'photoUrl':defaultImgUrl, 'firstName':'','lastName':'', 'phone':'', 'address':'' }
 
       this.store.dispatch(setLoadingSpinner({status:true}))
+      this.store.dispatch(setCurrentChatUser({currentChatUser:user}))
       this.store.dispatch(signUpStart({email, password}));
-  
+
+      // this.store.select(getCurrentChatUser).subscribe(data => console.log(data))
+
 
       // this.authService.signup(email, password).subscribe({
       //   next: (resData) => {
