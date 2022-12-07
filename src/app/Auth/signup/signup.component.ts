@@ -15,7 +15,7 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/shared/models/user';
 import { Store } from '@ngrx/store';
 import { signUpStart, signUpSuccess } from '../store/auth.actions';
-import { setLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
+import { pageIsLoading } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
 import { getLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.selector';
 import { getCurrentChatUser, getErrorMessage } from 'src/app/shared/store/shared.selector';
 import { Observable } from 'rxjs';
@@ -94,14 +94,14 @@ export class SignupComponent implements OnInit {
       const password: string = this.signupForm.controls['password'].value;
       const defaultImgUrl: string = 'https://cdn.pixabay.com/photo/2016/11/14/17/39/person-1824144__340.png'
 
-      const user:User = {'uid':email,'email':email,'displayName': username,'password':password, 'photoUrl':defaultImgUrl, 'firstName':'','lastName':'', 'phone':'', 'address':'' }
+      const user:User = {'uid':email,'email':email,'displayName': username,'password':password, 'photoUrl':defaultImgUrl, 'firstName':'','lastName':'', 'phone':'', 'address':'', 'notificationsCounter':'', 'unReadChatsCounter':'' }
 
-      this.store.dispatch(setLoadingSpinner({status:true}))
-      // this.store.dispatch(setCurrentChatUser({currentChatUser:user}))
+      this.store.dispatch(pageIsLoading({status:true}))
+
       this.store.dispatch(setCurrentChatUserStart())
       this.store.dispatch(signUpStart({email, password}));
       this.userService.addUser(user)
-      // this.store.select(getCurrentChatUser).subscribe(data => console.log(data))
+     
 
 
       // this.authService.signup(email, password).subscribe({

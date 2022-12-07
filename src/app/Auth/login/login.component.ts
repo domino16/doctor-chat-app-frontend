@@ -10,7 +10,7 @@ import { rootState } from 'src/app/store/rootState';
 import {
   getLoadingSpinner
 } from 'src/app/shared/loading-spinner/store/loading-spinner.selector';
-import { setLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
+import { pageIsLoading } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
 import { getErrorMessage } from 'src/app/shared/store/shared.selector';
 
 @Component({
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     // this.isLoading = true;
     // this.store.select(login_success).subscribe(()=> this.isLoading = false)
     this.store.dispatch(loginStart({ email, password }));
-    this.store.dispatch(setLoadingSpinner({ status: true }));
+    this.store.dispatch(pageIsLoading({ status: true }));
     // this.authService.signin(email, password).subscribe({
     //   next: (resData) => {
     //     this.isLoading = false;

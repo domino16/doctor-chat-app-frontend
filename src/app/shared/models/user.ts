@@ -8,4 +8,6 @@ export interface User{
   lastName?: string;
   phone?: string;
   address?: string;
+  notificationsCounter?:string;
+  unReadChatsCounter?:string;
 }

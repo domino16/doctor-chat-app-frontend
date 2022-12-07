@@ -7,6 +7,7 @@ export const loadChats = createAction('[CHAT PAGE] load chats start');
 export const loadChatsSuccess = createAction('[CHAT PAGE] success load chats', props<{chats: Chat[] }>());
 
 export const addChat = createAction('[CHAT PAGE] add chat', props<{user:User}>())
+export const addChatId = createAction('[CHAT PAGE] add Chat Id', props<{chatId:string}>())
 
 export const setSelectedChat = createAction('[CHAT PAGE] set selected chat', props<{selectedChat:Chat| null}>())
 
@@ -15,4 +16,7 @@ export const setAllUsersSuccess = createAction('[CHAT PAGE] get all users succes
 
 export const loadMessagesStart = createAction('[CHAT PAGE] load messages start', props<{chatId: string}>())
 export const loadMessagesSuccess = createAction('[CHAT PAGE] load messages succsess', props<{messages:Message[]}>())
+
+export const listIsLoading = createAction('[CHAT PAGE] list is loading', props<{status:boolean}>())
+export const messagesIsLoading = createAction('[CHAT] PAGE messages is loading', props<{status:boolean}>())
 

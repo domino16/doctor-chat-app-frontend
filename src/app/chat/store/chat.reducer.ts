@@ -17,5 +17,8 @@ export const chatReducer = createReducer(
     ...state,
     allUsers: users,
   })),
-  on(chatActions.loadMessagesSuccess, (state, {messages}) => ({...state, messages:messages}))
+  on(chatActions.loadMessagesSuccess, (state, {messages}) => ({...state, messages:messages})),
+  on(chatActions.listIsLoading, (state, {status}) => ({...state, listIsLoading:status})),
+  on(chatActions.messagesIsLoading, (state, {status}) => ({...state, messagesIsLoading:status})),
+  on(chatActions.addChatId, (state, {chatId})=>({...state, addChatId:chatId}))
 );

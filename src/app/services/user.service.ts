@@ -9,6 +9,7 @@ import {
   doc,
   setDoc,
   docData,
+  updateDoc
 } from '@angular/fire/firestore';
 import { AuthService } from '../Auth/auth.service';
 import { authUser } from '../Auth/store/auth.selector';
@@ -30,6 +31,11 @@ export class UserService {
   addUser(user: User): Observable<any> {
     const ref = doc(this.firestore, 'users', user?.email);
     return from(setDoc(ref, user));
+  }
+
+  updateUser(user:User):Observable<any>{
+    const ref = doc(this.firestore, 'users', user?.email);
+    return from(updateDoc(ref, {unreadChatsCounter:user.unReadChatsCounter}));
   }
 
   getallUsers(): Observable<User[]> {

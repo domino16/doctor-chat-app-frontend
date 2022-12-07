@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, exhaustMap, map, of, throwError } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
-import { setLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
+import { pageIsLoading } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
 import { setErrorMessage } from 'src/app/shared/store/shared.actions';
 import { getCurrentChatUser } from 'src/app/shared/store/shared.selector';
 import { rootState } from 'src/app/store/rootState';
@@ -35,7 +35,7 @@ export class AuthEffects {
       exhaustMap((action) => {
         return this.authService.signin(action.email, action.password).pipe(
           map((data) => {
-            this.store.dispatch(setLoadingSpinner({ status: false }));
+            this.store.dispatch(pageIsLoading({ status: false }));
             const authUser = this.authService.handleAuth(
               data.email,
               data.localId,
@@ -46,7 +46,7 @@ export class AuthEffects {
           }),
           catchError((errorRes) => {
             console.log(errorRes);
-            this.store.dispatch(setLoadingSpinner({ status: false }));
+            this.store.dispatch(pageIsLoading({ status: false }));
             let errorMessage = 'Nieznany błąd';
             if (!errorRes.error || !errorRes.error.error) {
               throwError(() => new Error(errorMessage));
@@ -92,7 +92,7 @@ export class AuthEffects {
       exhaustMap((action) => {
         return this.authService.signup(action.email, action.password).pipe(
           map((data) => {
-            this.store.dispatch(setLoadingSpinner({ status: false }));
+            this.store.dispatch(pageIsLoading({ status: false }));
             const authUser = this.authService.handleAuth(
               data.email,
               data.localId,
@@ -106,7 +106,7 @@ export class AuthEffects {
           }),
           catchError((errorRes) => {
             console.log(errorRes);
-            this.store.dispatch(setLoadingSpinner({ status: false }));
+            this.store.dispatch(pageIsLoading({ status: false }));
             let errorMessage = 'Nieznany błąd';
             if (!errorRes.error || !errorRes.error.error) {
               throwError(() => new Error(errorMessage));

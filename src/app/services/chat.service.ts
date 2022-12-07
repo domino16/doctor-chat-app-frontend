@@ -12,7 +12,7 @@ import {
   orderBy,
 } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { concatMap, take, map } from 'rxjs/operators';
 import { Chat } from '../shared/models/chat';
 import { Message } from '../shared/models/message';
@@ -95,7 +95,6 @@ export class ChatService {
     const chatRef = doc(this.firestore, 'chats', chatId);
     const today = Timestamp.fromDate(new Date());
     return this.userService.CurrentAuthUSer.pipe(
-
       take(1),
       concatMap((user) =>
         addDoc(ref, {
@@ -105,13 +104,23 @@ export class ChatService {
         })
       ),
       concatMap(() =>
-        updateDoc(chatRef, { lastMessage: message, lastMessageDate: today })
+        updateDoc(chatRef, { lastMessage: message, lastMessageDate: today,  lastMessageUnread:true})
       )
     );
   }
 
+  setLastMessageUnreadToFalse(chatId:string){
+
+const ref = doc(this.firestore, 'chats', chatId)
+ref.update
+  }
+
+
+
+
   getChatMessages(chatId: string): Observable<Message[]> {
-    const ref = collection(this.firestore, 'chats', chatId, 'messages');
+
+    const ref = collection(this.firestore, 'chats',chatId, 'messages');
     const queryAll = query(ref, orderBy('sentDate', 'asc'));
     return collectionData(queryAll) as Observable<Message[]>;
   }

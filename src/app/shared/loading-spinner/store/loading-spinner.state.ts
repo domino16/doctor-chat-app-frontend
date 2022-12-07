@@ -1,9 +1,9 @@
 
 
 export interface loadingSpinnerState{
-  showLoading:boolean;
+  pageIsLoading:boolean;
 }
 
  export const initialState: loadingSpinnerState =  {
-  showLoading:false
+  pageIsLoading:false
 }

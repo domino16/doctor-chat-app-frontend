@@ -2,18 +2,19 @@ import { Injectable } from '@angular/core';
 import { user } from '@angular/fire/auth';
 import { act, Actions, createEffect, ofType } from '@ngrx/effects';
 import { createEffects } from '@ngrx/effects/src/effects_module';
+import { Store } from '@ngrx/store';
 import { switchMap, map, exhaustMap, of, tap } from 'rxjs';
 import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user.service';
 import { Chat } from 'src/app/shared/models/chat';
+import { rootState } from 'src/app/store/rootState';
 import * as chatActions from './chat.actions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatEffects {
-  constructor(private actions$: Actions, private chatService: ChatService, private userService: UserService
-  ) {}
+  constructor(private actions$: Actions, private chatService: ChatService, private userService: UserService, private store:Store<[rootState]>) {}
 
   loadChat$ = createEffect(() => {
     return this.actions$.pipe(
@@ -22,7 +23,7 @@ export class ChatEffects {
         console.log(action)
         return this.chatService.myChats.pipe(
           map((chats) => {
-            console.log(chats);
+            this.store.dispatch(chatActions.listIsLoading({status:false}))
             return chatActions.loadChatsSuccess({ chats });
           })
         );
@@ -39,10 +40,13 @@ export class ChatEffects {
                 } else {
                   return this.chatService.createChat(action.user);
                 }
+
+        })).pipe(map(chatId => {
+          return chatActions.addChatId({chatId:chatId})
         }))
       }
     )
-  )},{ dispatch: false })
+  )})
 
 
   loadAllUsers = createEffect(()=>{
@@ -59,6 +63,7 @@ export class ChatEffects {
       switchMap((action) => {
         return this.chatService.getChatMessages(action.chatId).pipe(
           map((messages) => {
+            this.store.dispatch(chatActions.messagesIsLoading({status:false}))
             return chatActions.loadMessagesSuccess({ messages: messages  });
           })
         );

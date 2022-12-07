@@ -4,16 +4,23 @@ import { User } from 'src/app/shared/models/user';
 
 export interface myChatsState {
   chats: Chat[];
+  addChatId:string;
  selectedChat: Chat | null;
  allUsers: User[];
  messages: Message[];
+ listIsLoading:boolean;
+  messagesIsLoading:boolean;
 
 }
 
 export const initialState: myChatsState = {
   chats: [],
+  addChatId:'',
   selectedChat: null,
   allUsers: [],
-  messages:[]
+  messages:[],
+  listIsLoading:false,
+  messagesIsLoading:false,
+
 
 };

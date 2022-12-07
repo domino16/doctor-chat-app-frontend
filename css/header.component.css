@@ -1,0 +1,241 @@
+body {
+  background: #eeeeee;
+}
+
+.form-inline {
+  display: inline-block;
+}
+
+.navbar {
+  background: #4a12d7;
+  padding-left: 16px;
+  padding-right: 16px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  border-radius: 0px;
+}
+
+.nav img {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  margin: -8px 0;
+  float: left;
+  margin-right: 10px;
+}
+
+.navbar .navbar-brand {
+  color: #dddddd;
+  font-family: "Merienda One", sans-serif;
+}
+
+.navbar ul li i {
+  font-size: 18px;
+}
+
+.navbar .dropdown-menu i {
+  font-size: 16px;
+  min-width: 22px;
+}
+
+.navbar .dropdown.open > a {
+  background: none !important;
+}
+
+.navbar .dropdown-menu {
+  border-radius: 1px;
+  border-color: #e5e5e5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.navbar .dropdown-menu li a {
+  color: #777;
+  padding: 8px 20px;
+  line-height: normal;
+}
+
+.navbar .dropdown-menu li a:hover,
+.navbar .dropdown-menu li a:active {
+  color: #333;
+}
+
+.navbar .dropdown-menu .material-icons {
+  font-size: 21px;
+  line-height: 16px;
+  vertical-align: middle;
+  margin-top: -2px;
+}
+
+.navbar .badge {
+  background: #f44336;
+  font-size: 11px;
+  border-radius: 20px;
+  position: absolute;
+  min-width: 10px;
+  padding: 4px 6px 0;
+  min-height: 18px;
+  top: 5px;
+}
+
+.navbar ul.nav li a.notifications,
+.navbar ul.nav li a.messages {
+  position: relative;
+  margin-right: 10px;
+}
+
+.navbar ul.nav li a.messages {
+  margin-right: 20px;
+}
+
+.navbar a.notifications .badge {
+  margin-left: -8px;
+}
+
+.navbar a.messages .badge {
+  margin-left: -4px;
+}
+
+.navbar .active a,
+.navbar .active a:hover,
+.navbar .active a:focus {
+  background: transparent !important;
+}
+
+.navbar-nav > li > a {
+  padding: 8px 6px;
+}
+
+.nav-link {
+  font-size: 2rem;
+  color: #dddddd;
+}
+
+a.nav-link.active {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+li.signIn a {
+  position: relative;
+  margin-right: 50px;
+  transform-style: preserve-3d;
+  background-color: white;
+  padding: 0;
+  font-weight: bold;
+  font-size: 1.6rem;
+  transition: color 0.3s, background-color 0.3;
+}
+
+li.signUp a {
+  position: relative;
+  margin-right: 50px;
+  transform-style: preserve-3d;
+  background-color: #e15b64;
+  padding: 0;
+  margin-left: 20px;
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: #eeeeee;
+  cursor: pointer;
+  transition: color 0.3s;
+  transition: background-color 0.3s;
+}
+
+li.signIn a::before {
+  position: absolute;
+  height: 100%;
+  right: -22px;
+  top: 0px;
+  content: "";
+  width: 50px;
+  border-radius: 50%;
+  transform: translateZ(-1px);
+  background-color: #fff;
+  cursor: pointer;
+}
+
+li.signIn a::after {
+  position: absolute;
+  height: 100%;
+  left: -22px;
+  top: 0px;
+  content: "";
+  width: 50px;
+  border-radius: 50%;
+  transform: translateZ(-1px);
+  background-color: #fff;
+}
+
+li.signUp a::before {
+  position: absolute;
+  height: calc(100% + 4px);
+  right: -22px;
+  top: -2px;
+  content: "";
+  width: 50px;
+  border: 2px solid #4a12d7;
+  border-radius: 50%;
+  transform: translateZ(-1px);
+  background-color: #e15b64;
+  transition: background-color 0.3s;
+}
+
+li.signUp a::after {
+  position: absolute;
+  height: calc(100% + 4px);
+  left: -22px;
+  top: -2px;
+  content: "";
+  width: 50px;
+  border: 2px solid #4a12d7;
+  border-radius: 50%;
+  transform: translateZ(-1px);
+  background-color: #e15b64;
+  transition: background-color 0.3s;
+}
+
+li.signIn a:hover,
+li.signIn a:hover::before,
+li.signIn a:hover::after {
+  background-color: #e15b64;
+  color: white;
+  cursor: pointer;
+}
+
+li.signUp a:hover,
+li.signUp a:hover::before,
+li.signUp a:hover::after {
+  background-color: white;
+  color: #337ab7;
+  cursor: pointer;
+}
+
+.dropdown-toggle.nav-link {
+  border-radius: 10px;
+  transition: color 0.3s, border-radius 10px 0.3s;
+}
+
+.nav > li > :hover {
+  color: #337ab7;
+}
+
+@media (min-width: 1200px) {
+  .form-inline .input-group {
+    width: 300px;
+    margin-left: 30px;
+  }
+}
+@media (max-width: 1199px) {
+  .form-inline {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .input-group {
+    width: 100%;
+  }
+}
+@media (max-width: 1199px) and (max-width: 768px) {
+  ul.navbar-right {
+    display: flex;
+    flex-direction: row;
+  }
+}/*# sourceMappingURL=header.component.css.map */
