@@ -3,34 +3,39 @@
 <div class="visits">
   <h2>Nadchodzące:</h2>
   <hr>
-  <div class="visits__box">
+  <ng-container *ngFor="let visit of visits">
+  <div *ngIf="currentDate <= visit.date.toMillis()  " class="visits__box">
     <div class="visits__box-img"><img src="https://cdn.pixabay.com/photo/2020/06/20/15/30/woman-doctor-5321351_960_720.jpg" alt="avatar"></div>
     <div class="visits__box-text">
-      <h2>Dr Elżbieta Kowalska</h2>
-      <p>Data: 25.08.2022</p>
-      <p>Godzina: 8:00</p>
-      <p>Miejsce: Teleporada</p>
-      <p>Komentarz: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam eligendi amet iste impedit cupiditate, explicabo, a doloremque et ut quos reprehenderit molestias officiis quaerat distinctio dolores quis harum delectus! Similique dolor enim in, ratione excepturi et voluptatum non provident eveniet consequuntur eum architecto, eos rerum. Consequatur.</p>
+      <h2>Dr {{visit.doctor}}</h2>
+      <p><span>Data:</span> {{visit.date | datePipe }}</p>
+      <p><span>Godzina</span> {{visit.time}}</p>
+      <p><span>Miejsce:</span> {{visit.place}}</p>
+      <p><span>Komentarz:</span> {{visit.comment}}</p>
+
 
     </div>
 
   </div>
-
+</ng-container>
   <h2>Archwialne:</h2>
   <hr>
 
-  <div class="visits__box">
-    <div class="visits__box-img"><img src="https://cdn.pixabay.com/photo/2020/06/20/15/30/woman-doctor-5321351_960_720.jpg" alt="avatar"></div>
-    <div class="visits__box-text">
-      <h2>Dr Elżbieta Kowalska</h2>
-      <p><span>Data:</span> 25.08.2022</p>
-      <p><span>Godzina</span> 8:00</p>
-      <p><span>Miejsce:</span> Teleporada</p>
-      <p><span>Komentarz:</span> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam eligendi amet iste impedit cupiditate, explicabo, a doloremque et ut quos reprehenderit molestias officiis quaerat distinctio dolores quis harum delectus! Similique dolor enim in, ratione excepturi et voluptatum non provident eveniet consequuntur eum architecto, eos rerum. Consequatur.</p>
+  <ng-container *ngFor="let visit of visits">
+    <div *ngIf="currentDate > visit.date.toMillis()  " class="visits__box">
+      <div class="visits__box-img"><img src="https://cdn.pixabay.com/photo/2020/06/20/15/30/woman-doctor-5321351_960_720.jpg" alt="avatar"></div>
+      <div class="visits__box-text">
+        <h2>Dr {{visit.doctor}}</h2>
+        <p><span>Data:</span> {{visit.date | datePipe }}</p>
+        <p><span>Godzina</span> {{visit.time}}</p>
+        <p><span>Miejsce:</span> {{visit.place}}</p>
+        <p><span>Komentarz:</span> {{visit.comment}}</p>
+
+
+      </div>
 
     </div>
-
-  </div>
+  </ng-container>
 
 </div>
 </div>

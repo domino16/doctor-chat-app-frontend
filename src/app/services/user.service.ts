@@ -29,12 +29,12 @@ export class UserService {
 
 
   addUser(user: User): Observable<any> {
-    const ref = doc(this.firestore, 'users', user?.email);
+    const ref = doc(this.firestore, `users/${user.email}`);
     return from(setDoc(ref, user));
   }
 
   updateUser(user:User):Observable<any>{
-    const ref = doc(this.firestore, 'users', user?.email);
+    const ref = doc(this.firestore, `users/${user.email}`);
     return from(updateDoc(ref, {unreadChatsCounter:user.unReadChatsCounter}));
   }
 
@@ -51,7 +51,7 @@ export class UserService {
         if (!user?.email) {
           return of(null);
         }
-        const ref = doc(this.firestore, 'users', user.email);
+        const ref = doc(this.firestore, `users/${user.email}`);
         return docData(ref) as Observable<User>;
       })
     );
@@ -64,7 +64,7 @@ export class UserService {
         if (!user?.email) {
           return of(null);
         }
-        const ref = doc(this.firestore, 'users', user.email);
+        const ref = doc(this.firestore, `users/${user.email}`);
         return docData(ref) as Observable<User>;
       })
     );

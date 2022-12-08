@@ -11,6 +11,7 @@ export interface myChatsState {
   listIsLoading: boolean;
   messagesIsLoading: boolean;
   messageNotificationcCounter: number;
+
 }
 
 export const initialState: myChatsState = {
@@ -22,4 +23,5 @@ export const initialState: myChatsState = {
   listIsLoading: false,
   messagesIsLoading: false,
   messageNotificationcCounter: 0,
+
 };

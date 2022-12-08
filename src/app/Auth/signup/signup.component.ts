@@ -75,6 +75,7 @@ export class SignupComponent implements OnInit {
       repassword: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       acceptTerms: new FormControl(false, Validators.requiredTrue),
+      ifDoctor: new FormControl(false)
     },
     Validation.match('password', 'repassword')
   );
@@ -93,8 +94,9 @@ export class SignupComponent implements OnInit {
       const email: string = this.signupForm.controls['email'].value;
       const password: string = this.signupForm.controls['password'].value;
       const defaultImgUrl: string = 'https://cdn.pixabay.com/photo/2016/11/14/17/39/person-1824144__340.png'
+      const ifDoctor: boolean = this.signupForm.controls['ifDoctor'].value;
 
-      const user:User = {'uid':email,'email':email,'displayName': username,'password':password, 'photoUrl':defaultImgUrl, 'firstName':'','lastName':'', 'phone':'', 'address':'', 'notificationsCounter':'', 'unReadChatsCounter':'' }
+      const user:User = {'uid':email,'email':email,'displayName': username,'password':password, 'photoUrl':defaultImgUrl, 'firstName':'','lastName':'', 'phone':'', 'address':'', 'notificationsCounter':'', 'unReadChatsCounter':'', 'doctor':ifDoctor, 'visitNotificationsNumber':0  }
 
       this.store.dispatch(pageIsLoading({status:true}))
 

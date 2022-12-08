@@ -23,3 +23,4 @@ export const messagesIsLoading = createAction('[CHAT] PAGE messages is loading',
 export const addOneToCounter = createAction('[CHAT PAGE] +1 counter');
 export const removeOneFromCounter = createAction('[CHAT PAGE] -1 counter');
 export const resetCounter = createAction('[CHAT PAGE] reset counter', props<{counter:number}>());
+

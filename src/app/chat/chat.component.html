@@ -1,5 +1,7 @@
 <div class="container-xxl chat-box">
   <div class="chat-box__list" [ngClass]="{'chat-box__list-hide': hideClassToggle }">
+    <!-- <div class="chat-box__list" class="chat-box__list-hide" > -->
+
     <app-loading-spinner *ngIf="listIsLoading | async"></app-loading-spinner>
     <div class="chat-box__search-input">
       <mat-form-field>
@@ -29,7 +31,9 @@
 
           </span>
         </p>
-        <p mat-line class="cs"> <span  [ngStyle]="{'font-weight': chat.lastMessageUnread && chat.lastMessage?.lastMessageAuthor != currentUser?.email? 'bold' : 'normal' }" class="chat-box__last-message">{{ chat.lastMessage?.lastMessage }}</span></p>
+        <p mat-line class="cs"> <span
+            [ngStyle]="{'font-weight': chat.lastMessageUnread && chat.lastMessage?.lastMessageAuthor != currentUser?.email? 'bold' : 'normal' }"
+            class="chat-box__last-message">{{ chat.lastMessage?.lastMessage }}</span></p>
         <mat-divider></mat-divider>
       </mat-list-option>
     </mat-selection-list>
@@ -45,6 +49,7 @@
         selectedChat.chatImg
       " />
       <h2>{{ selectedChat.chatName }}</h2>
+      <button (click)="popupVisibleToggle()" mat-flat-button color="primary">Doodaj Wizytę</button>
       <div class="close-icon" (click)="onClickX()"><i class="bi bi-x-lg"></i></div>
     </div>
 
@@ -52,7 +57,7 @@
 
 
     <div class="allbox-messages">
-<app-loading-spinner *ngIf="messagesIsLoading | async"></app-loading-spinner>
+      <app-loading-spinner *ngIf="messagesIsLoading | async"></app-loading-spinner>
       <div *ngFor="let message of chatAllMessages" class="message-box"
         [ngClass]="{'message-box-left': message.author !== currentUser?.email,'message-box-right': message.author === currentUser?.email }">
         <span *ngIf="message.author === currentUser?.email"
@@ -87,10 +92,52 @@
     <div class="inputext">
       <mat-form-field appearance="outline">
         <input [formControl]="messageControl" matInput placeholder="Wpisz swoją wiadomość">
-        <button  (click)="onSubmit()" mat-icon-button matSuffix>
+        <button (click)="onSubmit()" mat-icon-button matSuffix>
           <mat-icon>send</mat-icon>
         </button>
       </mat-form-field>
     </div>
+  </div>
+
+  <div class="chat-box__visit"></div>
+
+
+</div>
+
+<div [ngClass]="{'popup-hide': !popupVisible}" class="popup">
+  <div class="popup__shadow"></div>
+  <div class="popup__form">
+    <div class="popup__form-x-icon close-icon" (click)="popupVisibleToggle()"><i class="bi bi-x-lg"></i></div>
+    <h2>Formularz dodawania wizyty</h2><form [formGroup]="addVisitForm" (ngSubmit)="visitAddSubmit()">
+    <div class="data-picker"><mat-form-field appearance="fill">
+        <mat-label>Wybierz Date</mat-label>
+        <input  formControlName="datePick" matInput [matDatepicker]="picker">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field></div>
+      <div class="24hr-example">
+        <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Wybierz Godzine</mat-label>
+        <input  formControlName="timePick" matInput placeholder="24hr format" aria-label="24hr format" [ngxTimepicker]="fullTime" [format]="24"  readonly>
+        <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+      </mat-form-field>
+
+   </div>
+   <mat-form-field appearance="fill">
+    <mat-label>Wybierz Miejsce</mat-label>
+    <mat-select formControlName="placePick">
+      <mat-option value="Warszawa ul. Narutowicza 25">Warszawa ul. Narutowicza 25</mat-option>
+      <mat-option value="Poznań ul. Warszawska 13">Poznań ul. Warszawska 13</mat-option>
+      <mat-option value="Szczecin ul. bohaterów 98">Szczecin ul. bohaterów 98</mat-option>
+      <mat-option value="Gdańsk ul. polna 1">Gdańsk ul. polna 1</mat-option>
+      <mat-option value="Teleporada">Teleporada</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label >Komentarz</mat-label>
+    <textarea formControlName="comment" matInput></textarea>
+  </mat-form-field>
+    <button class="btn btn-primary">Dodaj wizytę</button></form>
   </div>
 </div>

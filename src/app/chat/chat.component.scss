@@ -37,14 +37,15 @@ app-loading-spinner {
     background-color: #a8bbbf;
   }
 
-  &__list {
+  &__list{
     position: relative;
-    width: 40%;
-    margin: 0px 10px 15px 0;
+    margin: 0px 10px 15px 5px;
     background-color: #f5f5f5;
     overflow: auto;
+    width:100%;
 
   }
+
 
 
   &__list,
@@ -52,6 +53,21 @@ app-loading-spinner {
     border-radius: 15px;
     box-shadow: 0 3px 10px rgba($color: #000000, $alpha: 0.4);
     background-color: #f8f8f8;
+  }
+
+  &__messages-hide{
+    position: absolute;
+    top: 0;
+    left: -200%;
+    // animation: hide 1s forwards;
+  }
+
+  &__list-hide{
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    left: -200%;
+
   }
 
   &__search-input {
@@ -97,9 +113,12 @@ app-loading-spinner {
     width: calc(60% - 20px);
     margin: 0px 0px 15px 10px;
     overflow: auto;
+    width: 100%;
+      animation: show 0.5s forwards;
 
     .discussion_header{
       display: flex;
+      align-items: center;
 
       h2{
         font-size: 3rem;
@@ -112,6 +131,14 @@ app-loading-spinner {
         font-size: 4rem;
         padding: 20px;
         cursor: pointer;
+      }
+
+      button{
+        position: absolute;
+        right: 100px;
+        padding: 5px 30px;
+
+
       }
 
     }
@@ -251,45 +278,106 @@ app-loading-spinner {
 
 
 
-@media(max-width:768px){
+.popup{
+  display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+  &__shadow{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    z-index: -1;
+  }
+
+  &__form{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-evenly;
+    width: 400px;
+    height: 500px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    z-index: 100;
+    border-radius: 10px;
+
+    h2{
+      position: absolute;
+      top: 10px;
+    }
+
+    button{
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      padding: 5px 30px;
+    }
+    &-x-icon{
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+  }
+}
+
+.popup-hide{
+  display: none;
+}
+
+
+@media(min-width:768px){
   .chat-box{
 
     &__list{
-      width:100%;
-      animation: show 1s forwards;
+      width: 40%;
+      animation: none;
     }
 
+
+
     &__list-hide{
-      position:absolute;
+      position:relative;
       top: 0;
       bottom: 0;
-      animation: hide 0.3s forwards;
+      left: 0;
 
     }
 
     &__messages{
-      width: 100%;
-      animation: show 0.5s forwards;
+      width: calc(60% - 20px);
+      animation: none
     }
 
     &__messages-hide{
-      position: absolute;
+      position: relative;
       top: 0;
-      bottom: 0;
-      animation: hide 1s forwards;
+      left: 0;
+      animation: none;
     }
   }
+
+
 }
 @keyframes hide {
   from {left: 0px;
 
   }
-  to {left: -120%;
+  to {left: -150%;
   }
 }
 
 @keyframes show {
-  from {left: -120%;
+  from {left: -150%;
 
   }
   to {left: 0;

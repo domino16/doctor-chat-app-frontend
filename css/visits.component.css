@@ -1,0 +1,36 @@
+.visits hr {
+  border-top: 1px solid black;
+}
+.visits__box {
+  display: flex;
+  margin: 20px 5px;
+  min-height: 300px;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.3);
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.visits__box-img {
+  display: flex;
+  background-color: #fa0542;
+  width: 40%;
+  max-height: 300px;
+}
+.visits__box-img img {
+  position: relative;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.visits__box-text {
+  width: 60%;
+  margin: 10px;
+  font-size: 1.6rem;
+}
+.visits__box-text span {
+  font-weight: 700;
+}
+
+hr {
+  color: black;
+}/*# sourceMappingURL=visits.component.css.map */

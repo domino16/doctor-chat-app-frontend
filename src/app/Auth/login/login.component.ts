@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
   }
 
   send() {
-    console.log(this.loginForm);
+    
     const email: string = this.loginForm.controls['username'].value;
     const password: string = this.loginForm.controls['password'].value;
     // this.isLoading = true;

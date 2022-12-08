@@ -7,6 +7,7 @@ import { AuthUser } from '../Auth/authuser.model';
 import { isAuthenticated } from '../Auth/store/auth.selector';
 import { authState } from '../Auth/store/auth.state';
 import { addOneToCounter, resetCounter } from '../chat/store/chat.actions';
+import { loadVisitsStart } from '../visits/store/visits.action';
 import {
   getChats,
   getMessagesNotificationsNumber,
@@ -38,8 +39,12 @@ export class HeaderComponent implements OnInit {
 
   myChats: Observable<Chat[]> = this.store.select(getChats);
   chats!: Chat[];
+  userId!:string
 
   ngOnInit(): void {
+    this.store.select(getCurrentChatUser).subscribe(user => {this.userId =user?.email!;}
+    )
+    this.store.dispatch(loadVisitsStart({userId:this.userId}))
     this.messageNotificationNumber = this.store.select(
       getMessagesNotificationsNumber
     );

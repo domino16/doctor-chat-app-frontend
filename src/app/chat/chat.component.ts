@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Message } from '../shared/models/message';
+import { visitData } from '../shared/models/visit.data';
 import {
   Observable,
   combineLatest,
@@ -14,7 +15,7 @@ import { UserService } from '../services/user.service';
 import { User } from '../shared/models/user';
 import { AuthService } from '../Auth/auth.service';
 import { ChatService } from '../services/chat.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Chat } from '../shared/models/chat';
 import { Store } from '@ngrx/store';
 import { rootState } from '../store/rootState';
@@ -42,6 +43,8 @@ import {
   setSelectedChat,
 } from './store/chat.actions';
 import { getCurrentChatUser } from '../shared/store/shared.selector';
+import { Timestamp } from '@angular/fire/firestore';
+import { VisitsService } from '../visits/visits.service';
 
 @Component({
   selector: 'app-chat',
@@ -58,13 +61,14 @@ export class ChatComponent implements OnInit {
   hideClassToggle: boolean = false;
   myChats: Observable<Chat[]> = this.store.select(getChats);
   chatDisplayName: string | undefined = '';
-  chatListControl = new FormControl< string>('');
+  chatListControl = new FormControl<string[]>(['']);
   messageControl = new FormControl('');
   chatAllMessages: Message[] = [];
   currentDate = new Date().getTime();
   filteredUsers!: Observable<User[]>;
   selectedChat = this.store.select(getSelectedChat);
   selectedChatID!:string;
+  otherUserId!:string;
   otherUserIndex!: number;
   myUserIndex!: number;
   listIsLoading: Observable<Boolean> = this.store.select(
@@ -74,10 +78,14 @@ export class ChatComponent implements OnInit {
     getMessagesIsLoadingStatus
   );
 
+  popupVisible:boolean = false;
+
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
     private chatService: ChatService,
+    private visitsService: VisitsService,
     private store: Store<rootState>
   ) {}
 
@@ -85,7 +93,6 @@ export class ChatComponent implements OnInit {
 
     this.store.dispatch(listIsLoading({ status: true }));
     this.store.dispatch(loadChats());
-
     this.store.dispatch(setallUsers());
     this.store.select(getChats).subscribe();
     this.store.select(getMessages).subscribe(messages => {this.chatAllMessages = [...messages].reverse()
@@ -119,10 +126,11 @@ export class ChatComponent implements OnInit {
       .subscribe((user) => (this.currentUser = user));
 
     this.store.select(getSelectedChat).subscribe((chat) => {
-      this.otherUserIndex =
-        chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 1 : 0;
+
+       this.otherUserIndex = chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 1 : 0;
       this.myUserIndex =
         chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 0 : 1;
+        this.otherUserId = chat?.userIDs[this.otherUserIndex]!
     });
 
     this.chatListControl.valueChanges
@@ -141,11 +149,12 @@ export class ChatComponent implements OnInit {
       }),
         map((value) => {
 
-          this.selectedChatID = value!
+          this.selectedChatID = value![0]
           this.chatService.setLastMessageUnreadToFalse(this.selectedChatID)
           this.chatAllMessages = null!;
           this.store.dispatch(messagesIsLoading({ status: true }));
-          return this.store.dispatch(loadMessagesStart({ chatId: value![0] }));
+        if(this.selectedChatID){return this.store.dispatch(loadMessagesStart({ chatId: this.selectedChatID }));}
+
         }),
         switchMap(() => this.store.select(getMessages)),
 
@@ -168,10 +177,10 @@ export class ChatComponent implements OnInit {
   createChat(user: User) {
     this.store.dispatch(addChat({ user }))
     this.store.select(getaddChatId).subscribe(chatId => {
-      console.log(chatId)
-      this.chatListControl.setValue(chatId);
+      this.chatListControl.setValue([chatId]);
     })
     this.searchControl.setValue('');
+
 
     // this.chatListControl.setValue([chatId]);
     // this.chatService
@@ -195,7 +204,7 @@ export class ChatComponent implements OnInit {
     const message = this.messageControl.value;
     const selectedChatID: any = this.chatListControl.value;
 
-    if (message && this.selectedChatID![0]) {
+    if (message && this.selectedChatID[0]) {
       this.chatService.addChatMessage(selectedChatID[0], message).subscribe();
       this.messageControl.setValue('');
     }
@@ -203,7 +212,7 @@ export class ChatComponent implements OnInit {
 
 
   onClickX() {
-    this.chatListControl.setValue('');
+    this.chatListControl.setValue(['']);
 
     // this.chatListControl.valueChanges
     //   .pipe(
@@ -220,5 +229,35 @@ export class ChatComponent implements OnInit {
   setUnreadToFalse(){
     this.chatService.setLastMessageUnreadToFalse(this.selectedChatID)
   }
+
+  popupVisibleToggle(){
+    this.popupVisible = !this.popupVisible
+  }
+
+
+  addVisitForm: FormGroup = new FormGroup({
+    datePick: new FormControl('', Validators.required),
+    timePick: new FormControl('', Validators.required),
+    placePick: new FormControl('', Validators.required),
+    comment: new FormControl(''),
+  });
+
+
+
+  visitAddSubmit(){
+    const date: Timestamp = this.addVisitForm.controls['datePick'].value;
+    const time: string = this.addVisitForm.controls['timePick'].value;
+    const place: string = this.addVisitForm.controls['placePick'].value;
+    const comment: string = this.addVisitForm.controls['comment'].value;
+
+    const  visit:visitData ={date:date,time:time, place:place, comment: comment, doctor:`${this.currentUser?.firstName} ${this.currentUser?.lastName}`,'doctorImg': this.currentUser?.photoUrl! }
+
+    if(this.addVisitForm.valid){
+    this.visitsService.addVisit(this.otherUserId, this.currentUser!.email, visit)
+    this.popupVisible = false;}
+
+
+  }
+
 
 }

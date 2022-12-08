@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
-import {MatCardModule} from '@angular/material/card';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
 
@@ -49,6 +49,12 @@ import { rootReducer } from './store/rootState';
 import { ChatEffects } from './chat/store/chat.effects';
 import { SharedEffects } from './shared/store/shared.effects';
 import { VisitsComponent } from './visits/visits.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {MatSelectModule} from '@angular/material/select';
+import { DatePipePipe } from './shared/date-pipe.pipe';
+import { VisitsEffects } from './visits/store/visits.effects';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +65,7 @@ import { VisitsComponent } from './visits/visits.component';
     LoadingSpinnerComponent,
     HeaderComponent,
     VisitsComponent,
+    DatePipePipe,
   ],
   imports: [
     BrowserModule,
@@ -74,8 +81,13 @@ import { VisitsComponent } from './visits/visits.component';
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule,
-    EffectsModule.forRoot([AuthEffects, ChatEffects, SharedEffects]),
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
+NgxMaterialTimepickerModule,
+
+
+    EffectsModule.forRoot([AuthEffects, ChatEffects, SharedEffects , VisitsEffects]),
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
@@ -95,6 +107,6 @@ import { VisitsComponent } from './visits/visits.component';
   ],
   providers: [ScreenTrackingService, UserTrackingService],
 
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent, ],
 })
 export class AppModule {}

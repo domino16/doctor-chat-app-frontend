@@ -10,4 +10,6 @@ export interface User{
   address?: string;
   notificationsCounter?:string;
   unReadChatsCounter?:string;
+  visitNotificationsNumber:number;
+  doctor:boolean;
 }
