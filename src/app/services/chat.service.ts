@@ -37,7 +37,7 @@ export class ChatService {
 
   createChat(otherChatUser: User) {
     const ref = collection(this.firestore, 'chats');
-    return this.userService.CurrentAuthUSer.pipe(
+    return this.userService.CurrentAuthUser().pipe(
       take(1),
       concatMap((user) =>
         addDoc(ref, {
@@ -74,7 +74,7 @@ export class ChatService {
 
   get myChats(): Observable<Chat[]> {
     const ref = collection(this.firestore, 'chats');
-    return this.userService.CurrentAuthUSer.pipe(
+    return this.userService.CurrentAuthUser().pipe(
       concatMap((user) => {
         const myQuery = query(
           ref,
@@ -103,7 +103,7 @@ export class ChatService {
        const ref = collection(this.firestore, `chats/${chatId}/messages`);
     const chatRef = doc(this.firestore, `chats/${chatId}`);
     const today = Timestamp.fromDate(new Date());
-    return this.userService.CurrentAuthUSer.pipe(
+    return this.userService.CurrentAuthUser().pipe(
       take(1),
       concatMap((user) => {
         messageAuthor = user?.uid!;

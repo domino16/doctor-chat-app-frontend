@@ -44,6 +44,11 @@ export class UserService {
     return collectionData(queryAll) as Observable<User[]>;
   }
 
+  getUserById(userId:string): Observable<User> {
+    const ref = doc(this.firestore, `users/${userId}`);
+    return docData(ref) as Observable<User>
+  }
+
    CurrentAuthUser(): Observable<User | null> {
     // return this.authService.user$
     return this.store.select(authUser).pipe(
@@ -57,18 +62,7 @@ export class UserService {
     );
   }
 
-  get CurrentAuthUSer(): Observable<User | null> {
-    // return this.authService.user$
-    return this.store.select(authUser).pipe(
-      switchMap((user) => {
-        if (!user?.email) {
-          return of(null);
-        }
-        const ref = doc(this.firestore, `users/${user.email}`);
-        return docData(ref) as Observable<User>;
-      })
-    );
-  }
+
 
 
     }

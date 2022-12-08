@@ -44,7 +44,8 @@ import {
 } from './store/chat.actions';
 import { getCurrentChatUser } from '../shared/store/shared.selector';
 import { Timestamp } from '@angular/fire/firestore';
-import { VisitsService } from '../visits/visits.service';
+import { VisitsService } from '../services/visits.service';
+import { incrementVisitNotificationNumber } from '../visits/store/visits.action';
 
 @Component({
   selector: 'app-chat',
@@ -52,7 +53,6 @@ import { VisitsService } from '../visits/visits.service';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
-
   username: string = '';
   // messages!: Observable<Message[]>;
   searchControl = new FormControl<string | User>('');
@@ -67,8 +67,8 @@ export class ChatComponent implements OnInit {
   currentDate = new Date().getTime();
   filteredUsers!: Observable<User[]>;
   selectedChat = this.store.select(getSelectedChat);
-  selectedChatID!:string;
-  otherUserId!:string;
+  selectedChatID!: string;
+  otherUserId!: string;
   otherUserIndex!: number;
   myUserIndex!: number;
   listIsLoading: Observable<Boolean> = this.store.select(
@@ -78,8 +78,7 @@ export class ChatComponent implements OnInit {
     getMessagesIsLoadingStatus
   );
 
-  popupVisible:boolean = false;
-
+  popupVisible: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -90,13 +89,13 @@ export class ChatComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.store.dispatch(listIsLoading({ status: true }));
     this.store.dispatch(loadChats());
     this.store.dispatch(setallUsers());
     this.store.select(getChats).subscribe();
-    this.store.select(getMessages).subscribe(messages => {this.chatAllMessages = [...messages].reverse()
-    })
+    this.store.select(getMessages).subscribe((messages) => {
+      this.chatAllMessages = [...messages].reverse();
+    });
 
     combineLatest([this.chatListControl.valueChanges, this.myChats])
       .pipe(
@@ -113,7 +112,6 @@ export class ChatComponent implements OnInit {
       this.filteredUsers = this.searchControl.valueChanges.pipe(
         startWith(''),
         map((value) => {
-
           const name = typeof value === 'string' ? value : value?.displayName;
           return name ? this._filter(name as string) : this.users?.slice();
         })
@@ -126,38 +124,40 @@ export class ChatComponent implements OnInit {
       .subscribe((user) => (this.currentUser = user));
 
     this.store.select(getSelectedChat).subscribe((chat) => {
-
-       this.otherUserIndex = chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 1 : 0;
+      this.otherUserIndex =
+        chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 1 : 0;
       this.myUserIndex =
         chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 0 : 1;
-        this.otherUserId = chat?.userIDs[this.otherUserIndex]!
+      this.otherUserId = chat?.userIDs[this.otherUserIndex]!;
     });
 
     this.chatListControl.valueChanges
-      .pipe(tap(()=>{
-
-        this.myChats.pipe(take(1)).subscribe((chats) => {
-          this.store.dispatch(resetCounter({counter:0}))
-          return chats.forEach(chat => {
-            if (
-              chat.lastMessageUnread == true &&
-              chat.lastMessage?.lastMessageAuthor == this.currentUser?.email
-            ){
-              this.store.dispatch(addOneToCounter())}
-          })
-          })
-      }),
+      .pipe(
+        tap(() => {
+          this.myChats.pipe(take(1)).subscribe((chats) => {
+            this.store.dispatch(resetCounter({ counter: 0 }));
+            return chats.forEach((chat) => {
+              if (
+                chat.lastMessageUnread == true &&
+                chat.lastMessage?.lastMessageAuthor == this.currentUser?.email
+              ) {
+                this.store.dispatch(addOneToCounter());
+              }
+            });
+          });
+        }),
         map((value) => {
-
-          this.selectedChatID = value![0]
-          this.chatService.setLastMessageUnreadToFalse(this.selectedChatID)
+          this.selectedChatID = value![0];
+          this.chatService.setLastMessageUnreadToFalse(this.selectedChatID);
           this.chatAllMessages = null!;
           this.store.dispatch(messagesIsLoading({ status: true }));
-        if(this.selectedChatID){return this.store.dispatch(loadMessagesStart({ chatId: this.selectedChatID }));}
-
+          if (this.selectedChatID) {
+            return this.store.dispatch(
+              loadMessagesStart({ chatId: this.selectedChatID })
+            );
+          }
         }),
-        switchMap(() => this.store.select(getMessages)),
-
+        switchMap(() => this.store.select(getMessages))
       )
       .subscribe(() => {});
   }
@@ -175,12 +175,11 @@ export class ChatComponent implements OnInit {
   }
 
   createChat(user: User) {
-    this.store.dispatch(addChat({ user }))
-    this.store.select(getaddChatId).subscribe(chatId => {
+    this.store.dispatch(addChat({ user }));
+    this.store.select(getaddChatId).subscribe((chatId) => {
       this.chatListControl.setValue([chatId]);
-    })
+    });
     this.searchControl.setValue('');
-
 
     // this.chatListControl.setValue([chatId]);
     // this.chatService
@@ -210,7 +209,6 @@ export class ChatComponent implements OnInit {
     }
   }
 
-
   onClickX() {
     this.chatListControl.setValue(['']);
 
@@ -225,15 +223,13 @@ export class ChatComponent implements OnInit {
     this.hideClassToggle = !this.hideClassToggle;
   }
 
-
-  setUnreadToFalse(){
-    this.chatService.setLastMessageUnreadToFalse(this.selectedChatID)
+  setUnreadToFalse() {
+    this.chatService.setLastMessageUnreadToFalse(this.selectedChatID);
   }
 
-  popupVisibleToggle(){
-    this.popupVisible = !this.popupVisible
+  popupVisibleToggle() {
+    this.popupVisible = !this.popupVisible;
   }
-
 
   addVisitForm: FormGroup = new FormGroup({
     datePick: new FormControl('', Validators.required),
@@ -242,22 +238,29 @@ export class ChatComponent implements OnInit {
     comment: new FormControl(''),
   });
 
-
-
-  visitAddSubmit(){
+  visitAddSubmit() {
     const date: Timestamp = this.addVisitForm.controls['datePick'].value;
     const time: string = this.addVisitForm.controls['timePick'].value;
     const place: string = this.addVisitForm.controls['placePick'].value;
     const comment: string = this.addVisitForm.controls['comment'].value;
 
-    const  visit:visitData ={date:date,time:time, place:place, comment: comment, doctor:`${this.currentUser?.firstName} ${this.currentUser?.lastName}`,'doctorImg': this.currentUser?.photoUrl! }
+    const visit: visitData = {
+      date: date,
+      time: time,
+      place: place,
+      comment: comment,
+      doctor: `${this.currentUser?.firstName} ${this.currentUser?.lastName}`,
+      doctorImg: this.currentUser?.photoUrl!,
+    };
 
-    if(this.addVisitForm.valid){
-    this.visitsService.addVisit(this.otherUserId, this.currentUser!.email, visit)
-    this.popupVisible = false;}
-
-
+    if (this.addVisitForm.valid) {
+      this.visitsService.addVisit(
+        this.otherUserId,
+        this.currentUser!.email,
+        visit
+      );
+      this.popupVisible = false;
+      this.store.dispatch(incrementVisitNotificationNumber({userId:this.otherUserId}))
+    }
   }
-
-
 }

@@ -1,7 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { visitData } from 'src/app/shared/models/visit.data';
 import {
-  decrementVisitNotificationNumber,
   incrementVisitNotificationNumber,
   loadVisitsSuccess,
   resetVisitNotificationNumber,
@@ -19,17 +18,5 @@ export const initialState:state = {
 
 export const visitReducer = createReducer(
   initialState,
-  on(incrementVisitNotificationNumber, (state) => ({
-    ...state,
-    visitNotificationNumber: state.visitNotificationNumber + 1,
-  })),
-  on(decrementVisitNotificationNumber, (state) => ({
-    ...state,
-    visitNotificationNumber: state.visitNotificationNumber + 1,
-  })),
-  on(resetVisitNotificationNumber, (state) => ({
-    ...state,
-    visitNotificationNumber: state.visitNotificationNumber + 1,
-  })),
   on(loadVisitsSuccess, (state, action) => ({...state, visits:action.visits}))
 );

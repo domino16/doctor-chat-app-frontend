@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore, orderBy, query } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { addDoc, collection, collectionData, doc, docData, Firestore, orderBy, query, updateDoc } from '@angular/fire/firestore';
+import { from, Observable } from 'rxjs';
+import { User } from '../shared/models/user';
 import { visitData } from '../shared/models/visit.data';
 
 @Injectable({
@@ -26,4 +27,12 @@ export class VisitsService {
     collectionData(queryAll).subscribe(data => console.log(data))
     return collectionData(queryAll) as Observable<visitData[]>;
   }
+
+  addVisitNotificationNumber(userId: string, number: number):Observable<any> {
+    const userref = doc(this.firestore,`users/${userId}`);
+    return from(updateDoc(userref, {visitNotificationsNumber:number} ));
+  }
+
+
+
 }
