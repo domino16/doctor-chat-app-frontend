@@ -16,27 +16,27 @@
       </mat-autocomplete>
     </div>
     <mat-selection-list [multiple]="false" [formControl]="chatListControl">
-      <mat-list-option (click)="hideClassToggle = !hideClassToggle" *ngFor="let chat of myChats | async"
+      <mat-list-option (click)="hideClassToggle = !hideClassToggle" *ngFor="let chat of myChats |  async "
         [value]="chat.id">
-        <img matListAvatar [src]="chat.chatImg" alt="photo avatar">
+        <img matListAvatar [src]="chat.chatImg!" alt="photo avatar">
 
         <p mat-line class="chat-box__chat-title">
           <span class="chat-box__chat-name">{{ chat.chatName}} </span><span class="chat-box__chat-date">
-            <ng-container *ngIf="currentDate - chat.lastMessageDate?.toMillis()! >= 46400000">
-              {{chat.lastMessageDate?.toMillis() | date:'MMM d, H:mm'}}</ng-container>
-            <ng-container *ngIf="currentDate - chat.lastMessageDate?.toMillis()! <= 46400000">
-              {{chat.lastMessageDate?.toMillis() | date:'H:mm'}}</ng-container>
+            <ng-container *ngIf="currentDate - chat.lastMessage?.lastMessageDate?.toMillis()! >= 46400000">
+              {{chat.lastMessage?.lastMessageDate?.toMillis() | date:'MMM d, H:mm'}}</ng-container>
+            <ng-container *ngIf="currentDate - chat.lastMessage?.lastMessageDate?.toMillis()! <= 46400000">
+              {{chat.lastMessage?.lastMessageDate?.toMillis() | date:'H:mm'}}</ng-container>
 
           </span>
         </p>
-        <p mat-line class="cs"> <span  [ngStyle]="{'font-weight': chat.lastMessageUnread ? 'bold' : 'normal' }" class="chat-box__last-message">{{ chat.lastMessage }}</span></p>
+        <p mat-line class="cs"> <span  [ngStyle]="{'font-weight': chat.lastMessageUnread && chat.lastMessage?.lastMessageAuthor != currentUser?.email? 'bold' : 'normal' }" class="chat-box__last-message">{{ chat.lastMessage?.lastMessage }}</span></p>
         <mat-divider></mat-divider>
       </mat-list-option>
     </mat-selection-list>
 
   </div>
 
-  <div class="chat-box__messages" *ngIf="selectedChat | async as selectedChat"
+  <div (click)="setUnreadToFalse()" class="chat-box__messages" *ngIf="selectedChat | async as selectedChat"
     [ngClass]="{'chat-box__messages-hide': !hideClassToggle }">
 
     <div class="discussion_header">

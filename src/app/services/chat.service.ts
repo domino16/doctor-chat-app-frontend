@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { user } from '@angular/fire/auth';
 import {
   doc,
   addDoc,
@@ -10,9 +11,13 @@ import {
   Timestamp,
   collection,
   orderBy,
+  docSnapshots,
+  DocumentReference,
+  CollectionReference,
+  DocumentData,
 } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
-import { from, Observable } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { concatMap, take, map } from 'rxjs/operators';
 import { Chat } from '../shared/models/chat';
 import { Message } from '../shared/models/message';
@@ -23,7 +28,10 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class ChatService {
-  constructor(private firestore: Firestore, private userService: UserService, private store:Store) {}
+
+  constructor(private firestore: Firestore, private userService: UserService, private store:Store) {
+
+  }
 
   createChat(otherChatUser: User) {
     const ref = collection(this.firestore, 'chats');
@@ -91,28 +99,36 @@ export class ChatService {
 
 
   addChatMessage(chatId: string, message: string): Observable<any> {
+    let messageAuthor = ''
     const ref = collection(this.firestore, 'chats', chatId, 'messages');
-    const chatRef = doc(this.firestore, 'chats', chatId);
+    const chatRef = doc(this.firestore, `chats`, chatId);
     const today = Timestamp.fromDate(new Date());
     return this.userService.CurrentAuthUSer.pipe(
       take(1),
-      concatMap((user) =>
-        addDoc(ref, {
+      concatMap((user) =>{
+        messageAuthor = user?.uid!
+         return addDoc(ref, {
           message: message,
           author: user?.uid,
           sentDate: today,
-        })
+        } )
+
+      }
       ),
-      concatMap(() =>
-        updateDoc(chatRef, { lastMessage: message, lastMessageDate: today,  lastMessageUnread:true})
+      concatMap((user) =>
+        updateDoc(chatRef,{lastMessageUnread: true,lastMessage:{lastMessage: message, lastMessageDate: today, lastMessageAuthor:messageAuthor}})
       )
     );
   }
 
-  setLastMessageUnreadToFalse(chatId:string){
 
-const ref = doc(this.firestore, 'chats', chatId)
-ref.update
+
+    setLastMessageUnreadToFalse(chatId:string){
+      const chatDoc = doc(
+        this.firestore,
+        `chats/${chatId}`,
+      );
+       updateDoc(chatDoc,{lastMessageUnread:false})
   }
 
 
@@ -120,7 +136,7 @@ ref.update
 
   getChatMessages(chatId: string): Observable<Message[]> {
 
-    const ref = collection(this.firestore, 'chats',chatId, 'messages');
+    const ref = collection(this.firestore, `chats/${chatId}/messages`);
     const queryAll = query(ref, orderBy('sentDate', 'asc'));
     return collectionData(queryAll) as Observable<Message[]>;
   }

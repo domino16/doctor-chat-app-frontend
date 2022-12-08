@@ -101,7 +101,7 @@ export class SignupComponent implements OnInit {
       this.store.dispatch(setCurrentChatUserStart())
       this.store.dispatch(signUpStart({email, password}));
       this.userService.addUser(user)
-     
+
 
 
       // this.authService.signup(email, password).subscribe({

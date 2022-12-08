@@ -8,6 +8,7 @@ import {
   tap,
   of,
   startWith,
+  take,
 } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { User } from '../shared/models/user';
@@ -25,15 +26,18 @@ import {
   getListIsLoadingStatus,
   getMessages,
   getMessagesIsLoadingStatus,
+  getMessagesNotificationsNumber,
   getSelectedChat,
 } from './store/chat.selectors';
 import {
   addChat,
+  addOneToCounter,
   listIsLoading,
   loadChats,
   loadChatsSuccess,
   loadMessagesStart,
   messagesIsLoading,
+  resetCounter,
   setallUsers,
   setSelectedChat,
 } from './store/chat.actions';
@@ -54,13 +58,13 @@ export class ChatComponent implements OnInit {
   hideClassToggle: boolean = false;
   myChats: Observable<Chat[]> = this.store.select(getChats);
   chatDisplayName: string | undefined = '';
-  chatListControl = new FormControl< string | string[]>('');
+  chatListControl = new FormControl< string>('');
   messageControl = new FormControl('');
   chatAllMessages: Message[] = [];
   currentDate = new Date().getTime();
   filteredUsers!: Observable<User[]>;
   selectedChat = this.store.select(getSelectedChat);
-  selectedChatID!:string
+  selectedChatID!:string;
   otherUserIndex!: number;
   myUserIndex!: number;
   listIsLoading: Observable<Boolean> = this.store.select(
@@ -78,7 +82,7 @@ export class ChatComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.chatService.setLastMessageUnreadToFalse(this.selectedChatID)
+
     this.store.dispatch(listIsLoading({ status: true }));
     this.store.dispatch(loadChats());
 
@@ -102,6 +106,7 @@ export class ChatComponent implements OnInit {
       this.filteredUsers = this.searchControl.valueChanges.pipe(
         startWith(''),
         map((value) => {
+
           const name = typeof value === 'string' ? value : value?.displayName;
           return name ? this._filter(name as string) : this.users?.slice();
         })
@@ -121,9 +126,23 @@ export class ChatComponent implements OnInit {
     });
 
     this.chatListControl.valueChanges
-      .pipe(
+      .pipe(tap(()=>{
+
+        this.myChats.pipe(take(1)).subscribe((chats) => {
+          this.store.dispatch(resetCounter({counter:0}))
+          return chats.forEach(chat => {
+            if (
+              chat.lastMessageUnread == true &&
+              chat.lastMessage?.lastMessageAuthor == this.currentUser?.email
+            ){
+              this.store.dispatch(addOneToCounter())}
+          })
+          })
+      }),
         map((value) => {
-          this.selectedChatID = this.chatListControl.value as string
+
+          this.selectedChatID = value!
+          this.chatService.setLastMessageUnreadToFalse(this.selectedChatID)
           this.chatAllMessages = null!;
           this.store.dispatch(messagesIsLoading({ status: true }));
           return this.store.dispatch(loadMessagesStart({ chatId: value![0] }));
@@ -150,7 +169,7 @@ export class ChatComponent implements OnInit {
     this.store.dispatch(addChat({ user }))
     this.store.select(getaddChatId).subscribe(chatId => {
       console.log(chatId)
-      this.chatListControl.setValue([chatId]);
+      this.chatListControl.setValue(chatId);
     })
     this.searchControl.setValue('');
 
@@ -196,4 +215,10 @@ export class ChatComponent implements OnInit {
 
     this.hideClassToggle = !this.hideClassToggle;
   }
+
+
+  setUnreadToFalse(){
+    this.chatService.setLastMessageUnreadToFalse(this.selectedChatID)
+  }
+
 }

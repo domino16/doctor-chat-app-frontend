@@ -5,9 +5,11 @@ import { LoginComponent } from './Auth/login/login.component';
 import { SignupComponent } from './Auth/signup/signup.component';
 import { AuthGuard } from './Auth/auth.guard';
 import { AppComponent } from './app.component';
+import { VisitsComponent } from './visits/visits.component';
 
 const routes: Routes = [
-  { path: 'chat',canActivate:[AuthGuard], component: ChatComponent },
+  { path: 'chat', canActivate: [AuthGuard], component: ChatComponent },
+  { path: 'visits', canActivate: [AuthGuard], component: VisitsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
 ];

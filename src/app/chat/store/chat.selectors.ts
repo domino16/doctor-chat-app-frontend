@@ -17,3 +17,5 @@ export const getListIsLoadingStatus = createSelector(getChatState, state => stat
 
 export const getMessagesIsLoadingStatus = createSelector(getChatState, state => state.messagesIsLoading)
 
+export const getMessagesNotificationsNumber = createSelector(getChatState, state => state.messageNotificationcCounter)
+

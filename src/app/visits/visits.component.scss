@@ -1,0 +1,43 @@
+.visits {
+  hr {
+    border-top: 1px solid black;
+  }
+
+  &__box {
+    display: flex;
+    margin: 20px 5px;
+    min-height: 300px;
+    box-shadow: 0 0 5px 5px rgba($color: #000000, $alpha: 0.3);
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    overflow: hidden;
+
+    &-img {display: flex;
+      background-color: #fa0542;
+
+      width: 40%;
+      max-height: 300px;
+      // height: 100%;
+
+      img {position: relative;
+        // top: 20%;
+        width: 100%;
+
+        object-fit: cover;
+      }
+    }
+
+    &-text {
+      width: 60%;
+      margin: 10px;
+      font-size: 1.6rem;
+
+      span{
+        font-weight: 700;
+      }
+    }
+  }
+}
+hr {
+  color: black;
+}

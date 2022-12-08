@@ -20,3 +20,6 @@ export const loadMessagesSuccess = createAction('[CHAT PAGE] load messages succs
 export const listIsLoading = createAction('[CHAT PAGE] list is loading', props<{status:boolean}>())
 export const messagesIsLoading = createAction('[CHAT] PAGE messages is loading', props<{status:boolean}>())
 
+export const addOneToCounter = createAction('[CHAT PAGE] +1 counter');
+export const removeOneFromCounter = createAction('[CHAT PAGE] -1 counter');
+export const resetCounter = createAction('[CHAT PAGE] reset counter', props<{counter:number}>());

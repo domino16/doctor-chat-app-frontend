@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
+import {MatCardModule} from '@angular/material/card';
 
 
 
@@ -47,6 +48,7 @@ import { AuthEffects } from './Auth/store/auth.effects';
 import { rootReducer } from './store/rootState';
 import { ChatEffects } from './chat/store/chat.effects';
 import { SharedEffects } from './shared/store/shared.effects';
+import { VisitsComponent } from './visits/visits.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,7 @@ import { SharedEffects } from './shared/store/shared.effects';
     SignupComponent,
     LoadingSpinnerComponent,
     HeaderComponent,
+    VisitsComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +74,7 @@ import { SharedEffects } from './shared/store/shared.effects';
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
+    MatCardModule,
     EffectsModule.forRoot([AuthEffects, ChatEffects, SharedEffects]),
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({
