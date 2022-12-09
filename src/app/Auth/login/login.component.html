@@ -4,7 +4,7 @@
     <div class="alert alert-danger" *ngIf="errorMessage | async" >{{errorMessage|async}}</div>
       <h1>Zaloguj!</h1>
       <div class="form-box">
-          <label for="username">Nazwa użytkownika:</label>
+          <label for="username">Adres email:</label>
           <input type="text" id="username" placeholder="Podaj nazwę użytkownika" name="username" formControlName="username">
           <span  class="error-text" *ngIf="!loginForm.controls['username'].valid && loginForm.controls['username'].touched ">Uzupełnij to pole.</span>
 

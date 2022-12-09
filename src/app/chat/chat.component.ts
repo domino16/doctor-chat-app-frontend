@@ -45,7 +45,8 @@ import {
 import { getCurrentChatUser } from '../shared/store/shared.selector';
 import { Timestamp } from '@angular/fire/firestore';
 import { VisitsService } from '../services/visits.service';
-import { incrementVisitNotificationNumber } from '../visits/store/visits.action';
+import { incrementVisitNotificationNumber, loadNotificationNumberStart } from '../visits/store/visits.action';
+import { getVisitNotificationNumber } from '../visits/store/visits.selectors';
 
 @Component({
   selector: 'app-chat',
@@ -59,7 +60,7 @@ export class ChatComponent implements OnInit {
   users!: User[];
   currentUser!: User | null;
   hideClassToggle: boolean = false;
-  myChats: Observable<Chat[]> = this.store.select(getChats);
+  myChats: Observable<Chat[]> = this.store.select(getChats).pipe(map(chats => [...chats].sort((a, b)=>(b.lastMessage?.lastMessageDate?.toMillis()!) - (a.lastMessage?.lastMessageDate?.toMillis()!))));
   chatDisplayName: string | undefined = '';
   chatListControl = new FormControl<string[]>(['']);
   messageControl = new FormControl('');
@@ -89,6 +90,7 @@ export class ChatComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     this.store.dispatch(listIsLoading({ status: true }));
     this.store.dispatch(loadChats());
     this.store.dispatch(setallUsers());
@@ -254,13 +256,14 @@ export class ChatComponent implements OnInit {
     };
 
     if (this.addVisitForm.valid) {
+      this.store.dispatch(incrementVisitNotificationNumber({userId:this.otherUserId}))
       this.visitsService.addVisit(
         this.otherUserId,
         this.currentUser!.email,
         visit
       );
       this.popupVisible = false;
-      this.store.dispatch(incrementVisitNotificationNumber({userId:this.otherUserId}))
+
     }
   }
 }

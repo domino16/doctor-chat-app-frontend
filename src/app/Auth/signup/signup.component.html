@@ -17,6 +17,22 @@
           15 znaków.</span>
       </span>
     </div>
+
+    <div class="form-box">
+      <label for="firstname">Imię:</label>
+      <input type="text" id="firstname" placeholder="Podaj imię" name="firstname" formControlName="firstname">
+      <span *ngIf="!signupForm.get('firstname')!.valid && signupForm.get('firstname')!.touched" class="error-text"><span
+          *ngIf="!signupForm.get('firstname')!.value">Uzupełnij pole Imię.</span>
+      </span>
+    </div>
+    <div class="form-box">
+      <label for="lastname">Nazwisko</label>
+      <input type="text" id="lastname" placeholder="Podaj nazwisko" name="lastname" formControlName="lastname">
+      <span *ngIf="!signupForm.get('lastname')!.valid && signupForm.get('lastname')!.touched" class="error-text"><span
+          *ngIf="!signupForm.get('lastname')!.value">Uzupełnij pole Nazwisko.</span>
+
+      </span>
+    </div>
     <div class="form-box">
       <label for="password">Hasło:</label>
       <input type="password" id="password" placeholder="Podaj hasło" name="password" formControlName="password">

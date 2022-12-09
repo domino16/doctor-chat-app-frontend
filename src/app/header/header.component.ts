@@ -7,7 +7,7 @@ import { AuthUser } from '../Auth/authuser.model';
 import { isAuthenticated } from '../Auth/store/auth.selector';
 import { authState } from '../Auth/store/auth.state';
 import { addOneToCounter, resetCounter } from '../chat/store/chat.actions';
-import { loadVisitsStart } from '../visits/store/visits.action';
+import { loadVisitsStart, resetVisitNotificationNumber } from '../visits/store/visits.action';
 import {
   getChats,
   getMessagesNotificationsNumber,
@@ -17,6 +17,8 @@ import { Chat } from '../shared/models/chat';
 import { User } from '../shared/models/user';
 import { getCurrentChatUser } from '../shared/store/shared.selector';
 import { rootState } from '../store/rootState';
+import { getVisitNotificationNumber } from '../visits/store/visits.selectors';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -30,11 +32,13 @@ export class HeaderComponent implements OnInit {
   avatar!: string | undefined;
   messageNotificationNumber!: Observable<number>;
   emailCurrentUser!: string | undefined;
+  visitNotificationNumber:Observable<number> = this.store.select(getVisitNotificationNumber)
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private store: Store<[rootState]>
+    private store: Store<[rootState]>,
+    private router:Router
   ) {}
 
   myChats: Observable<Chat[]> = this.store.select(getChats);
@@ -42,6 +46,7 @@ export class HeaderComponent implements OnInit {
   userId!:string
 
   ngOnInit(): void {
+
     this.store.select(getCurrentChatUser).subscribe(user => {this.userId =user?.email!;}
     )
     this.store.dispatch(loadVisitsStart({userId:this.userId}))
@@ -78,5 +83,9 @@ export class HeaderComponent implements OnInit {
 
   onLogout() {
     this.authService.logout();
+  }
+
+  onNotificationsClick(){
+    this.router.navigate(['/visits'])
   }
 }

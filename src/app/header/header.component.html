@@ -36,9 +36,9 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right" *ngIf="loggedIn">
-        <li class="nav-item"><a class="notifications"><i class="fa fa-bell-o"></i><span class="badge">1</span></a></li>
+        <li class="nav-item"(click)="onNotificationsClick()" ><a class="notifications"><i class="fa fa-bell-o"></i><span class="badge">{{visitNotificationNumber | async}}</span></a></li>
         <li class="nav-item"><a routerLink="/chat" class="messages"><i class="fa fa-envelope-o"></i><span class="badge"
-              *ngIf="(messageNotificationNumber | async )! > 0">{{messageNotificationNumber | async}}</span></a></li>
+              *ngIf="(messageNotificationNumber | async )! > 0  ">{{messageNotificationNumber | async}}</span></a></li>
         <li class="dropdown nav-item">
           <a data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link"><img src="{{avatar}}"
               class="avatar" alt="Avatar">{{username}}</a>

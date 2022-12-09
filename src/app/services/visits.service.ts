@@ -28,7 +28,7 @@ export class VisitsService {
     return collectionData(queryAll) as Observable<visitData[]>;
   }
 
-  addVisitNotificationNumber(userId: string, number: number):Observable<any> {
+  updateVisitNotificationNumber(userId: string, number: number):Observable<any> {
     const userref = doc(this.firestore,`users/${userId}`);
     return from(updateDoc(userref, {visitNotificationsNumber:number} ));
   }

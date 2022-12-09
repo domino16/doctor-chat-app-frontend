@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Validation } from '../passwordValidators/validation';
 import { StrongPasswordValidation } from '../passwordValidators/strongPasswordValidation';
@@ -17,7 +12,10 @@ import { Store } from '@ngrx/store';
 import { signUpStart, signUpSuccess } from '../store/auth.actions';
 import { pageIsLoading } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
 import { getLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.selector';
-import { getCurrentChatUser, getErrorMessage } from 'src/app/shared/store/shared.selector';
+import {
+  getCurrentChatUser,
+  getErrorMessage,
+} from 'src/app/shared/store/shared.selector';
 import { Observable } from 'rxjs';
 import { authUser } from '../store/auth.selector';
 import { setCurrentChatUserStart } from 'src/app/shared/store/shared.actions';
@@ -28,8 +26,7 @@ import { setCurrentChatUserStart } from 'src/app/shared/store/shared.actions';
   styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
-
-  isLoading!:Observable<boolean>;
+  isLoading!: Observable<boolean>;
   authUser!: any;
 
   error!: Observable<string>;
@@ -43,7 +40,7 @@ export class SignupComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private userService: UserService,
-    private store:Store
+    private store: Store
   ) {}
 
   signupForm: FormGroup = new FormGroup(
@@ -72,6 +69,8 @@ export class SignupComponent implements OnInit {
           }),
         ])
       ),
+      firstname: new FormControl('', [Validators.required]),
+      lastname: new FormControl('', [Validators.required]),
       repassword: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       acceptTerms: new FormControl(false, Validators.requiredTrue),
@@ -93,18 +92,32 @@ export class SignupComponent implements OnInit {
       const username: string = this.signupForm.controls['username'].value;
       const email: string = this.signupForm.controls['email'].value;
       const password: string = this.signupForm.controls['password'].value;
-      const defaultImgUrl: string = 'https://cdn.pixabay.com/photo/2016/11/14/17/39/person-1824144__340.png'
+      const defaultImgUrl: string =
+        'https://cdn.pixabay.com/photo/2016/11/14/17/39/person-1824144__340.png';
       const ifDoctor: boolean = this.signupForm.controls['ifDoctor'].value;
+      const firstName: string = this.signupForm.controls['firstname'].value;
+      const lastName: string = this.signupForm.controls['lastname'].value;
 
-      const user:User = {'uid':email,'email':email,'displayName': username,'password':password, 'photoUrl':defaultImgUrl, 'firstName':'','lastName':'', 'phone':'', 'address':'', 'notificationsCounter':'', 'unReadChatsCounter':'', 'doctor':ifDoctor, 'visitNotificationsNumber':0  }
+      const user: User = {
+        uid: email,
+        email: email,
+        displayName: username,
+        password: password,
+        photoUrl: defaultImgUrl,
+        firstName: firstName,
+        lastName: lastName,
+        phone: '',
+        address: '',
+        notificationsCounter: '',
+        unReadChatsCounter: '',
+        doctor: ifDoctor,
+        visitNotificationsNumber: 0,
+      };
 
-      this.store.dispatch(pageIsLoading({status:true}))
-
-      this.store.dispatch(setCurrentChatUserStart())
-      this.store.dispatch(signUpStart({email, password}));
-      this.userService.addUser(user)
-
-
+      this.store.dispatch(pageIsLoading({ status: true }));
+      this.store.dispatch(setCurrentChatUserStart());
+      this.store.dispatch(signUpStart({ email, password }));
+      this.userService.addUser(user);
 
       // this.authService.signup(email, password).subscribe({
       //   next: (resData) => {
@@ -120,7 +133,6 @@ export class SignupComponent implements OnInit {
       //     this.isLoading = false;
       //   }
       // });
-
     }
   }
 }

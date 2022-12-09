@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { loadVisitsStart } from './store/visits.action';
+import { loadVisitsStart, resetVisitNotificationNumber } from './store/visits.action';
 import { getVisits } from './store/visits.selectors';
 import { rootState } from '../store/rootState';
 import { visitData } from '../shared/models/visit.data';
@@ -20,6 +20,7 @@ export class VisitsComponent implements OnInit {
   constructor(private store: Store<[rootState]>) {}
 
   ngOnInit(): void {
+    this.store.dispatch(resetVisitNotificationNumber())
     this.store.select(getCurrentChatUser).subscribe((user) => {
       this.userId = user?.email!;
     });
@@ -28,5 +29,5 @@ export class VisitsComponent implements OnInit {
       .select<visitData[]>(getVisits)
       .subscribe((visits) => (this.visits = visits));
   }
-  
+
 }

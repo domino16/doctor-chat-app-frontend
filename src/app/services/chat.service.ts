@@ -95,7 +95,7 @@ export class ChatService {
       chat.chatImg = photoUrl;
     });
 
-    return chats;
+    return chats ;
   }
 
   addChatMessage(chatId: string, message: string): Observable<any> {

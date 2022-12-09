@@ -5,6 +5,7 @@ import { AuthService } from './Auth/auth.service';
 import { UserService } from './services/user.service';
 import { setCurrentChatUserStart } from './shared/store/shared.actions';
 import { rootState } from './store/rootState';
+import { loadNotificationNumberStart } from './visits/store/visits.action';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
 
 
 ngOnInit(): void {
+  this.store.dispatch(loadNotificationNumberStart())
   this.store.dispatch(setCurrentChatUserStart())
   this.userSub = this.authService.user$.subscribe(user =>{
     this.loggedIn = user ? true : false;

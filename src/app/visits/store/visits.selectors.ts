@@ -8,3 +8,4 @@ export const getVisitState = createFeatureSelector<state>(VISIT_STATE_NAME);
 export const getVisitNotificationNumber = createSelector(getVisitState, state => state.visitNotificationNumber)
 
 export const getVisits = createSelector(getVisitState, state => state.visits )
+

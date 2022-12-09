@@ -5,7 +5,7 @@
   <hr>
   <ng-container *ngFor="let visit of visits">
   <div *ngIf="currentDate <= visit.date.toMillis()  " class="visits__box">
-    <div class="visits__box-img"><img src="https://cdn.pixabay.com/photo/2020/06/20/15/30/woman-doctor-5321351_960_720.jpg" alt="avatar"></div>
+    <div class="visits__box-img"><img src="{{visit.doctorImg}}" alt="avatar"></div>
     <div class="visits__box-text">
       <h2>Dr {{visit.doctor}}</h2>
       <p><span>Data:</span> {{visit.date | datePipe }}</p>
