@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subscription, take } from 'rxjs';
+import { map, Observable, of, Subscription, take } from 'rxjs';
 import { AppComponent } from '../app.component';
 import { AuthService } from '../Auth/auth.service';
 import { AuthUser } from '../Auth/authuser.model';
@@ -18,7 +18,7 @@ import { User } from '../shared/models/user';
 import { getCurrentChatUser } from '../shared/store/shared.selector';
 import { rootState } from '../store/rootState';
 import { getVisitNotificationNumber } from '../visits/store/visits.selectors';
-import { Router } from '@angular/router';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -33,12 +33,13 @@ export class HeaderComponent implements OnInit {
   messageNotificationNumber!: Observable<number>;
   emailCurrentUser!: string | undefined;
   visitNotificationNumber:Observable<number> = this.store.select(getVisitNotificationNumber)
+  activeRoute!:string
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
     private store: Store<[rootState]>,
-    private router:Router
+    private router:Router,
   ) {}
 
   myChats: Observable<Chat[]> = this.store.select(getChats);
@@ -46,6 +47,14 @@ export class HeaderComponent implements OnInit {
   userId!:string
 
   ngOnInit(): void {
+
+
+    this.router.events
+    .subscribe(event =>
+     {
+        this.activeRoute = this.router.url;
+        console.log(this.activeRoute);
+     });
 
     this.store.select(getCurrentChatUser).subscribe(user => {this.userId =user?.email!;}
     )
@@ -60,7 +69,7 @@ export class HeaderComponent implements OnInit {
 
     this.store.select(getCurrentChatUser).subscribe((user) => {
       this.emailCurrentUser = user?.email;
-      this.username = user?.displayName;
+      this.username =`${user?.firstName} ${user?.lastName}`
       this.avatar = user?.photoUrl;
     });
 

@@ -1,0 +1,107 @@
+@use '../shared/colors' as *;
+.cards {
+    &__card {
+      position: relative;
+      margin: 20px 10px;
+      height: 450px;
+      color: $pure-white;
+      text-align: center;
+      perspective: 1000px;
+
+      &:hover {
+        .cards__card-img {
+          transform: rotateY(180deg);
+          opacity: 0;
+        }
+
+        .cards__card-info {
+          transform: rotateY(0deg);
+          opacity: 1;
+
+          p{
+            font-size: 1.6rem;
+          }
+
+        }
+      }
+
+      &-img {
+        padding: 2em;
+        height: 100%;
+        border-radius: 8px;
+        background-size: cover;
+        transition: transform 1s, opacity 1s;
+
+        &--first {
+          background-image: $light-blue-gradient, url(../../assets/images/doctor-5965973_960_720.png);
+        }
+
+        &--second {
+          background-image: $blue-gradient, url(../../assets/images/surgeon-6207766_960_720.png);
+        }
+
+        &--third {
+          background-image: $purple-gradient, url(../../assets/images/health-2082630_960_720.webp);
+        }
+
+        &-title {
+          font-size: 2.8rem;
+        }
+
+        &-info {
+          position: absolute;
+          bottom: 30px;
+          right: 30px;
+          font-size: 1.8rem;
+
+          i {
+            margin-right: 0.5em;
+          }
+        }
+      }
+
+      &-info {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-image: $light-blue-gradient-solid;
+        border-radius: 8px;
+        opacity: 0;
+        transform: rotateY(-180deg);
+        transition: transform 1s, opacity 1s;
+
+        &-title {
+          position: absolute;
+          left: 50%;
+          transform: translate(-50%);
+          top: 1.2em;
+
+          font-size: 2.8rem;
+        }
+
+
+        &-btn {
+          position: absolute;
+          left: 50%;
+          transform: translate(-50%);
+          bottom: 2em;
+          padding: 1em;
+          border-radius: 8px;
+          width: 50%;
+          border: none;
+          background-color: $green-color;
+          cursor: pointer;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: $green-color-hover;
+          }
+        }
+      }
+    }
+  }

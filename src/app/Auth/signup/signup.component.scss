@@ -1,8 +1,20 @@
+@use '../../shared/colors' as *;
+
+
+img{
+  position: absolute;
+  left: 0;
+  z-index: -1;
+
+
+}
+
 .wrapper {
   width: 440px;
-  background-color: #fff;
+  background-color: $pure-white;
   box-shadow: 0 0 10px #000;
 }
+
 
 form {
   padding: 30px;
@@ -26,18 +38,18 @@ h1 {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid rgb(197, 197, 197);
+  border: 1px solid $light-white;
   border-radius: 5px;
 }
 
 .form-box.error input {
-  border: 1px solid rgb(196, 72, 72);
+  border: 1px solid $secondary-color;
   background-color: rgba(99, 12, 15, 0.1);
 }
 
 .form-box .error-text {
   font-size: 14px;
-  color: rgb(196, 72, 72);
+  color: $secondary-color;
 }
 
 
@@ -54,7 +66,7 @@ h1 {
   margin-left: 10px;
   width: 100px;
   font-size: 18px;
-  background-color: rgb(0, 140, 255);
+  background-color:$main-color;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -64,12 +76,12 @@ h1 {
 
 .send:hover,
 .clear:hover {
-  background-color: rgb(0, 107, 194);
+  background-color: $main-color;
 }
 
 .disabled-button,
 .disabled-button:hover {
-  background-color: rgb(74, 74, 74);
+  background-color: $dark;
 }
 
 .line-through {

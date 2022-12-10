@@ -60,13 +60,14 @@ export class ChatComponent implements OnInit {
   users!: User[];
   currentUser!: User | null;
   hideClassToggle: boolean = false;
-  myChats: Observable<Chat[]> = this.store.select(getChats).pipe(map(chats => [...chats].sort((a, b)=>(b.lastMessage?.lastMessageDate?.toMillis()!) - (a.lastMessage?.lastMessageDate?.toMillis()!))));
-  chatDisplayName: string | undefined = '';
+  myChats: Observable<Chat[]> = this.store.select(getChats).pipe().pipe(map(chats => [...chats].sort((a, b)=>(b.lastMessage?.lastMessageDate?.toMillis()!) - (a.lastMessage?.lastMessageDate?.toMillis()!))))
+
   chatListControl = new FormControl<string[]>(['']);
   messageControl = new FormControl('');
   chatAllMessages: Message[] = [];
   currentDate = new Date().getTime();
-  filteredUsers!: Observable<User[]>;
+  filteredAllUsers!: Observable<User[]>;
+  filteredAllDoctor!: Observable<User[]>;
   selectedChat = this.store.select(getSelectedChat);
   selectedChatID!: string;
   otherUserId!: string;
@@ -109,16 +110,33 @@ export class ChatComponent implements OnInit {
         this.store.dispatch(setSelectedChat({ selectedChat: chat }))
       );
 
-    this.userService.getallUsers().subscribe((user) => {
-      this.users = user;
-      this.filteredUsers = this.searchControl.valueChanges.pipe(
+
+
+
+
+    this.userService.getallUsers().subscribe((users) => {
+      this.users = users;
+      this.filteredAllDoctor = this.searchControl.valueChanges.pipe(
         startWith(''),
         map((value) => {
-          const name = typeof value === 'string' ? value : value?.displayName;
+          // const name = typeof value === 'string' ? value : value?.displayName;
+          const name = typeof value === 'string' ? value : value?.email;
+          return name ? this._filter(name as string) : users.filter(user => user.doctor == true).slice();
+        })
+      )
+
+
+      this.filteredAllUsers = this.searchControl.valueChanges.pipe(
+        startWith(''),
+        map((value) => {
+          // const name = typeof value === 'string' ? value : value?.displayName;
+          const name = typeof value === 'string' ? value : value?.email;
           return name ? this._filter(name as string) : this.users?.slice();
         })
-      );
+      )
+
     });
+
 
     // this.store.select(authUser).subscribe(user => this.currentUser = user)
     this.store
@@ -164,16 +182,19 @@ export class ChatComponent implements OnInit {
       .subscribe(() => {});
   }
 
-  displayFn(user: User): string {
-    return user && user.displayName ? user.displayName : '';
-  }
+  // displayFn(user: User): string {
+  //   return user && user.displa ? user.displayName : '';
+  // }
 
   private _filter(name: string): User[] {
     const filterValue = name.toLowerCase();
 
-    return this.users.filter((option) =>
-      option.displayName?.toLowerCase().includes(filterValue)
+  const filteredUsers = this.users.filter((option) =>{
+      const arr = filterValue.split(' ');
+      // option.lastName?.toLowerCase().includes(filterValue)}
+      return arr.some(el => option.firstName?.toLowerCase().includes(el) || option.lastName?.toLowerCase().includes(el));}
     );
+    return filteredUsers
   }
 
   createChat(user: User) {

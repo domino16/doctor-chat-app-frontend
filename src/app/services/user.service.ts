@@ -15,6 +15,7 @@ import { AuthService } from '../Auth/auth.service';
 import { authUser } from '../Auth/store/auth.selector';
 import { Store } from '@ngrx/store';
 import { rootState } from '../store/rootState';
+import { where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +44,8 @@ export class UserService {
     const queryAll = query(ref);
     return collectionData(queryAll) as Observable<User[]>;
   }
+
+
 
   getUserById(userId:string): Observable<User> {
     const ref = doc(this.firestore, `users/${userId}`);

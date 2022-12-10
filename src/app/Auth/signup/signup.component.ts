@@ -45,11 +45,7 @@ export class SignupComponent implements OnInit {
 
   signupForm: FormGroup = new FormGroup(
     {
-      username: new FormControl('', [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(15),
-      ]),
+
       password: new FormControl(
         '',
         Validators.compose([
@@ -89,7 +85,7 @@ export class SignupComponent implements OnInit {
     if (!this.signupForm.valid) {
       return;
     } else {
-      const username: string = this.signupForm.controls['username'].value;
+    
       const email: string = this.signupForm.controls['email'].value;
       const password: string = this.signupForm.controls['password'].value;
       const defaultImgUrl: string =
@@ -101,7 +97,6 @@ export class SignupComponent implements OnInit {
       const user: User = {
         uid: email,
         email: email,
-        displayName: username,
         password: password,
         photoUrl: defaultImgUrl,
         firstName: firstName,

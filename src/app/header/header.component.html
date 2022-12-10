@@ -4,9 +4,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 
-<nav class="navbar navbar-expand-md navbar-light ">
+<nav class="navbar navbar-expand-lg navbar-light ">
   <div class="container-xxl">
-    <a class="navbar-brand">Dominik Pietrzyk</a>
+    <a routerLink="/" class="navbar-brand"><img *ngIf="activeRoute != '/login' && activeRoute != '/signup'" src="../../assets/images/doctor-2025725_960_720.png" alt="">Dominik Pietrzyk</a>
     <div class="navbar-header">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,14 +36,14 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right" *ngIf="loggedIn">
-        <li class="nav-item"(click)="onNotificationsClick()" ><a class="notifications"><i class="fa fa-bell-o"></i><span class="badge">{{visitNotificationNumber | async}}</span></a></li>
+        <li class="nav-item"(click)="onNotificationsClick()" ><a class="notifications"><i class="fa fa-bell-o"></i><span class="badge" *ngIf="(visitNotificationNumber| async )! > 0">{{visitNotificationNumber | async}}</span></a></li>
         <li class="nav-item"><a routerLink="/chat" class="messages"><i class="fa fa-envelope-o"></i><span class="badge"
               *ngIf="(messageNotificationNumber | async )! > 0  ">{{messageNotificationNumber | async}}</span></a></li>
         <li class="dropdown nav-item">
           <a data-bs-toggle="dropdown" aria-expanded="false" class="dropdown-toggle nav-link"><img src="{{avatar}}"
               class="avatar" alt="Avatar">{{username}}</a>
           <ul class="dropdown-menu">
-            <li><a><i class="fa fa-user-o"></i> Profil</a></li>
+            <li><a routerLink="/profile"><i class="fa fa-user-o"></i> Profil</a></li>
             <li class="divider"></li>
             <li><a (click)="onLogout()"><i class="material-icons">&#xE8AC;</i> Logout</a></li>
           </ul>

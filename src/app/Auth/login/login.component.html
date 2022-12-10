@@ -1,4 +1,5 @@
 <app-loading-spinner *ngIf="isLoading | async"></app-loading-spinner>
+<img src="../../../assets/images/doctor-2025725_960_720.png" alt="">
 <div class="wrapper" *ngIf="!(isLoading | async)">
   <form [formGroup]="loginForm" (ngSubmit)="send()">
     <div class="alert alert-danger" *ngIf="errorMessage | async" >{{errorMessage|async}}</div>

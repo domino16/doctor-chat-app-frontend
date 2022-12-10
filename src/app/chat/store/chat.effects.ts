@@ -23,7 +23,7 @@ export class ChatEffects {
         console.log(action)
         return this.chatService.myChats.pipe(
           map((chats) => {
-            
+
             this.store.dispatch(chatActions.listIsLoading({status:false}))
             return chatActions.loadChatsSuccess({ chats });
           })

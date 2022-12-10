@@ -16,9 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import {
@@ -50,11 +48,13 @@ import { ChatEffects } from './chat/store/chat.effects';
 import { SharedEffects } from './shared/store/shared.effects';
 import { VisitsComponent } from './visits/visits.component';
 import { MatNativeDateModule } from '@angular/material/core';
-import { NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
-import {MatSelectModule} from '@angular/material/select';
-import { DatePipePipe } from './shared/date-pipe.pipe';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { DatePipePipe } from './shared/pipes/date-pipe.pipe';
 import { VisitsEffects } from './visits/store/visits.effects';
-
+import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { HomeComponent } from './home/home.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -66,6 +66,8 @@ import { VisitsEffects } from './visits/store/visits.effects';
     HeaderComponent,
     VisitsComponent,
     DatePipePipe,
+    ProfilePageComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,10 +86,15 @@ import { VisitsEffects } from './visits/store/visits.effects';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-NgxMaterialTimepickerModule,
+    NgxMaterialTimepickerModule,
+    FontAwesomeModule,
 
-
-    EffectsModule.forRoot([AuthEffects, ChatEffects, SharedEffects , VisitsEffects]),
+    EffectsModule.forRoot([
+      AuthEffects,
+      ChatEffects,
+      SharedEffects,
+      VisitsEffects,
+    ]),
     StoreModule.forRoot(rootReducer),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
@@ -107,6 +114,6 @@ NgxMaterialTimepickerModule,
   ],
   providers: [ScreenTrackingService, UserTrackingService],
 
-  bootstrap: [AppComponent, ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

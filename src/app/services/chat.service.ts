@@ -44,12 +44,14 @@ export class ChatService {
           userIDs: [user?.uid, otherChatUser.uid],
           users: [
             {
-              displayName: user?.displayName ?? '',
               photoUrl: user?.photoUrl ?? '',
+              firstName:user?.firstName ?? '',
+              lastName:user?.lastName ?? '',
             },
             {
-              displayName: otherChatUser.displayName ?? '',
               photoUrl: otherChatUser.photoUrl ?? '',
+              firstName:otherChatUser?.firstName ?? '',
+              lastName:otherChatUser?.lastName ?? '',
             },
           ],
         })
@@ -90,8 +92,8 @@ export class ChatService {
     chats.forEach((chat: Chat) => {
       const otherUserIndex =
         chat.userIDs?.indexOf(currentUserId ?? '') === 0 ? 1 : 0;
-      const { displayName, photoUrl } = chat.users[otherUserIndex];
-      chat.chatName = displayName;
+      const { photoUrl , firstName, lastName} = chat.users[otherUserIndex];
+      chat.chatName = `${firstName} ${lastName}`;
       chat.chatImg = photoUrl;
     });
 
