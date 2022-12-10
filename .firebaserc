@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "chat-36809"
+    "default": "chat-5-96444"
   },
   "targets": {
-    "chat-36809": {
+    "chat-2-21fd4": {
       "hosting": {
         "Dyplom": [
-          "chat-36809"
+          "chat-2-21fd4"
         ]
       }
     }

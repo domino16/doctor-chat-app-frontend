@@ -51,10 +51,9 @@ export class VisitsEffects {
     return this.actions$.pipe(
       ofType(visitActions.resetVisitNotificationNumber),
       switchMap((action) => {
-        return this.userService.CurrentAuthUser().pipe(map(user =>{
+        return this.userService.CurrentAuthUser().pipe(take(1), map(user =>{
           return this.visitsService.updateVisitNotificationNumber(user?.uid!, 0)
         }))
-
 
       })
     );
@@ -64,7 +63,7 @@ export class VisitsEffects {
     return this.actions$.pipe(
       ofType(visitActions.loadNotificationNumberStart),
       switchMap((action) => {
-        return this.userService.CurrentAuthUser().pipe(map(user =>{
+        return this.userService.CurrentAuthUser().pipe(take(1), map(user =>{
           return visitActions.loadNotificationNumberSuccess({visitNotificationNumber: +(user?.visitNotificationsNumber!)})}
         ))
 

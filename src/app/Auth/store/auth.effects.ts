@@ -99,9 +99,9 @@ export class AuthEffects {
               data.idToken,
               +data.expiresIn
             );
-            this.store.select(getCurrentChatUser).subscribe((currentUser) => {
-              this.userService.addUser(currentUser!)
-            });
+            // this.store.select(getCurrentChatUser).subscribe((currentUser) => {
+            //   this.userService.addUser(currentUser!)
+            // });
             return loginSuccess({ authUser });
           }),
           catchError((errorRes) => {
