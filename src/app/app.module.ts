@@ -3,7 +3,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
@@ -12,11 +11,21 @@ import { SignupComponent } from './Auth/signup/signup.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { HeaderComponent } from './header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
+
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+
 
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import {
@@ -35,10 +44,6 @@ import {
 } from '@angular/fire/remote-config';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatIconModule } from '@angular/material/icon';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
@@ -47,14 +52,11 @@ import { rootReducer } from './store/rootState';
 import { ChatEffects } from './chat/store/chat.effects';
 import { SharedEffects } from './shared/store/shared.effects';
 import { VisitsComponent } from './visits/visits.component';
-import { MatNativeDateModule } from '@angular/material/core';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { DatePipePipe } from './shared/pipes/date-pipe.pipe';
 import { VisitsEffects } from './visits/store/visits.effects';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { HomeComponent } from './home/home.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 @NgModule({
   declarations: [
@@ -76,18 +78,18 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatListModule,
     MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
     MatAutocompleteModule,
     BrowserAnimationsModule,
-    MatListModule,
     MatDividerModule,
-    MatButtonModule,
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSelectModule,
     NgxMaterialTimepickerModule,
-    FontAwesomeModule,
+    StoreRouterConnectingModule.forRoot(),
 
     EffectsModule.forRoot([
       AuthEffects,
@@ -101,7 +103,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open
     }),
-   
+
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
@@ -112,6 +114,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     providePerformance(() => getPerformance()),
     provideRemoteConfig(() => getRemoteConfig()),
     provideStorage(() => getStorage()),
+    StoreRouterConnectingModule.forRoot(),
   ],
   providers: [ScreenTrackingService, UserTrackingService],
 

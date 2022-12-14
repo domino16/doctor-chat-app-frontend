@@ -136,7 +136,7 @@ li.signIn a {
   position: relative;
   margin-right: 50px;
   transform-style: preserve-3d;
-  background-color: $light-white;
+  background-color: $pure-white;
   padding: 0;
   font-weight: bold;
   font-size: 1.6rem;
@@ -153,7 +153,7 @@ li.signUp a {
   margin-left: 20px;
   font-weight: bold;
   font-size: 1.6rem;
-  color: $light-white;
+  color: $pure-white;
   cursor: pointer;
   transition: color 0.3s;
   transition: background-color 0.3s;
@@ -234,9 +234,6 @@ li.signUp a:hover::after {
   transition: color 0.3s, border-radius 10px 0.3s;
 }
 
-.nav>li>:hover{
-  color: $main-color;
-}
 
 @media (min-width: 1200px) {
   .form-inline .input-group {

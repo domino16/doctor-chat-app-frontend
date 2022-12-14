@@ -12,6 +12,7 @@ import { SHARED_STATE_NAME } from "../shared/store/shared.selector";
 import { sharedState } from "../shared/store/shared.state";
 import { VISIT_STATE_NAME } from "../visits/store/visits.selectors";
 import { state, visitReducer } from "../visits/store/visits.reducer";
+import { routerReducer, RouterReducerState } from "@ngrx/router-store";
 
 export interface rootState{
   [AUTH_STATE_NAME]:authState
@@ -19,6 +20,7 @@ export interface rootState{
   [SHARED_STATE_NAME]: sharedState
   [CHAT_STATE_NAME]: myChatsState
   [VISIT_STATE_NAME]: state
+  router:RouterReducerState
 }
 
 export const rootReducer ={
@@ -27,5 +29,6 @@ export const rootReducer ={
   [SHARED_STATE_NAME]: sharedReducer,
   [CHAT_STATE_NAME]: chatReducer,
   [VISIT_STATE_NAME]: visitReducer,
+  router:routerReducer
 
 }

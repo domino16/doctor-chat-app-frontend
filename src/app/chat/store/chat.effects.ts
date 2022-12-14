@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { user } from '@angular/fire/auth';
 import { act, Actions, createEffect, ofType } from '@ngrx/effects';
-import { createEffects } from '@ngrx/effects/src/effects_module';
 import { Store } from '@ngrx/store';
 import { switchMap, map, exhaustMap, of, tap } from 'rxjs';
 import { ChatService } from 'src/app/services/chat.service';

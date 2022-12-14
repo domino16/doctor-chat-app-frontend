@@ -4,24 +4,26 @@
 
     <app-loading-spinner *ngIf="listIsLoading | async"></app-loading-spinner>
     <div class="chat-box__search-input">
-      <mat-form-field>
+      <mat-form-field  appearance="fill">
         <input matInput placeholder="Z kim chcesz porozmawiać?" [formControl]="searchControl"
           [matAutocomplete]="userss" />
       </mat-form-field>
       <!-- <mat-autocomplete #userss="matAutocomplete" [displayWith]="displayFn"> -->
       <mat-autocomplete #userss="matAutocomplete" >
+        <ng-container *ngIf="!currentUser?.doctor">
         <ng-container *ngFor="let user of filteredAllDoctor | async ">
-          <mat-option [value]="user" *ngIf="user.email != currentUser?.email && user.doctor " (click)="createChat(user)"
+          <mat-option [value]="user" *ngIf="user.email != currentUser?.email  " (click)="createChat(user)"
             (click)="hideClassToggle = !hideClassToggle">
             {{user.firstName}} {{user.lastName}}
           </mat-option>
-        </ng-container>
+        </ng-container></ng-container>
+        <ng-container *ngIf="currentUser?.doctor">
         <ng-container *ngFor="let user of filteredAllUsers | async ">
-          <mat-option [value]="user" *ngIf="user.email != currentUser?.email && !user.doctor " (click)="createChat(user)"
+          <mat-option [value]="user" *ngIf="user.email != currentUser?.email " (click)="createChat(user)"
             (click)="hideClassToggle = !hideClassToggle">
             {{user.firstName}} {{user.lastName}}
           </mat-option>
-        </ng-container>
+        </ng-container></ng-container>
       </mat-autocomplete>
 
 
@@ -29,6 +31,7 @@
     <mat-selection-list [multiple]="false" [formControl]="chatListControl">
       <mat-list-option (click)="hideClassToggle = !hideClassToggle" *ngFor="let chat of myChats |  async "
         [value]="chat.id">
+
         <img matListAvatar [src]="chat.chatImg!" alt="photo avatar">
 
         <p mat-line class="chat-box__chat-title">
@@ -58,7 +61,7 @@
         selectedChat.chatImg
       " />
       <h2>{{ selectedChat.chatName }}</h2>
-      <button *ngIf="currentUser?.doctor" (click)="popupVisibleToggle()" mat-flat-button class="add-visit-btn" >Dodaj Wizytę</button>
+      <button *ngIf="currentUser?.doctor" (click)="popupVisibleToggle()"  class="btn add-visit-btn" >Dodaj Wizytę</button>
       <div class="close-icon" (click)="onClickX()"><i class="bi bi-x-lg"></i></div>
     </div>
 

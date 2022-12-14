@@ -39,11 +39,44 @@ app-loading-spinner {
   }
 
   &__list{
+    display: flex;
+    flex-direction: column;
     position: relative;
     margin: 0px 10px 15px 5px;
     background-color: $pure-white;
     overflow: auto;
     width:100%;
+
+
+  mat-form-field {
+    mat-form-field-wrapper{
+      background-color: #007bff;
+      color: red;
+    }
+    width: 100%;
+  }
+
+    mat-selection-list{
+display: flex;
+flex-direction: column;
+
+
+      mat-list-option{
+        display: flex;
+        height: 80px;
+        padding-right: 0px;
+
+        img{
+          position: absolute;
+          left: 10px;
+        }
+
+
+
+
+
+      }
+    }
 
   }
 
@@ -76,19 +109,18 @@ app-loading-spinner {
     font-size: 1.8rem;
   }
 
-  mat-form-field {
-    width: 300px;
-  }
+
 
   &__chat-title {
-    position: relative;
+    margin-left: 70px;
+
   }
 
   &__chat-date {
     font-size: 1.6rem;
     color: $dark;
     position: absolute;
-    right: 0;
+    right: 15px;
   }
 
   &__chat-name {
@@ -97,6 +129,7 @@ app-loading-spinner {
   }
 
   img {
+   position: relative;
     width: 60px;
     height: 60px;
   }
@@ -106,7 +139,8 @@ app-loading-spinner {
   }
 
   .cs {
-    padding: 10px 0px;
+    // padding: 10px 0px;
+    margin-left: 70px;
   }
 
   &__messages {
@@ -150,6 +184,7 @@ app-loading-spinner {
     transform: translate(-50%);
     bottom: 0px;
     width: 95%;
+    background-color: #fff;
 
   }
   }
