@@ -234,6 +234,10 @@ li.signUp a:hover::after {
   transition: color 0.3s, border-radius 10px 0.3s;
 }
 
+.dropdown-toggle.nav-link:hover{
+  color: $main-color;
+}
+
 
 @media (min-width: 1200px) {
   .form-inline .input-group {

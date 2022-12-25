@@ -124,18 +124,19 @@ flex-direction: column;
   }
 
   &__chat-name {
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: 500;
   }
 
   img {
    position: relative;
+    top: 5px;
     width: 60px;
     height: 60px;
   }
 
   &__last-message {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .cs {
@@ -146,18 +147,20 @@ flex-direction: column;
   &__messages {
     position: relative;
     width: calc(60% - 20px);
-    margin: 0px 0px 15px 10px;
+    margin: 0px 0px 15px 0px;
     overflow: auto;
     width: 100%;
       animation: show 0.5s forwards;
 
     .discussion_header{
       display: flex;
-      align-items: center;
+      // align-items: center;
+      position: relative;
 
       h2{
-        font-size: 3rem;
-        margin-top: 25px;
+        font-size: 2rem;
+        margin-top: 10px;
+
       }
 
       .close-icon{
@@ -171,6 +174,7 @@ flex-direction: column;
       button{
         position: absolute;
         right: 100px;
+        bottom: 10px;
         padding: 5px 30px;
 
 
@@ -195,7 +199,7 @@ flex-direction: column;
   display: flex;
   flex-direction: column-reverse;
   width: 100%;
-  height: 80%;
+  height: calc(100% - 155px) ;
   overflow: auto;
   padding-top: 15px;
 
@@ -325,9 +329,10 @@ flex-direction: column;
   align-items: center;
   z-index: 10;
 
+
   &__shadow{
-    width: 100%;
-    height: 100%;
+    width: 150%;
+    height: 150%;
     background-color: rgba(0,0,0,0.6);
     z-index: -1;
   }
@@ -336,19 +341,21 @@ flex-direction: column;
 
 
     mat-form-field{
-    width:350px
+    width:330px;
+
     }
 
     position: absolute;
     display: flex;
     flex-direction: column;
     justify-content:space-evenly;
-    width: 400px;
+    max-width: 370px;
     height: 500px;
     padding: 20px;
     background-color: $light-white;
     z-index: 100;
     border-radius: 10px;
+
 
     h2{
       position: absolute;
@@ -431,4 +438,41 @@ flex-direction: column;
   }
   to {left: 0;
   }
+}
+
+@media(min-width:992px){
+
+    .chat-box{
+      color:
+
+        &__chat-name{
+          font-size: 2rem;
+        }
+
+        &__last-message{
+          font-size: 2rem;
+        }
+
+
+        &__messages{
+
+          .discussion_header{
+
+            h2{
+              font-size: 3rem;
+              margin-top: 30px;
+            }
+
+            button{
+              font-size: 1.6rem;
+              bottom: 30px;
+            }
+
+          }
+
+        }
+
+
+    }
+
 }
