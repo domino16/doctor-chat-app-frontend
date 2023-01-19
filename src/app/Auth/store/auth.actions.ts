@@ -15,7 +15,7 @@ export const loginSuccess = createAction(
 
 export const signUpStart = createAction(
   '[AUTH PAGE] SignUp Start',
-  props<{  email: string; password: string;}>()
+  props<{  email: string; password: string;photoUrl:string; firstName:string; lastName:string;doctor:boolean;  unReadChatsCounter:number; visitNotificationsNumber:number }>()
 );
 
 export const  signUpSuccess = createAction(

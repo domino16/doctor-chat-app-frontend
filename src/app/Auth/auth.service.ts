@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, BehaviorSubject, tap, throwError } from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import { AuthUser } from './authuser.model';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store'
@@ -9,12 +9,14 @@ import { loginSuccess } from './store/auth.actions';
 export interface AuthResponseData {
   idToken: string;
   email: string;
-  refreshToken: string;
+
   expiresIn: string;
-  localId: string;
-  registered?: string;
+
 }
 
+export interface TestAuthResponsData{
+
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -37,7 +39,6 @@ export class AuthService {
 
     const loadedUser = new AuthUser(
       userData.email,
-      userData.id,
       userData._token,
       new Date(userData._tokenExpirationDate)
     );
@@ -67,60 +68,48 @@ export class AuthService {
 
   handleAuth(
     email: string,
-    localId: string,
+
     idToken: string,
     expiresIn: number
   ){
     const expirationDate = new Date(new Date().getTime() + +expiresIn * 1000);
-    const user = new AuthUser(email, localId, idToken, expirationDate);
+    const user = new AuthUser(email, idToken, expirationDate);
     this.user$.next(user);
     this.autoLogout(+expiresIn*1000)
     localStorage.setItem('userData', JSON.stringify(user));
     return user;
   }
 
-  signup(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBBEadMd4kTFSAX9mTPGlXTUvRMbgXQD88',
-        {
-          email: email,
-          password: password,
-          returnSecureToken: true,
-        }
-      )
-      // .pipe(
-      //   catchError((errorRes) => {
-      //     let errorMessage = 'Nieznany błąd';
-      //     if (!errorRes.error || !errorRes.error.error) {
-      //       throwError(() => new Error(errorMessage));
-      //     }
-      //     switch (errorRes.error.error.message) {
-      //       case 'EMAIL_EXISTS':
-      //         errorMessage = 'Ten Email jest już używany.';
-      //     }
-      //     return throwError(() => new Error(errorMessage));
-      //   })
-      //   tap((resData) => {
-      //     this.handleAuth(
-      //       resData.email,
-      //       resData.localId,
-      //       resData.idToken,
-      //       +resData.expiresIn
-      //     );
-      //   })
-      // );
+
+      signup(email: string, password: string, photoUrl: string, firstName:String, lastName:string,doctor:boolean, unReadChatsCounter:number, visitNotificationNumber:number ) {
+           return this.http
+          .post<AuthResponseData>(
+            'http://localhost:8080/api/v1/auth/register',
+            {
+              email: email,
+              password: password,
+              firstName:firstName,
+              lastName:lastName,
+              photoUrl: photoUrl,
+              doctor:doctor,
+              unReadChatsCounter: unReadChatsCounter,
+              visitNotificationNumber: visitNotificationNumber
+
+            }
+          )
+
+
   }
+
 
 
   signin(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBBEadMd4kTFSAX9mTPGlXTUvRMbgXQD88',
+        'http://localhost:8080/api/v1/auth/login',
         {
           email: email,
-          password: password,
-          returnSecureToken: true,
+          password: password
         }
       )
 

@@ -4,29 +4,29 @@
   <h2>Nadchodzące:</h2>
   <hr>
   <ng-container *ngFor="let visit of visits">
-  <div *ngIf="currentDate <= visit.date.toMillis()  " class="visits__box">
-    <div class="visits__box-img"><img src="{{visit.doctorImg}}" alt="avatar"></div>
-    <div class="visits__box-text">
-      <h2>Dr {{visit.doctor}}</h2>
-      <p><span>Data:</span> {{visit.date | datePipe }}</p>
-      <p><span>Godzina</span> {{visit.time}}</p>
-      <p><span>Miejsce:</span> {{visit.place}}</p>
-      <p><span>Komentarz:</span> {{visit.comment}}</p>
+    <div *ngIf="currentDate < (visit.date | dateToTimestamp) "class="visits__box">
+      <div class="visits__box-img"><img src="{{visit.doctorImg}}" alt="avatar"></div>
+      <div class="visits__box-text">
+        <h2>Dr {{visit.doctor}}</h2>
+        <p><span>Data:</span> {{visit.date | date: 'dd/MM/y'}}</p>
+        <p><span>Godzina</span> {{visit.time}}</p>
+        <p><span>Miejsce:</span> {{visit.place}}</p>
+        <p><span>Komentarz:</span> {{visit.comment}}</p>
 
+
+      </div>
 
     </div>
-
-  </div>
-</ng-container>
+  </ng-container>
   <h2>Archwialne:</h2>
   <hr>
 
   <ng-container *ngFor="let visit of visits">
-    <div *ngIf="currentDate > visit.date.toMillis()  " class="visits__box">
+    <div *ngIf="currentDate > (visit.date | dateToTimestamp) "class="visits__box">
       <div class="visits__box-img"><img src="{{visit.doctorImg}}" alt="avatar"></div>
       <div class="visits__box-text">
         <h2>Dr {{visit.doctor}}</h2>
-        <p><span>Data:</span> {{visit.date | datePipe }}</p>
+        <p><span>Data:</span> {{visit.date | date: 'dd/MM/y'}}</p>
         <p><span>Godzina</span> {{visit.time}}</p>
         <p><span>Miejsce:</span> {{visit.place}}</p>
         <p><span>Komentarz:</span> {{visit.comment}}</p>

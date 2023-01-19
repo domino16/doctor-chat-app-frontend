@@ -1,9 +1,8 @@
-import { Timestamp } from "@angular/fire/firestore";
 
 export interface visitData{
     doctor:string;
-    doctorImg:string
-    date:Timestamp;
+    doctorImg:string;
+    date:Date;
     time:string;
     place:string;
     comment:string;

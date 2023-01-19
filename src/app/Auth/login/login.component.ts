@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loginStart, loginSuccess } from '../store/auth.actions';
-import { User } from 'src/app/shared/models/user';
-import { Observable, Subscription } from 'rxjs';
+import { loginStart} from '../store/auth.actions';
+import { Observable} from 'rxjs';
 import { rootState } from 'src/app/store/rootState';
 import {
   getLoadingSpinner
@@ -41,22 +40,12 @@ export class LoginComponent implements OnInit {
   }
 
   send() {
-    
+
     const email: string = this.loginForm.controls['username'].value;
     const password: string = this.loginForm.controls['password'].value;
-    // this.isLoading = true;
-    // this.store.select(login_success).subscribe(()=> this.isLoading = false)
+
     this.store.dispatch(loginStart({ email, password }));
     this.store.dispatch(pageIsLoading({ status: true }));
-    // this.authService.signin(email, password).subscribe({
-    //   next: (resData) => {
-    //     this.isLoading = false;
-    //     this.router.navigate(['/']);
-    //   },
-    //   error: (errorMessage) => {
-    //     this.error = errorMessage;
-    //     this.isLoading = false;
-    //   },
-    // });
+
   }
 }

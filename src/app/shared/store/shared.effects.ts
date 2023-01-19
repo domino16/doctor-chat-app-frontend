@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
-import { user } from "@angular/fire/auth";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { map, switchMap, take } from "rxjs";
+import { map, switchMap} from "rxjs";
 import { UserService } from "src/app/services/user.service";
 import { setCurrentChatUserStart, setCurrentChatUserSuccess } from "./shared.actions";
 

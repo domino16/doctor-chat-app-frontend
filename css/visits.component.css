@@ -1,3 +1,6 @@
+.visits h2 {
+  margin-top: 50px;
+}
 .visits hr {
   border-top: 1px solid black;
 }
@@ -6,13 +9,13 @@
   margin: 20px 5px;
   min-height: 300px;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.3);
-  background-color: #f8f8f8;
+  background-color: #fff;
   border-radius: 5px;
   overflow: hidden;
 }
 .visits__box-img {
   display: flex;
-  background-color: #fa0542;
+  background-color: #cc165f;
   width: 40%;
   max-height: 300px;
 }

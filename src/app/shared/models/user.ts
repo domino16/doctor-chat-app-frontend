@@ -1,14 +1,10 @@
 export interface User{
-  uid?: string;
   email: string;
   password:string;
-  photoUrl?: string;
-  firstName?: string;
-  lastName?: string;
-  phone?: string;
-  address?: string;
-  notificationsCounter?:string;
-  unReadChatsCounter?:string;
+  photoUrl: string;
+  firstName: string;
+  lastName: string;
+  unReadChatsCounter:number;
   visitNotificationsNumber:number;
   doctor:boolean;
 }

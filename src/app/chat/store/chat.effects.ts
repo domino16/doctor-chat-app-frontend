@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { user } from '@angular/fire/auth';
-import { act, Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { switchMap, map, exhaustMap, of, tap } from 'rxjs';
+import { switchMap, map, of } from 'rxjs';
 import { ChatService } from 'src/app/services/chat.service';
 import { UserService } from 'src/app/services/user.service';
-import { Chat } from 'src/app/shared/models/chat';
 import { rootState } from 'src/app/store/rootState';
 import * as chatActions from './chat.actions';
 
@@ -19,10 +17,8 @@ export class ChatEffects {
     return this.actions$.pipe(
       ofType(chatActions.loadChats),
       switchMap((action) => {
-        console.log(action)
         return this.chatService.myChats.pipe(
           map((chats) => {
-
             this.store.dispatch(chatActions.listIsLoading({status:false}))
             return chatActions.loadChatsSuccess({ chats });
           })
@@ -31,22 +27,22 @@ export class ChatEffects {
     );
   });
 
+
   addChat$ = createEffect(()=>{
     return this.actions$.pipe(
       ofType(chatActions.addChat),
-      switchMap((action)=>{return this.chatService.chatExist(action.user.uid!).
-        pipe(switchMap((chatId) =>{if (chatId) {
+      switchMap((action)=>{
+        return this.chatService.chatExist(action.user.email).pipe(switchMap((chatId) =>{if (chatId) {
+
                   return of(chatId);
                 } else {
                   return this.chatService.createChat(action.user);
                 }
 
-        })).pipe(map(chatId => {
-          return chatActions.addChatId({chatId:chatId})
         }))
       }
     )
-  )})
+  )},{dispatch:false})
 
 
   loadAllUsers = createEffect(()=>{

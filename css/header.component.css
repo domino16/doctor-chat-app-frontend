@@ -1,14 +1,10 @@
-body {
-  background: #eeeeee;
-}
-
 .form-inline {
   display: inline-block;
 }
 
 .navbar {
-  background: #4a12d7;
-  padding-left: 16px;
+  background: linear-gradient(45deg, rgb(67, 136, 248), rgb(8, 93, 198));
+  padding-left: 30px;
   padding-right: 16px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
   border-radius: 0px;
@@ -24,8 +20,16 @@ body {
 }
 
 .navbar .navbar-brand {
-  color: #dddddd;
+  display: flex;
+  position: relative;
+  color: #eee;
   font-family: "Merienda One", sans-serif;
+}
+.navbar .navbar-brand img {
+  position: absolute;
+  top: -5px;
+  left: -40px;
+  max-height: 120px;
 }
 
 .navbar ul li i {
@@ -43,7 +47,7 @@ body {
 
 .navbar .dropdown-menu {
   border-radius: 1px;
-  border-color: #e5e5e5;
+  border-color: #eee;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -66,7 +70,7 @@ body {
 }
 
 .navbar .badge {
-  background: #f44336;
+  background: #cc165f;
   font-size: 11px;
   border-radius: 20px;
   position: absolute;
@@ -79,7 +83,16 @@ body {
 .navbar ul.nav li a.notifications,
 .navbar ul.nav li a.messages {
   position: relative;
+  bottom: 0;
   margin-right: 10px;
+  color: #fff;
+  transition: background-color 0.3, border-radius 0.3s;
+}
+
+.navbar ul.nav li a.notifications:hover,
+.navbar ul.nav li a.messages:hover {
+  border-radius: 7px;
+  background-color: #cc165f;
 }
 
 .navbar ul.nav li a.messages {
@@ -106,19 +119,31 @@ body {
 
 .nav-link {
   font-size: 2rem;
-  color: #dddddd;
+  color: #eee;
+}
+
+.navbar-collapse {
+  margin-left: 20px;
 }
 
 a.nav-link.active {
-  color: #ffffff;
+  color: #fff;
   text-decoration: underline;
+}
+
+.navbar-toggler {
+  background-color: white;
+}
+
+.navbar-toggler:hover {
+  background-color: #eee;
 }
 
 li.signIn a {
   position: relative;
   margin-right: 50px;
   transform-style: preserve-3d;
-  background-color: white;
+  background-color: #fff;
   padding: 0;
   font-weight: bold;
   font-size: 1.6rem;
@@ -129,12 +154,12 @@ li.signUp a {
   position: relative;
   margin-right: 50px;
   transform-style: preserve-3d;
-  background-color: #e15b64;
+  background-color: #cc165f;
   padding: 0;
   margin-left: 20px;
   font-weight: bold;
   font-size: 1.6rem;
-  color: #eeeeee;
+  color: #fff;
   cursor: pointer;
   transition: color 0.3s;
   transition: background-color 0.3s;
@@ -172,10 +197,10 @@ li.signUp a::before {
   top: -2px;
   content: "";
   width: 50px;
-  border: 2px solid #4a12d7;
+  border: 2px solid rgb(25, 115, 223);
   border-radius: 50%;
   transform: translateZ(-1px);
-  background-color: #e15b64;
+  background-color: #cc165f;
   transition: background-color 0.3s;
 }
 
@@ -186,26 +211,26 @@ li.signUp a::after {
   top: -2px;
   content: "";
   width: 50px;
-  border: 2px solid #4a12d7;
+  border: 2px solid rgb(25, 115, 223);
   border-radius: 50%;
   transform: translateZ(-1px);
-  background-color: #e15b64;
+  background-color: #cc165f;
   transition: background-color 0.3s;
 }
 
 li.signIn a:hover,
 li.signIn a:hover::before,
 li.signIn a:hover::after {
-  background-color: #e15b64;
-  color: white;
+  background-color: #cc165f;
+  color: #fff;
   cursor: pointer;
 }
 
 li.signUp a:hover,
 li.signUp a:hover::before,
 li.signUp a:hover::after {
-  background-color: white;
-  color: #337ab7;
+  background-color: #fff;
+  color: rgb(25, 115, 223);
   cursor: pointer;
 }
 
@@ -214,8 +239,8 @@ li.signUp a:hover::after {
   transition: color 0.3s, border-radius 10px 0.3s;
 }
 
-.nav > li > :hover {
-  color: #337ab7;
+.dropdown-toggle.nav-link:hover {
+  color: rgb(25, 115, 223);
 }
 
 @media (min-width: 1200px) {
@@ -233,7 +258,13 @@ li.signUp a:hover::after {
     width: 100%;
   }
 }
-@media (max-width: 1199px) and (max-width: 768px) {
+@media (max-width: 768px) {
+  ul.navbar-right {
+    display: flex;
+    flex-direction: row;
+  }
+}
+@media (max-width: 990px) {
   ul.navbar-right {
     display: flex;
     flex-direction: row;

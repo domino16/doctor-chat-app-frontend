@@ -1,10 +1,9 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './Auth/login/login.component';
 import { SignupComponent } from './Auth/signup/signup.component';
 import { AuthGuard } from './Auth/auth.guard';
-import { AppComponent } from './app.component';
 import { VisitsComponent } from './visits/visits.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { HomeComponent } from './home/home.component';

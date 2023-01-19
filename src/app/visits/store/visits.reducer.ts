@@ -1,11 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import { visitData } from 'src/app/shared/models/visit.data';
 import {
-  incrementVisitNotificationNumber,
   loadNotificationNumberSuccess,
-  // loadNotificationNumberSuccess,
   loadVisitsSuccess,
-  resetVisitNotificationNumber,
 } from './visits.action';
 
 export interface state {

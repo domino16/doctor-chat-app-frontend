@@ -5,8 +5,7 @@ import { getVisits } from './store/visits.selectors';
 import { rootState } from '../store/rootState';
 import { visitData } from '../shared/models/visit.data';
 import { getCurrentChatUser } from '../shared/store/shared.selector';
-import { mergeMap, Observable, switchMap, take, Subject } from 'rxjs';
-import { VisitsService } from '../services/visits.service';
+import { WebSocketService } from '../services/webSocket.service';
 @Component({
   selector: 'app-visits',
   templateUrl: './visits.component.html',
@@ -17,7 +16,8 @@ export class VisitsComponent implements OnInit {
   userId!: string;
   currentDate = new Date().getTime();
 
-  constructor(private store: Store<[rootState]>) {}
+
+  constructor(private store: Store<[rootState]>, private webSocketService:WebSocketService) {}
 
   ngOnInit(): void {
     this.store.dispatch(resetVisitNotificationNumber())
@@ -27,7 +27,11 @@ export class VisitsComponent implements OnInit {
     this.store.dispatch(loadVisitsStart({ userId: this.userId }));
     this.store
       .select<visitData[]>(getVisits)
-      .subscribe((visits) => (this.visits = visits));
+      .subscribe((visits) =>{
+        this.visits = visits;
+      });
+      this.webSocketService.messageComeEvent.next('event');
   }
+
 
 }

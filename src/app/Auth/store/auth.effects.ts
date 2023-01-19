@@ -6,18 +6,16 @@ import { catchError, exhaustMap, map, of, throwError } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { pageIsLoading } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
 import { setErrorMessage } from 'src/app/shared/store/shared.actions';
-import { getCurrentChatUser } from 'src/app/shared/store/shared.selector';
 import { rootState } from 'src/app/store/rootState';
 import { AuthService } from '../auth.service';
 import { AuthUser } from '../authuser.model';
-import { SignupComponent } from '../signup/signup.component';
+
 import {
   loginStart,
   loginSuccess,
   signUpStart,
   signUpSuccess,
 } from './auth.actions';
-import { authUser } from './auth.selector';
 @Injectable()
 export class AuthEffects {
   user!: AuthUser;
@@ -38,7 +36,6 @@ export class AuthEffects {
             this.store.dispatch(pageIsLoading({ status: false }));
             const authUser = this.authService.handleAuth(
               data.email,
-              data.localId,
               data.idToken,
               +data.expiresIn
             );
@@ -51,19 +48,12 @@ export class AuthEffects {
             if (!errorRes.error || !errorRes.error.error) {
               throwError(() => new Error(errorMessage));
             }
-            switch (errorRes.error.error.message) {
-              case 'EMAIL_NOT_FOUND':
+            switch (errorRes.error.text) {
+              case 'User not found\r\n':
                 errorMessage = 'Nie znaleźliśmy użytkownika o tej nazwie.';
                 break;
-              case 'INVALID_PASSWORD':
+              case 'Bad credentials\r\n':
                 errorMessage = 'Błędne hasło';
-                break;
-              case 'USER_DISABLED':
-                errorMessage =
-                  'To konto zostało wyłączone przez administratora';
-                break;
-              case 'INVALID_EMAIL':
-                errorMessage = 'Musisz wpisać email';
                 break;
             }
             return of(setErrorMessage({ message: errorMessage }));
@@ -90,18 +80,14 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(signUpStart),
       exhaustMap((action) => {
-        return this.authService.signup(action.email, action.password).pipe(
+        return this.authService.signup(action.email, action.password,action.photoUrl,action.firstName,action.lastName,action.doctor, action.unReadChatsCounter,action.visitNotificationsNumber).pipe(
           map((data) => {
             this.store.dispatch(pageIsLoading({ status: false }));
             const authUser = this.authService.handleAuth(
               data.email,
-              data.localId,
               data.idToken,
               +data.expiresIn
             );
-            // this.store.select(getCurrentChatUser).subscribe((currentUser) => {
-            //   this.userService.addUser(currentUser!)
-            // });
             return loginSuccess({ authUser });
           }),
           catchError((errorRes) => {
@@ -111,12 +97,9 @@ export class AuthEffects {
             if (!errorRes.error || !errorRes.error.error) {
               throwError(() => new Error(errorMessage));
             }
-            switch (errorRes.error.error.message) {
+            switch (errorRes.error) {
               case 'EMAIL_EXISTS':
                 errorMessage = 'Ten Email jest już używany.';
-                break;
-              case 'OPERATION_NOT_ALLOWED':
-                errorMessage = 'Logowanie na hasło jest wyłączone';
                 break;
               case 'TOO_MANY_ATTEMPTS_TRY_LATER':
                 errorMessage = 'Zbyt wiele prób spróbuj ponownie później';

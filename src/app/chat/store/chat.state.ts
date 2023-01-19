@@ -4,7 +4,7 @@ import { User } from 'src/app/shared/models/user';
 
 export interface myChatsState {
   chats: Chat[];
-  addChatId: string;
+  addChatId: number;
   selectedChat: Chat | null;
   allUsers: User[];
   messages: Message[];
@@ -16,7 +16,7 @@ export interface myChatsState {
 
 export const initialState: myChatsState = {
   chats: [],
-  addChatId: '',
+  addChatId: 0,
   selectedChat: null,
   allUsers: [],
   messages: [],

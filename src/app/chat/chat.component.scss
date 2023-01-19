@@ -93,7 +93,6 @@ flex-direction: column;
     position: absolute;
     top: 0;
     left: -200%;
-    // animation: hide 1s forwards;
   }
 
   &__list-hide{
@@ -140,7 +139,6 @@ flex-direction: column;
   }
 
   .cs {
-    // padding: 10px 0px;
     margin-left: 70px;
   }
 
@@ -154,7 +152,6 @@ flex-direction: column;
 
     .discussion_header{
       display: flex;
-      // align-items: center;
       position: relative;
 
       h2{
@@ -232,7 +229,6 @@ flex-direction: column;
     }
   }
 
-// Style klasy wiadomości po prawej stronie
   .message-box-right{
     justify-content: flex-end;
     padding-right: 80px;
@@ -277,7 +273,6 @@ flex-direction: column;
     }
   }
 
-// Style klasy wiadomości po lewej stronie
   .message-box-left{
     justify-content: flex-start;
     padding-left: 80px;

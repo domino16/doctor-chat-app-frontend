@@ -53,7 +53,6 @@ export class HeaderComponent implements OnInit {
     .subscribe(event =>
      {
         this.activeRoute = this.router.url;
-        console.log(this.activeRoute);
      });
 
     this.store.select(getCurrentChatUser).subscribe(user => {this.userId =user?.email!;}

@@ -1,7 +1,6 @@
 
 import { createReducer, on } from '@ngrx/store';
 import * as chatActions from './chat.actions';
-import { getMessagesNotificationsNumber } from './chat.selectors';
 import { initialState } from './chat.state';
 
 export const chatReducer = createReducer(
@@ -46,5 +45,7 @@ export const chatReducer = createReducer(
     ...state,
     messageNotificationcCounter:counter
   })),
+
+
 
 );

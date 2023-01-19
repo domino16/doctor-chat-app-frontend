@@ -4,7 +4,7 @@ import { map, switchMap, take } from 'rxjs';
 import * as visitActions from '../store/visits.action';
 import { VisitsService } from '../../services/visits.service';
 import { UserService } from 'src/app/services/user.service';
-import { user } from '@angular/fire/auth';
+
 
 @Injectable({
   providedIn: 'root',
@@ -34,12 +34,10 @@ export class VisitsEffects {
     return this.actions$.pipe(
       ofType(visitActions.incrementVisitNotificationNumber),
       switchMap((action) => {
-
         return this.userService.getUserById(action.userId).pipe(take(1),
-          map((user) => {
+          switchMap((user) => {
                const newNumber =user.visitNotificationsNumber + 1
               return this.visitsService.updateVisitNotificationNumber(action.userId, newNumber)
-
           })
         );
       })
@@ -51,8 +49,8 @@ export class VisitsEffects {
     return this.actions$.pipe(
       ofType(visitActions.resetVisitNotificationNumber),
       switchMap((action) => {
-        return this.userService.CurrentAuthUser().pipe(take(2), map(user =>{
-          return this.visitsService.updateVisitNotificationNumber(user?.uid!, 0)
+        return this.userService.CurrentAuthUser().pipe(take(2), switchMap(user =>{
+          return this.visitsService.updateVisitNotificationNumber(user?.email!, 0)
         }))
 
       })

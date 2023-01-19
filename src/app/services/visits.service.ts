@@ -1,7 +1,7 @@
+
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, doc, docData, Firestore, orderBy, query, updateDoc } from '@angular/fire/firestore';
-import { from, Observable } from 'rxjs';
-import { User } from '../shared/models/user';
+import { Observable } from 'rxjs';
 import { visitData } from '../shared/models/visit.data';
 
 @Injectable({
@@ -9,28 +9,42 @@ import { visitData } from '../shared/models/visit.data';
 })
 export class VisitsService {
 
-  constructor(private firestore: Firestore) { }
+  constructor(private Http:HttpClient) { }
 
 
 
-  addVisit(userId: string, doctorId: string, visit: visitData) {
-    const userref = collection(this.firestore,`users/${userId}/visits`);
-    const doctorref = collection(this.firestore, `users/${doctorId}/visits`);
+  addVisit(userId: string, doctorId: string, visit: visitData):void{
 
-    addDoc(doctorref,  visit );
-    addDoc(userref,  visit );
+    this.Http.post(`http://localhost:8080/user/visit/${userId}`,
+    {comment: visit.comment,
+      date: visit.date,
+      doctor:visit.doctor,
+      doctorImg:visit.doctorImg,
+      place: visit.place,
+      time:visit.time
+    }).subscribe()
+
+    this.Http.post(`http://localhost:8080/user/visit/${doctorId}`,
+    {comment: visit.comment,
+      date: visit.date,
+      doctor:visit.doctor,
+      doctorImg:visit.doctorImg,
+      place: visit.place,
+      time:visit.time
+    }).subscribe()
+
   }
+
 
   getVisits(userId: string): Observable<visitData[]> {
-    const ref = collection(this.firestore, `users/${userId}/visits`);
-    const queryAll = query(ref, orderBy('date', 'asc'));
-    collectionData(queryAll).subscribe(data => console.log(data))
-    return collectionData(queryAll) as Observable<visitData[]>;
+
+    return this.Http.get<visitData[]>(`http://localhost:8080/user/visit/${userId}`)
   }
 
+
   updateVisitNotificationNumber(userId: string, number: number):Observable<any> {
-    const userref = doc(this.firestore,`users/${userId}`);
-    return from(updateDoc(userref, {visitNotificationsNumber:number} ));
+
+    return this.Http.patch(`http://localhost:8080/user/setvisitnotification/${userId}`,number);
   }
 
 

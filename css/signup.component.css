@@ -1,3 +1,9 @@
+img {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+}
+
 .wrapper {
   width: 440px;
   background-color: #fff;
@@ -26,18 +32,18 @@ h1 {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid rgb(197, 197, 197);
+  border: 1px solid #eee;
   border-radius: 5px;
 }
 
 .form-box.error input {
-  border: 1px solid rgb(196, 72, 72);
+  border: 1px solid #cc165f;
   background-color: rgba(99, 12, 15, 0.1);
 }
 
 .form-box .error-text {
   font-size: 14px;
-  color: rgb(196, 72, 72);
+  color: #cc165f;
 }
 
 .control-buttons {
@@ -53,7 +59,7 @@ h1 {
   margin-left: 10px;
   width: 100px;
   font-size: 18px;
-  background-color: rgb(0, 140, 255);
+  background-color: rgb(25, 115, 223);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -63,12 +69,12 @@ h1 {
 
 .send:hover,
 .clear:hover {
-  background-color: rgb(0, 107, 194);
+  background-color: rgb(25, 115, 223);
 }
 
 .disabled-button,
 .disabled-button:hover {
-  background-color: rgb(74, 74, 74);
+  background-color: #2e2e2e;
 }
 
 .line-through {

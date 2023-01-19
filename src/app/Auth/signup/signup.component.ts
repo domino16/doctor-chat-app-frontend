@@ -5,19 +5,16 @@ import { Validation } from '../passwordValidators/validation';
 import { StrongPasswordValidation } from '../passwordValidators/strongPasswordValidation';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/shared/models/user';
 import { Store } from '@ngrx/store';
-import { signUpStart, signUpSuccess } from '../store/auth.actions';
+import { signUpStart } from '../store/auth.actions';
 import { pageIsLoading } from 'src/app/shared/loading-spinner/store/loading-spinner.actions';
 import { getLoadingSpinner } from 'src/app/shared/loading-spinner/store/loading-spinner.selector';
 import {
-  getCurrentChatUser,
   getErrorMessage,
 } from 'src/app/shared/store/shared.selector';
 import { Observable } from 'rxjs';
-import { authUser } from '../store/auth.selector';
 import { setCurrentChatUserStart } from 'src/app/shared/store/shared.actions';
 
 @Component({
@@ -37,9 +34,6 @@ export class SignupComponent implements OnInit {
   symbolsPattern = new RegExp('(?=.*[$@^!%*?&-.;:])');
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
-    private userService: UserService,
     private store: Store
   ) {}
 
@@ -85,7 +79,7 @@ export class SignupComponent implements OnInit {
     if (!this.signupForm.valid) {
       return;
     } else {
-    
+
       const email: string = this.signupForm.controls['email'].value;
       const password: string = this.signupForm.controls['password'].value;
       const defaultImgUrl: string =
@@ -94,40 +88,20 @@ export class SignupComponent implements OnInit {
       const firstName: string = this.signupForm.controls['firstname'].value;
       const lastName: string = this.signupForm.controls['lastname'].value;
 
-      const user: User = {
-        uid: email,
+      const user: User= {
         email: email,
         password: password,
         photoUrl: defaultImgUrl,
         firstName: firstName,
         lastName: lastName,
-        phone: '',
-        address: '',
-        notificationsCounter: '',
-        unReadChatsCounter: '',
         doctor: ifDoctor,
+        unReadChatsCounter: 0,
         visitNotificationsNumber: 0,
       };
 
       this.store.dispatch(pageIsLoading({ status: true }));
       this.store.dispatch(setCurrentChatUserStart());
-      this.store.dispatch(signUpStart({ email, password }));
-      this.userService.addUser(user);
-
-      // this.authService.signup(email, password).subscribe({
-      //   next: (resData) => {
-      //     console.log(resData);
-      //     this.isLoading = false;
-
-      //     this.router.navigate(['chat']);
-
-      //   },
-      //   error: (errorMessage) => {
-      //     console.error(errorMessage);
-      //     this.error = errorMessage;
-      //     this.isLoading = false;
-      //   }
-      // });
+      this.store.dispatch(signUpStart(user));
     }
   }
 }
