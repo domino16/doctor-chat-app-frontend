@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { take, map, switchMap } from 'rxjs/operators';
+import { take, map, switchMap, tap } from 'rxjs/operators';
 import { addChatId, loadChats, messagesIsLoading } from '../chat/store/chat.actions';
-import { getSelectedChat } from '../chat/store/chat.selectors';
+import {  getSelectedChat } from '../chat/store/chat.selectors';
 import { Chat } from '../shared/models/chat';
 import { Message } from '../shared/models/message';
 import { User } from '../shared/models/user';
@@ -24,6 +23,8 @@ export class ChatService {
   ) {}
 
   createChat(otherChatUser: User) {
+
+
 
     this.userService
       .CurrentAuthUser()
@@ -71,13 +72,18 @@ export class ChatService {
   }
 
   get myChats(): Observable<Chat[]> {
-
-
     return this.userService.CurrentAuthUser().pipe(
       switchMap((user) => {
         return this.http
           .get<Chat[]>(`http://localhost:8080/chats/${user?.email}`)
           .pipe(
+            map((chats) =>
+              chats.sort(
+                (chat2: Chat, chat1: Chat) =>
+                  new Date(chat1.lastMessage?.lastMessageDate!).getTime()! -
+                  new Date(chat2.lastMessage?.lastMessageDate!).getTime()!
+              )
+            ),
             map((chats) => this.addChatNameAndPic(user?.email ?? '', chats))
           ) as Observable<Chat[]>;
       })
@@ -100,6 +106,7 @@ export class ChatService {
 
     let messageAuthor = '';
     const today = new Date();
+
 
     return this.userService
       .CurrentAuthUser()
@@ -128,7 +135,6 @@ export class ChatService {
 
   setLastMessageUnreadToFalse(chatId: number) {
     if (chatId) {
-
       this.http
         .patch(
           `http://localhost:8080/chats/setlastmessageunreadtofalse/${chatId}`,
@@ -139,7 +145,6 @@ export class ChatService {
   }
 
   getChatMessages(chatId: number): Observable<Message[]> {
-
     let selectedChatID: number;
     this.store.dispatch(messagesIsLoading({status:false}))
     this.store.select(getSelectedChat).subscribe((chat) => {

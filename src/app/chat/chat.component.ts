@@ -7,7 +7,6 @@ import {
   map,
   switchMap,
   tap,
-  of,
   startWith,
   take,
 } from 'rxjs';
@@ -19,6 +18,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Chat } from '../shared/models/chat';
 import { Store } from '@ngrx/store';
 import { rootState } from '../store/rootState';
+
 import {
   getaddChatId,
   getChats,
@@ -52,13 +52,22 @@ import { WebSocketService } from '../services/webSocket.service';
 })
 export class ChatComponent implements OnInit {
   username: string = '';
+
   searchControl = new FormControl<string | User>('');
   users!: User[];
   currentUser!: User | null;
   hideClassToggle: boolean = false;
   myChats: Observable<Chat[]> = this.store
     .select(getChats)
-
+    .pipe(
+      map((chats) =>
+        [...chats].sort(
+          (a, b) =>
+            new Date(b.lastMessage?.lastMessageDate!).getTime() -
+            new Date (a.lastMessage?.lastMessageDate!).getTime()!
+        )
+      )
+    );
 
   chatListControl = new FormControl<number[]>([0]);
   messageControl = new FormControl('');
@@ -82,7 +91,6 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private authService: AuthService,
     private chatService: ChatService,
     private visitsService: VisitsService,
     private store: Store<rootState>,
@@ -114,7 +122,6 @@ export class ChatComponent implements OnInit {
       this.filteredAllDoctor = this.searchControl.valueChanges.pipe(
         startWith(''),
         map((value) => {
-          // const name = typeof value === 'string' ? value : value?.displayName;
           const name = typeof value === 'string' ? value : value?.email;
           return name
             ? this._filter(name as string)
@@ -125,12 +132,13 @@ export class ChatComponent implements OnInit {
       this.filteredAllUsers = this.searchControl.valueChanges.pipe(
         startWith(''),
         map((value) => {
-
+          // const name = typeof value === 'string' ? value : value?.displayName;
           const name = typeof value === 'string' ? value : value?.email;
           return name ? this._filter(name as string) : this.users?.slice();
         })
       );
     });
+
     this.store
       .select(getCurrentChatUser)
       .subscribe((user) => (this.currentUser = user));
@@ -197,8 +205,7 @@ export class ChatComponent implements OnInit {
       .select(getaddChatId)
       .pipe(take(100))
       .subscribe((chatId) => {
-        this.chatListControl.setValue([chatId]); // @@@@@@@@@@ do naprawy
-        console.log(chatId);
+        this.chatListControl.setValue([chatId]);
       });
     this.searchControl.setValue('');
 
@@ -210,12 +217,13 @@ export class ChatComponent implements OnInit {
     const selectedChatID: any = this.chatListControl.value;
 
     this.chatService.addChatMessage(selectedChatID[0], message!);
-    // this.chatService.addChatMessage(1,message)
+
     this.messageControl.setValue('');
   }
 
   onClickX() {
     this.chatListControl.setValue([0]);
+
 
     this.hideClassToggle = !this.hideClassToggle;
   }
@@ -264,5 +272,4 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  // method to receive the updated data.
 }
