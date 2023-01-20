@@ -58,7 +58,7 @@ import { jwtInterceptorProvider } from './Auth/jwt-interceptor.service';
     HomeComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     FormsModule,
     HttpClientModule,

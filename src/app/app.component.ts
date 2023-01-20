@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, ɵBrowserPlatformLocation } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AuthService } from './Auth/auth.service';
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit {
   userSub!:Subscription
   loggedIn:boolean = false;
 
-  constructor(private authService:AuthService, private userService:UserService, private  store:Store<[rootState]>){}
+  constructor(private authService:AuthService, private userService:UserService, private  store:Store<[rootState]>,@Inject(PLATFORM_ID) private platformId:ɵBrowserPlatformLocation){}
 
 
 ngOnInit(): void {
@@ -27,7 +28,9 @@ ngOnInit(): void {
     this.loggedIn = user ? true : false;
   }
   )
-  this.authService.autoLogin()
+  if(isPlatformBrowser(this.platformId)){
+    this.authService.autoLogin()
+  }
 
 }
 
