@@ -14,7 +14,7 @@ import { rootState } from "../store/rootState";
 })
 export class WebSocketService{
 
-  webSocketEndPoint: string = `http://localhost:8080/ws`;
+  webSocketEndPoint: string = `https://doctor-chat-app.herokuapp.com/ws`;
     topic: string = `/topic/messages`;
     stompClient: any;
     chatId!:number;

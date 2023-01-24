@@ -31,7 +31,7 @@ export class ChatService {
       .pipe(
         take(1),
         switchMap((user) =>{
-         return this.http.post('http://localhost:8080/chats/addchat', {
+         return this.http.post('https://doctor-chat-app.herokuapp.com/chats/addchat', {
             userIDs: [user?.email, otherChatUser.email],
             firstChatUser: {
               email: user?.email ?? '',
@@ -75,7 +75,7 @@ export class ChatService {
     return this.userService.CurrentAuthUser().pipe(
       switchMap((user) => {
         return this.http
-          .get<Chat[]>(`http://localhost:8080/chats/${user?.email}`)
+          .get<Chat[]>(`https://doctor-chat-app.herokuapp.com/chats/${user?.email}`)
           .pipe(
             map((chats) =>
               chats.sort(
@@ -114,7 +114,7 @@ export class ChatService {
       .subscribe((user) => {
         messageAuthor = user?.email!;
         this.http
-          .patch(`http://localhost:8080/chats/lastmessage/${chatId}`, {
+          .patch(`https://doctor-chat-app.herokuapp.com/chats/lastmessage/${chatId}`, {
             lastMessageUnread: true,
             lastMessage: {
               lastMessage: message,
@@ -137,7 +137,7 @@ export class ChatService {
     if (chatId) {
       this.http
         .patch(
-          `http://localhost:8080/chats/setlastmessageunreadtofalse/${chatId}`,
+          `https://doctor-chat-app.herokuapp.com/chats/setlastmessageunreadtofalse/${chatId}`,
           false
         )
         .subscribe();

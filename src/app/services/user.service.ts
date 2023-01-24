@@ -19,19 +19,19 @@ export class UserService {
 
   addUser(user: User): Observable<any> {
 
-   return this.http.post(`http://localhost:8080/user/adduser`,user);
+   return this.http.post(`https://doctor-chat-app.herokuapp.com/user/adduser`,user);
   }
 
 
   getallUsers(): Observable<User[]> {
 
-    return this.http.get<User[]>(`http://localhost:8080/user/users`)
+    return this.http.get<User[]>(`https://doctor-chat-app.herokuapp.com/user/users`)
   }
 
 
   getUserById(userId:string): Observable<User> {
 
-    return this.http.get<User>(`http://localhost:8080/user/user/${userId}`)
+    return this.http.get<User>(`https://doctor-chat-app.herokuapp.com/user/user/${userId}`)
   }
 
    CurrentAuthUser(): Observable<User | null> {
@@ -41,7 +41,7 @@ export class UserService {
         if (!user?.email) {
           return of(null);
         }
-        return this.http.get<User>(`http://localhost:8080/user/user/${user.email}`)
+        return this.http.get<User>(`https://doctor-chat-app.herokuapp.com/user/user/${user.email}`)
       })
     );
   }
