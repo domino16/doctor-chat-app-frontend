@@ -41,7 +41,6 @@ import { VisitsEffects } from './visits/store/visits.effects';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { HomeComponent } from './home/home.component';
 import { StoreRouterConnectingModule } from '@ngrx/router-store'
-import { jwtInterceptorProvider } from './Auth/jwt-interceptor.service';
 
 
 @NgModule({
@@ -91,7 +90,7 @@ import { jwtInterceptorProvider } from './Auth/jwt-interceptor.service';
     }),
     StoreRouterConnectingModule.forRoot(),
   ],
-  providers:[jwtInterceptorProvider],
+  providers:[],
 
   bootstrap: [AppComponent],
 })

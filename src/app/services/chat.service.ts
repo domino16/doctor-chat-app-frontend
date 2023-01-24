@@ -129,7 +129,7 @@ export class ChatService {
             author: user?.email!,
             sentDate: today,
           })
-        );
+        ,chatId);
       });
   }
 

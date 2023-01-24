@@ -8,7 +8,7 @@
         <input matInput placeholder="Z kim chcesz porozmawiać?" [formControl]="searchControl"
           [matAutocomplete]="userss" />
       </mat-form-field>
-  
+
       <mat-autocomplete #userss="matAutocomplete" >
         <ng-container *ngIf="!currentUser?.doctor">
         <ng-container *ngFor="let user of filteredAllDoctor | async ">
@@ -28,7 +28,7 @@
 
 
     </div>
-    <mat-selection-list [multiple]="false" [formControl]="chatListControl">
+    <mat-selection-list [hideSingleSelectionIndicator]="true" [multiple]="false" [formControl]="chatListControl">
       <mat-list-option (click)="hideClassToggle = !hideClassToggle" *ngFor="let chat of myChats |  async "
         [value]="chat.id">
 

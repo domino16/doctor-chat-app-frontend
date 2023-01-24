@@ -61,8 +61,8 @@ this.store.select(getSelectedChat).pipe(take(2)).subscribe(chat=>{
 
     }
 
-  sendMessage(message:String) {
-    this.stompClient.send(`/app/chat/${this.chatId}`, {}, message);
+  sendMessage(message:String, chatId:number) {
+    this.stompClient.send(`/app/chat/${chatId}`, {}, message);
   }
 
 
