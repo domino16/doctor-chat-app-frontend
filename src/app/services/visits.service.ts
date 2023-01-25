@@ -15,7 +15,7 @@ export class VisitsService {
 
   addVisit(userId: string, doctorId: string, visit: visitData):void{
 
-    this.Http.post(`https://doctor-chat-app.herokuapp.com/user/visit/${userId}`,
+    this.Http.post(`http://localhost:8080/user/visit/${userId}`,
     {comment: visit.comment,
       date: visit.date,
       doctor:visit.doctor,
@@ -24,7 +24,7 @@ export class VisitsService {
       time:visit.time
     }).subscribe()
 
-    this.Http.post(`https://doctor-chat-app.herokuapp.com/user/visit/${doctorId}`,
+    this.Http.post(`http://localhost:8080/user/visit/${doctorId}`,
     {comment: visit.comment,
       date: visit.date,
       doctor:visit.doctor,
@@ -38,13 +38,13 @@ export class VisitsService {
 
   getVisits(userId: string): Observable<visitData[]> {
 
-    return this.Http.get<visitData[]>(`https://doctor-chat-app.herokuapp.com/user/visit/${userId}`)
+    return this.Http.get<visitData[]>(`http://localhost:8080/user/visit/${userId}`)
   }
 
 
   updateVisitNotificationNumber(userId: string, number: number):Observable<any> {
 
-    return this.Http.patch(`https://doctor-chat-app.herokuapp.com/user/setvisitnotification/${userId}`,number);
+    return this.Http.patch(`http://localhost:8080/user/setvisitnotification/${userId}`,number);
   }
 
 

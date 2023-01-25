@@ -14,9 +14,9 @@
 }
 .nav img {
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  margin: -8px 0;
+  width: 26px;
+  height: 26px;
+  margin: -3px 0;
   float: left;
   margin-right: 10px;
 }
@@ -30,18 +30,18 @@
 
   img{
     position: absolute;
-    top: -5px;
+    top: 2px;
     left: -40px;
-    max-height: 120px;
+    max-height: 100px;
   }
 }
 
 .navbar ul li i {
-  font-size: 18px;
+  font-size: 14px;
 }
 .navbar .dropdown-menu i {
-  font-size: 16px;
-  min-width: 22px;
+  font-size: 12px;
+  min-width: 18px;
 }
 .navbar .dropdown.open > a {
   background: none !important;
@@ -61,15 +61,15 @@
   color: #333;
 }
 .navbar .dropdown-menu .material-icons {
-  font-size: 21px;
+  font-size: 18px;
   line-height: 16px;
   vertical-align: middle;
   margin-top: -2px;
 }
 .navbar .badge {
   background: $secondary-color;
-  font-size: 11px;
-  border-radius: 20px;
+  font-size: 10px;
+  border-radius: 18px;
   position: absolute;
   min-width: 10px;
   padding: 4px 6px 0;
@@ -111,7 +111,7 @@ background-color: $secondary-color;
 }
 
 .nav-link {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: $light-white;
 }
 
@@ -232,7 +232,10 @@ li.signUp a:hover::after {
 .dropdown-toggle.nav-link{
   border-radius: 10px;
   transition: color 0.3s, border-radius 10px 0.3s;
+
 }
+
+
 
 .dropdown-toggle.nav-link:hover{
   color: $main-color;

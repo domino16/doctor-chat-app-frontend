@@ -76,7 +76,7 @@ export class ChatComponent implements OnInit {
   filteredAllUsers!: Observable<User[]>;
   filteredAllDoctor!: Observable<User[]>;
   selectedChat = this.store.select(getSelectedChat);
-  selectedChatID: number = 0;
+  selectedChatID!: number;
   otherUserId!: string;
   otherUserIndex!: number;
   myUserIndex!: number;
@@ -144,6 +144,7 @@ export class ChatComponent implements OnInit {
       .subscribe((user) => (this.currentUser = user));
 
     this.store.select(getSelectedChat).subscribe((chat) => {
+      this.selectedChatID = chat?.id!;
       this.otherUserIndex =
         chat?.userIDs.indexOf(this.currentUser?.email ?? '') === 0 ? 1 : 0;
       this.myUserIndex =
@@ -169,7 +170,6 @@ export class ChatComponent implements OnInit {
         }),
         map((value) => {
           this.webSocketService._connect();
-          this.selectedChatID = value![0];
           this.chatService.setLastMessageUnreadToFalse(this.selectedChatID);
           this.chatAllMessages = null!;
           this.store.dispatch(messagesIsLoading({ status: true }));
@@ -203,9 +203,11 @@ export class ChatComponent implements OnInit {
     this.store.dispatch(addChat({ user }));
     this.store
       .select(getaddChatId)
-      .pipe(take(100))
       .subscribe((chatId) => {
-        this.chatListControl.setValue([chatId]);
+        setTimeout(() => {
+ this.chatListControl.setValue([chatId]);
+        }, 30);
+
       });
     this.searchControl.setValue('');
 
@@ -214,9 +216,9 @@ export class ChatComponent implements OnInit {
 
   onSubmit() {
     const message: string = this.messageControl.value!;
-    const selectedChatID: any = this.chatListControl.value;
+    // const selectedChatID: any = this.chatListControl.value;
 
-    this.chatService.addChatMessage(selectedChatID[0], message!);
+    this.chatService.addChatMessage(this.selectedChatID, message!);
 
     this.messageControl.setValue('');
   }

@@ -88,7 +88,7 @@ export class AuthService {
     visitNotificationNumber: number
   ) {
     return this.http.post<AuthResponseData>(
-      'https://doctor-chat-app.herokuapp.com/api/v1/auth/register',
+      'http://localhost:8080/api/v1/auth/register',
       {
         email: email,
         password: password,
@@ -104,7 +104,7 @@ export class AuthService {
 
   signin(email: string, password: string) {
     return this.http.post<AuthResponseData>(
-      'https://doctor-chat-app.herokuapp.com/api/v1/auth/login',
+      'http://localhost:8080/api/v1/auth/login',
       {
         email: email,
         password: password,

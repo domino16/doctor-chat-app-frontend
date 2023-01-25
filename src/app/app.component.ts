@@ -3,7 +3,6 @@ import { isPlatformBrowser, ɵBrowserPlatformLocation } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AuthService } from './Auth/auth.service';
-import { UserService } from './services/user.service';
 import { setCurrentChatUserStart } from './shared/store/shared.actions';
 import { rootState } from './store/rootState';
 import { loadNotificationNumberStart } from './visits/store/visits.action';
@@ -18,7 +17,7 @@ export class AppComponent implements OnInit {
   userSub!:Subscription
   loggedIn:boolean = false;
 
-  constructor(private authService:AuthService, private userService:UserService, private  store:Store<[rootState]>,@Inject(PLATFORM_ID) private platformId:ɵBrowserPlatformLocation){}
+  constructor(private authService:AuthService, private  store:Store<[rootState]>,@Inject(PLATFORM_ID) private platformId:ɵBrowserPlatformLocation){}
 
 
 ngOnInit(): void {

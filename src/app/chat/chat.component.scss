@@ -42,7 +42,7 @@ app-loading-spinner {
     display: flex;
     flex-direction: column;
     position: relative;
-    margin: 0px 10px 15px 5px;
+    margin: 0px 10px 10px 0px;
     background-color: $pure-white;
     overflow: auto;
     width:100%;
@@ -63,7 +63,7 @@ flex-direction: column;
 
       mat-list-option{
         display: flex;
-        height: 80px;
+        height: 60px;
         padding-right: 0px;
 
         img{
@@ -105,37 +105,37 @@ flex-direction: column;
 
   &__search-input {
     margin: 10px 30px;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
   }
 
 
 
   &__chat-title {
-    margin-left: 70px;
+    margin:5px 0 0 60px;
 
   }
 
   &__chat-date {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     color: $dark;
     position: absolute;
     right: 15px;
   }
 
   &__chat-name {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 500;
   }
 
   img {
    position: relative;
-    top: 5px;
-    width: 60px;
-    height: 60px;
+    top: 2px;
+    width: 50px;
+    height: 50px;
   }
 
   &__last-message {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 
   .cs {
@@ -145,7 +145,7 @@ flex-direction: column;
   &__messages {
     position: relative;
     width: calc(60% - 20px);
-    margin: 0px 0px 15px 0px;
+    margin: 0px 0px 10px 0px;
     overflow: auto;
     width: 100%;
       animation: show 0.5s forwards;
@@ -155,15 +155,14 @@ flex-direction: column;
       position: relative;
 
       h2{
-        font-size: 2rem;
-        margin-top: 10px;
+        font-size: 1.8rem;
 
       }
 
       .close-icon{
         position: absolute;
         right: 5px;
-        font-size: 4rem;
+        font-size: 3rem;
         padding: 20px;
         cursor: pointer;
       }
@@ -214,8 +213,8 @@ flex-direction: column;
 
     .message-text {
       max-width: 75%;
-      padding: 15px 15px 0px 15px;
-      border-radius: 40px;
+      padding: 10px 10px 0px 10px;
+      border-radius: 20px;
     }
 
     .message-picture {
@@ -223,7 +222,7 @@ flex-direction: column;
       bottom: 0;
 
       img {
-        width: 60px;
+        width: 50px;
         border-radius: 50%;
       }
     }
@@ -235,8 +234,8 @@ flex-direction: column;
 
     .messages-author{
       position: absolute;
-      top: -18px;
-      right: 105px;
+      top: -20px;
+      right: 95px;
       color: rgb(109, 113, 111);
 
     }
@@ -246,7 +245,7 @@ flex-direction: column;
       color: #fff ;
 
       text-align: right;
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       word-wrap: break-word;
 
 
@@ -280,7 +279,7 @@ flex-direction: column;
     .messages-author{
       position: absolute;
       top: -18px;
-      left: 105px;
+      left: 95px;
       color: rgb(109, 113, 111);
 
     }
@@ -289,7 +288,7 @@ flex-direction: column;
       background-color: #e4e6eb;
       color: #050505 ;
       text-align: left;
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       word-wrap: break-word;
       .lastMessageDate{
         position: relative;
@@ -441,11 +440,11 @@ flex-direction: column;
       color:
 
         &__chat-name{
-          font-size: 2rem;
+          font-size: 1.6rem;
         }
 
         &__last-message{
-          font-size: 2rem;
+          font-size: 1.6rem;
         }
 
 
@@ -454,12 +453,12 @@ flex-direction: column;
           .discussion_header{
 
             h2{
-              font-size: 3rem;
+              font-size: 2.5rem;
               margin-top: 30px;
             }
 
             button{
-              font-size: 1.6rem;
+              font-size: 1.4rem;
               bottom: 30px;
             }
 
